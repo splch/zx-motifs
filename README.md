@@ -30,11 +30,15 @@ Qiskit Circuits ──► ZX Diagrams ──► Labeled Graphs ──► Motif D
 
 | Family | Algorithms |
 |--------|-----------|
-| Entanglement | Bell state, GHZ state |
-| Protocol | Teleportation |
+| Entanglement | Bell state, GHZ state, W state, Cluster state |
+| Protocol | Teleportation, Superdense coding, Entanglement swapping |
 | Transform | QFT, Phase Estimation |
-| Oracle | Grover, Bernstein-Vazirani, Deutsch-Jozsa |
+| Oracle | Grover, Bernstein-Vazirani, Deutsch-Jozsa, Simon, Quantum counting |
 | Variational | QAOA MaxCut, VQE UCCSD fragment, Hardware-efficient ansatz |
+| Error Correction | Bit-flip code, Phase-flip code, Steane code, Shor code |
+| Simulation | Trotter Ising, Trotter Heisenberg, Quantum walk |
+| Arithmetic | Ripple-carry adder, QFT adder |
+| Machine Learning | Quantum kernel, Data re-uploading |
 
 ## Setup
 
@@ -71,7 +75,7 @@ print(f"{len(snapshots)} snapshots across simplification levels")
 pytest tests/ -v
 ```
 
-36 tests covering phase classification, conversion roundtrips, composition semantics, boundary preservation, and simplification correctness.
+Tests covering phase classification, conversion roundtrips, composition semantics, boundary preservation, simplification correctness, and parametrized validation of all algorithm generators.
 
 ## Usage
 
@@ -154,16 +158,16 @@ jupyter notebook notebooks/
 ```
 src/zx_motifs/
   algorithms/
-    registry.py          # 11 algorithm generators, family map
+    registry.py          # Algorithm generators, family map
   pipeline/
     converter.py         # Qiskit -> ZX at 6 simplification levels
     featurizer.py        # ZX -> labeled NetworkX graph
     matcher.py           # VF2 subgraph isomorphism with semantic matching
-    motif_generators.py  # 3 motif-finding strategies
+    motif_generators.py  # Motif-finding strategies
     catalog.py           # JSON-serialized motif catalog
     composer.py          # ZX box composition (sequential, parallel)
-notebooks/               # 4 exploration notebooks
-tests/                   # 36 tests
+notebooks/               # Exploration notebooks
+tests/                   # Tests
 ```
 
 ## Key Design Decisions

@@ -10,7 +10,7 @@ uv venv .venv && source .venv/bin/activate
 uv pip install -e ".[dev]"
 
 # Tests
-.venv/bin/python -m pytest tests/ -v          # all 36 tests
+.venv/bin/python -m pytest tests/ -v          # all tests
 .venv/bin/python -m pytest tests/test_composer.py -v  # one file
 .venv/bin/python -m pytest tests/test_featurizer.py::TestClassifyPhase -v  # one class
 .venv/bin/python -m pytest tests/test_converter.py::TestQiskitToZx::test_roundtrip_semantics -v  # one test
