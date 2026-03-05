@@ -130,13 +130,13 @@ class TestDistillationStructure:
         gate_names = {inst.operation.name for inst in qc.data}
         assert gate_names <= {"h", "cx"}, f"Unexpected gates: {gate_names}"
 
-    def test_dejmps_includes_ry(self):
-        """DEJMPS adds RY rotations for twirling."""
+    def test_dejmps_includes_rx(self):
+        """DEJMPS adds RX rotations for twirling."""
         from zx_motifs.algorithms.registry import make_dejmps_distillation
 
         qc = make_dejmps_distillation()
         gate_names = {inst.operation.name for inst in qc.data}
-        assert "ry" in gate_names
+        assert "rx" in gate_names
 
     def test_recurrence_more_cx_than_bbpssw(self):
         """Recurrence distillation has more CX gates than single-round BBPSSW."""

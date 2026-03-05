@@ -60,7 +60,7 @@ def make_grover(n_qubits=3, marked_state=0, n_iterations=1, **kwargs) -> Quantum
 
     for _ in range(n_iterations):
         # Oracle: flip phase of |marked_state>
-        binary = format(marked_state, f"0{n_qubits}b")
+        binary = format(marked_state, f"0{n_qubits}b")[::-1]  # LSB-first for Qiskit
         for i, bit in enumerate(binary):
             if bit == "0":
                 qc.x(i)
@@ -255,8 +255,8 @@ def make_bit_flip_code(n_qubits=5, **kwargs) -> QuantumCircuit:
     qc.cx(1, 3)
     qc.cx(1, 4)
     qc.cx(2, 4)
-    # Correction using Toffoli (decomposed)
-    _decompose_toffoli(qc, 3, 4, 2)
+    # Correction using Toffoli (decomposed): syndrome (1,1) = error on q1
+    _decompose_toffoli(qc, 3, 4, 1)
     return qc
 
 
@@ -277,8 +277,8 @@ def make_phase_flip_code(n_qubits=5, **kwargs) -> QuantumCircuit:
     qc.cx(1, 3)
     qc.cx(1, 4)
     qc.cx(2, 4)
-    # Correction
-    _decompose_toffoli(qc, 3, 4, 2)
+    # Correction: syndrome (1,1) = error on q1
+    _decompose_toffoli(qc, 3, 4, 1)
     # Decode back
     qc.h(0)
     qc.h(1)
@@ -376,23 +376,29 @@ def make_trotter_heisenberg(n_qubits=4, n_steps=1, dt=0.5, **kwargs) -> QuantumC
 def make_ripple_carry_adder(n_qubits=5, **kwargs) -> QuantumCircuit:
     """Cuccaro-style ripple-carry adder for 2-bit addition.
 
-    Uses 5 qubits: a0, b0, a1, b1, carry_out.
+    Uses 5 qubits: c0 (carry_in=0), a0, b0, a1, b1.
+    After execution: b0 = sum bit 0, b1 = sum bit 1, a1 = carry_out.
+    MAJ(c,a,b) = CX(c,b), CX(c,a), Toffoli(a,b,c).
+    UMA(c,a,b) = Toffoli(a,b,c), CX(c,a), CX(a,b).
     Toffoli gates decomposed into Clifford+T.
     """
     qc = QuantumCircuit(5)
-    a0, b0, a1, b1, cout = 0, 1, 2, 3, 4
-    # Majority gate on bit 0
-    qc.cx(a0, b0)
-    _decompose_toffoli(qc, a0, b0, a1)
-    # Majority gate on bit 1
+    c0, a0, b0, a1, b1 = 0, 1, 2, 3, 4
+    # MAJ(c0, a0, b0): propagate carry through bit 0
+    qc.cx(c0, b0)
+    qc.cx(c0, a0)
+    _decompose_toffoli(qc, a0, b0, c0)
+    # MAJ(c0, a1, b1): propagate carry through bit 1
+    qc.cx(c0, b1)
+    qc.cx(c0, a1)
+    _decompose_toffoli(qc, a1, b1, c0)
+    # UMA(c0, a1, b1): uncompute and add bit 1
+    _decompose_toffoli(qc, a1, b1, c0)
+    qc.cx(c0, a1)
     qc.cx(a1, b1)
-    _decompose_toffoli(qc, a1, b1, cout)
-    # UMA (unmajority-and-add) on bit 1
-    _decompose_toffoli(qc, a1, b1, cout)
-    qc.cx(a1, b1)
-    qc.cx(a1, b1)
-    # UMA on bit 0
-    _decompose_toffoli(qc, a0, b0, a1)
+    # UMA(c0, a0, b0): uncompute and add bit 0
+    _decompose_toffoli(qc, a0, b0, c0)
+    qc.cx(c0, a0)
     qc.cx(a0, b0)
     return qc
 
@@ -415,12 +421,19 @@ def make_simon(n_qubits=4, secret=None, **kwargs) -> QuantumCircuit:
 
     # Hadamard on data register
     qc.h(range(n))
-    # Oracle: copy data to ancilla, then XOR with secret
+    # Find flag bit: index of first set bit in secret
+    flag = 0
+    for i in range(n):
+        if secret & (1 << i):
+            flag = i
+            break
+
+    # Oracle: copy data to ancilla, then XOR with secret using flag bit
     for i in range(n):
         qc.cx(i, n + i)
     for i in range(n):
         if secret & (1 << i):
-            qc.cx(0, n + i)
+            qc.cx(flag, n + i)
     # Final Hadamard on data register
     qc.h(range(n))
     return qc
@@ -433,19 +446,23 @@ def make_w_state(n_qubits=3, **kwargs) -> QuantumCircuit:
     """W state preparation using RY rotations and CNOTs.
 
     Creates |W_n> = (|100..0> + |010..0> + ... + |000..1>) / sqrt(n).
+    Uses the F-gate approach: start from |10...0>, then distribute the
+    single excitation evenly across all qubits via controlled rotations.
     """
     n = max(3, n_qubits)
     qc = QuantumCircuit(n)
-    # First qubit: rotation to get amplitude 1/sqrt(n)
-    theta = 2 * np.arccos(np.sqrt(1 / n))
-    qc.ry(theta, 0)
-    for i in range(1, n):
-        # Controlled rotation to distribute amplitude
-        remaining = n - i
-        theta_i = 2 * np.arccos(np.sqrt(1 / remaining))
-        qc.cx(i - 1, i)
-        qc.ry(theta_i, i)
-        qc.cx(i - 1, i)
+    # Start with single excitation on qubit 0
+    qc.x(0)
+    # Distribute amplitude from qubit i to qubit i+1
+    for i in range(n - 1):
+        # Ry angle to split 1/(n-i) probability to qubit i, rest to i+1
+        theta = 2 * np.arccos(np.sqrt(1 / (n - i)))
+        # Controlled-Ry(theta) on qubit i+1, controlled by qubit i
+        # Decomposition: Ry(theta/2) - CX - Ry(-theta/2) - CX
+        qc.ry(theta / 2, i + 1)
+        qc.cx(i, i + 1)
+        qc.ry(-theta / 2, i + 1)
+        qc.cx(i, i + 1)
     return qc
 
 
@@ -463,7 +480,7 @@ def make_cluster_state(n_qubits=4, **kwargs) -> QuantumCircuit:
     return qc
 
 
-# ── Phase 2: Error Correction (additional) ─────────────────────────
+# ── Error Correction ──────────────────────────────────────
 
 
 def make_shor_code(n_qubits=9, **kwargs) -> QuantumCircuit:
@@ -488,7 +505,7 @@ def make_shor_code(n_qubits=9, **kwargs) -> QuantumCircuit:
     return qc
 
 
-# ── Phase 2: Simulation (additional) ───────────────────────────────
+# ── Simulation ────────────────────────────────────────────
 
 
 def make_quantum_walk(n_qubits=3, n_steps=2, **kwargs) -> QuantumCircuit:
@@ -516,7 +533,7 @@ def make_quantum_walk(n_qubits=3, n_steps=2, **kwargs) -> QuantumCircuit:
     return qc
 
 
-# ── Phase 2: Arithmetic (additional) ───────────────────────────────
+# ── Arithmetic ────────────────────────────────────────────
 
 
 def make_qft_adder(n_qubits=4, **kwargs) -> QuantumCircuit:
@@ -555,7 +572,7 @@ def make_qft_adder(n_qubits=4, **kwargs) -> QuantumCircuit:
     return qc
 
 
-# ── Phase 2: Oracle Family (additional) ────────────────────────────
+# ── Oracle Family ─────────────────────────────────────────
 
 
 def make_quantum_counting(n_qubits=5, **kwargs) -> QuantumCircuit:
@@ -616,7 +633,7 @@ def make_quantum_counting(n_qubits=5, **kwargs) -> QuantumCircuit:
     return qc
 
 
-# ── Phase 2: Protocol Family (additional) ──────────────────────────
+# ── Protocol Family ───────────────────────────────────────
 
 
 def make_entanglement_swapping(n_qubits=4, **kwargs) -> QuantumCircuit:
@@ -666,18 +683,19 @@ def make_bbpssw_distillation(n_qubits=4, **kwargs) -> QuantumCircuit:
 def make_dejmps_distillation(n_qubits=4, **kwargs) -> QuantumCircuit:
     """DEJMPS entanglement distillation (Deutsch et al. 1996).
 
-    Adds bilateral Ry(pi/4) rotations before CNOTs to handle asymmetric noise.
+    Adds bilateral Rx rotations before CNOTs to handle asymmetric noise.
+    Alice's qubits (0,2) get Rx(pi/2); Bob's qubits (1,3) get Rx(-pi/2).
     Qubits 0,1: pair to keep; 2,3: pair to sacrifice.
     """
     qc = QuantumCircuit(4)
     # Two Bell pairs
     _bell_pair(qc, 0, 1)
     _bell_pair(qc, 2, 3)
-    # Twirling rotations
-    qc.ry(np.pi / 4, 0)
-    qc.ry(np.pi / 4, 1)
-    qc.ry(np.pi / 4, 2)
-    qc.ry(np.pi / 4, 3)
+    # Bilateral rotations: Rx(pi/2) for Alice, Rx(-pi/2) for Bob
+    qc.rx(np.pi / 2, 0)
+    qc.rx(-np.pi / 2, 1)
+    qc.rx(np.pi / 2, 2)
+    qc.rx(-np.pi / 2, 3)
     # Bilateral CNOTs
     qc.cx(0, 2)
     qc.cx(1, 3)
@@ -727,7 +745,7 @@ def make_pumping_distillation(n_qubits=6, **kwargs) -> QuantumCircuit:
     return qc
 
 
-# ── Phase 2: Machine Learning Family ──────────────────────────────
+# ── Machine Learning Family ──────────────────────────────
 
 
 def make_quantum_kernel(n_qubits=4, **kwargs) -> QuantumCircuit:
@@ -866,27 +884,27 @@ REGISTRY = [
         "superdense_coding", "protocol", make_superdense_coding, (2, 2),
         tags=["communication", "bell_pair", "dense_coding"],
     ),
-    # ── Phase 2: Error Correction ──────────────────────────────────
+    # ── Error Correction ──────────────────────────────────
     AlgorithmEntry(
         "shor_code", "error_correction", make_shor_code, (9, 9),
         tags=["concatenated_code", "nine_qubit"],
     ),
-    # ── Phase 2: Simulation ────────────────────────────────────────
+    # ── Simulation ────────────────────────────────────────
     AlgorithmEntry(
         "quantum_walk", "simulation", make_quantum_walk, (3, 6),
         tags=["discrete_walk", "coin_operator"],
     ),
-    # ── Phase 2: Arithmetic ────────────────────────────────────────
+    # ── Arithmetic ────────────────────────────────────────
     AlgorithmEntry(
         "qft_adder", "arithmetic", make_qft_adder, (4, 8),
         tags=["addition", "controlled_phase", "qft_based"],
     ),
-    # ── Phase 2: Oracle ────────────────────────────────────────────
+    # ── Oracle ────────────────────────────────────────────
     AlgorithmEntry(
         "quantum_counting", "oracle", make_quantum_counting, (5, 8),
         tags=["grover_qpe", "counting", "hybrid"],
     ),
-    # ── Phase 2: Protocol ──────────────────────────────────────────
+    # ── Protocol ──────────────────────────────────────────
     AlgorithmEntry(
         "entanglement_swapping", "protocol", make_entanglement_swapping, (4, 4),
         tags=["bell_measurement", "relay", "teleportation_variant"],
@@ -908,7 +926,7 @@ REGISTRY = [
         "pumping_distillation", "distillation", make_pumping_distillation, (6, 6),
         tags=["distillation", "bell_pair", "bilateral_cnot", "pumping"],
     ),
-    # ── Phase 2: Machine Learning ──────────────────────────────────
+    # ── Machine Learning ──────────────────────────────────
     AlgorithmEntry(
         "quantum_kernel", "machine_learning", make_quantum_kernel, (2, 8),
         tags=["feature_map", "zz_interaction", "kernel_method"],

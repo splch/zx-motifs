@@ -1,4 +1,4 @@
-"""Tests for feature vectors, pre-filtering, and approximate matching (Phase 2)."""
+"""Tests for feature vectors, pre-filtering, and approximate matching."""
 import numpy as np
 import networkx as nx
 import pytest
