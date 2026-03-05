@@ -1,0 +1,65 @@
+======================================================================
+QUANTUM ALGORITHM PHYLOGENY — ZX MOTIF FINGERPRINT ANALYSIS
+======================================================================
+
+Corpus: 88 algorithm instances
+Motif library: 367 motifs (15 hand-crafted + discovered)
+
+─── Motif Universality ───
+  universal   : 8
+  common      : 29
+  specific    : 323
+  unused      : 7
+
+Universal motifs (present in ≥80% of families):
+  cx_pair                         (10/10 families)
+  syndrome_extraction             (10/10 families)
+  syndrome_extraction_param       (10/10 families)
+  x_hub_3z_param                  (8/10 families)
+  auto_e6f788f36bca2b43309cccea1713d508  (10/10 families)
+  auto_91d4674adae9a55e1397977512c89818  (8/10 families)
+  nbr_8f631cd937b2165b7a499b3b3f22145b  (10/10 families)
+  nbr_7aee5bd6bba6f751b6478b70d1c35d51  (9/10 families)
+
+─── PCA Variance Explained ───
+  PC1: 33.2%  PC2: 20.1%
+
+─── Motifs Surviving Full Reduction ───
+  phase_gadget_2t
+  phase_gadget_3t
+  hadamard_sandwich
+  cluster_chain
+
+─── Cross-family Structural Relatives (30 found) ───
+  bbpssw_distillation_q4         (distillation      ) <-> ghz_state_q6                   (entanglement      )  sim=0.990
+  bbpssw_distillation_q4         (distillation      ) <-> ghz_state_q5                   (entanglement      )  sim=0.982
+  ghz_state_q3                   (entanglement      ) <-> teleportation_q3               (protocol          )  sim=0.978
+  entanglement_swapping_q4       (protocol          ) <-> ghz_state_q4                   (entanglement      )  sim=0.958
+  bbpssw_distillation_q4         (distillation      ) <-> ghz_state_q4                   (entanglement      )  sim=0.956
+  entanglement_swapping_q4       (protocol          ) <-> ghz_state_q5                   (entanglement      )  sim=0.953
+  entanglement_swapping_q4       (protocol          ) <-> ghz_state_q6                   (entanglement      )  sim=0.947
+  qaoa_maxcut_q6                 (variational       ) <-> trotter_ising_q6               (simulation        )  sim=0.936
+  qaoa_maxcut_q5                 (variational       ) <-> trotter_ising_q6               (simulation        )  sim=0.933
+  qaoa_maxcut_q6                 (variational       ) <-> trotter_ising_q5               (simulation        )  sim=0.931
+  qaoa_maxcut_q5                 (variational       ) <-> trotter_ising_q5               (simulation        )  sim=0.929
+  qaoa_maxcut_q4                 (variational       ) <-> trotter_ising_q6               (simulation        )  sim=0.925
+  qaoa_maxcut_q4                 (variational       ) <-> trotter_ising_q5               (simulation        )  sim=0.923
+  ghz_state_q4                   (entanglement      ) <-> teleportation_q3               (protocol          )  sim=0.923
+  bbpssw_distillation_q4         (distillation      ) <-> entanglement_swapping_q4       (protocol          )  sim=0.916
+
+─── Motif Coverage ───
+  Overall mean coverage: 81.8%
+  simulation          : 86.2%
+  transform           : 85.6%
+  error_correction    : 85.5%
+  entanglement        : 85.0%
+  machine_learning    : 83.4%
+  oracle              : 82.0%
+  arithmetic          : 79.4%
+  variational         : 73.6%
+  protocol            : 70.5%
+  distillation        : 61.1%
+
+======================================================================
+Outputs saved to: scripts/output/
+======================================================================

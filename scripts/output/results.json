@@ -1,0 +1,3451 @@
+{
+  "phylogeny": {
+    "linkage_shape": [
+      87,
+      4
+    ]
+  },
+  "pca": {
+    "variance_explained_pc1": 0.3320410977683868,
+    "variance_explained_pc2": 0.20050025645954164
+  },
+  "universality": {
+    "motif_stats": [
+      {
+        "motif_id": "phase_gadget_2t",
+        "n_families": 0,
+        "category": "unused",
+        "families": []
+      },
+      {
+        "motif_id": "phase_gadget_3t",
+        "n_families": 0,
+        "category": "unused",
+        "families": []
+      },
+      {
+        "motif_id": "cx_pair",
+        "n_families": 10,
+        "category": "universal",
+        "families": [
+          "arithmetic",
+          "distillation",
+          "entanglement",
+          "error_correction",
+          "machine_learning",
+          "oracle",
+          "protocol",
+          "simulation",
+          "transform",
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "hadamard_sandwich",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "simulation"
+        ]
+      },
+      {
+        "motif_id": "zz_interaction",
+        "n_families": 0,
+        "category": "unused",
+        "families": []
+      },
+      {
+        "motif_id": "syndrome_extraction",
+        "n_families": 10,
+        "category": "universal",
+        "families": [
+          "arithmetic",
+          "distillation",
+          "entanglement",
+          "error_correction",
+          "machine_learning",
+          "oracle",
+          "protocol",
+          "simulation",
+          "transform",
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "toffoli_core",
+        "n_families": 0,
+        "category": "unused",
+        "families": []
+      },
+      {
+        "motif_id": "cluster_chain",
+        "n_families": 3,
+        "category": "specific",
+        "families": [
+          "entanglement",
+          "error_correction",
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "trotter_layer",
+        "n_families": 0,
+        "category": "unused",
+        "families": []
+      },
+      {
+        "motif_id": "syndrome_extraction_param",
+        "n_families": 10,
+        "category": "universal",
+        "families": [
+          "arithmetic",
+          "distillation",
+          "entanglement",
+          "error_correction",
+          "machine_learning",
+          "oracle",
+          "protocol",
+          "simulation",
+          "transform",
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "zz_interaction_param",
+        "n_families": 0,
+        "category": "unused",
+        "families": []
+      },
+      {
+        "motif_id": "toffoli_core_param",
+        "n_families": 0,
+        "category": "unused",
+        "families": []
+      },
+      {
+        "motif_id": "x_hub_3z_param",
+        "n_families": 8,
+        "category": "universal",
+        "families": [
+          "arithmetic",
+          "entanglement",
+          "error_correction",
+          "machine_learning",
+          "oracle",
+          "simulation",
+          "transform",
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "hadamard_pauli_pair",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "oracle",
+          "simulation"
+        ]
+      },
+      {
+        "motif_id": "pauli_x_hub_3z",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "auto_0ca20755a855b01e4fd4ae848c2fbf66",
+        "n_families": 6,
+        "category": "common",
+        "families": [
+          "arithmetic",
+          "machine_learning",
+          "oracle",
+          "simulation",
+          "transform",
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "auto_e6f788f36bca2b43309cccea1713d508",
+        "n_families": 10,
+        "category": "universal",
+        "families": [
+          "arithmetic",
+          "distillation",
+          "entanglement",
+          "error_correction",
+          "machine_learning",
+          "oracle",
+          "protocol",
+          "simulation",
+          "transform",
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "auto_404a1083ce742d80c7e014eaad7db875",
+        "n_families": 5,
+        "category": "common",
+        "families": [
+          "arithmetic",
+          "error_correction",
+          "oracle",
+          "protocol",
+          "simulation"
+        ]
+      },
+      {
+        "motif_id": "auto_12206b7d9c57893bcd75d3ad61b45e34",
+        "n_families": 4,
+        "category": "common",
+        "families": [
+          "arithmetic",
+          "error_correction",
+          "oracle",
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "auto_96923a646d722d5058de908ba8cd0d1a",
+        "n_families": 6,
+        "category": "common",
+        "families": [
+          "arithmetic",
+          "machine_learning",
+          "oracle",
+          "simulation",
+          "transform",
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "auto_91d4674adae9a55e1397977512c89818",
+        "n_families": 8,
+        "category": "universal",
+        "families": [
+          "distillation",
+          "entanglement",
+          "error_correction",
+          "machine_learning",
+          "oracle",
+          "simulation",
+          "transform",
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "auto_96ea930299ed1b7ec7a99f444341bc9c",
+        "n_families": 4,
+        "category": "common",
+        "families": [
+          "arithmetic",
+          "machine_learning",
+          "simulation",
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "auto_d4c2b89a05faed5e38a8dbf3a69bcef4",
+        "n_families": 3,
+        "category": "specific",
+        "families": [
+          "arithmetic",
+          "oracle",
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "auto_14e9e466cd2944b8a1d3c19198c94c4e",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "simulation",
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "auto_b857838486e14f206883f71c791406da",
+        "n_families": 3,
+        "category": "specific",
+        "families": [
+          "arithmetic",
+          "oracle",
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "auto_2846ca09f56b6cdde4249df5466d5a64",
+        "n_families": 4,
+        "category": "common",
+        "families": [
+          "arithmetic",
+          "error_correction",
+          "oracle",
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "auto_df768296e5fa8ddc0283b5b56a1ecb14",
+        "n_families": 5,
+        "category": "common",
+        "families": [
+          "entanglement",
+          "oracle",
+          "protocol",
+          "simulation",
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "auto_6d593320d6f28fb41aa95382c9b803bb",
+        "n_families": 4,
+        "category": "common",
+        "families": [
+          "arithmetic",
+          "error_correction",
+          "oracle",
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "auto_b3584662d9850da99a34b5be2f864484",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "simulation",
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "auto_17110c8a7c36edfc18bf36b07ae4f2e4",
+        "n_families": 3,
+        "category": "specific",
+        "families": [
+          "arithmetic",
+          "oracle",
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "auto_4ccb9e8ec6d569fc22134c1593b42eb0",
+        "n_families": 4,
+        "category": "common",
+        "families": [
+          "entanglement",
+          "oracle",
+          "simulation",
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "auto_6e3c3602d4860af4b0e06b2f50a707da",
+        "n_families": 4,
+        "category": "common",
+        "families": [
+          "entanglement",
+          "oracle",
+          "simulation",
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "auto_2f1baa04a7f474c79dd984f861febc32",
+        "n_families": 3,
+        "category": "specific",
+        "families": [
+          "arithmetic",
+          "error_correction",
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "auto_47506e491f8b565a009011a3d5810db9",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "arithmetic",
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "auto_cc761ff36754d083c41899d335aba9ab",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "arithmetic",
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "auto_2ac61fc7342f26a9b7022fd3b507721a",
+        "n_families": 4,
+        "category": "common",
+        "families": [
+          "arithmetic",
+          "machine_learning",
+          "oracle",
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "auto_d0fbf00a3566760c41ba7b4033de2ed7",
+        "n_families": 3,
+        "category": "specific",
+        "families": [
+          "oracle",
+          "simulation",
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "auto_16061487470b9819df308cc2cbf396e4",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "simulation"
+        ]
+      },
+      {
+        "motif_id": "auto_c0e8e88cff208f04140640955bcb0657",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "simulation"
+        ]
+      },
+      {
+        "motif_id": "auto_359f14ac9ca88ac4ca135d0af415e546",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "machine_learning"
+        ]
+      },
+      {
+        "motif_id": "auto_dd9ec3be97b183f6cc12073b9902a9d7",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "machine_learning"
+        ]
+      },
+      {
+        "motif_id": "auto_023e28ea210a4863c99eed8536997854",
+        "n_families": 3,
+        "category": "specific",
+        "families": [
+          "machine_learning",
+          "simulation",
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "auto_fd176f494abf4b8d64c63295f092b91b",
+        "n_families": 4,
+        "category": "common",
+        "families": [
+          "arithmetic",
+          "error_correction",
+          "oracle",
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "auto_3d11490ccd0e47b8ecbc66dc24c2acd1",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "arithmetic",
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "auto_cdaa928d2a1943cdf1183d9cad408ed6",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "arithmetic",
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "auto_d8010400fa519a52a6201031ec3ea46f",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "auto_1253be9de23ffc9b24a60fc9ef163881",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "simulation"
+        ]
+      },
+      {
+        "motif_id": "auto_53ebdf07c3fd1153aba41e7ff55e445d",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "simulation"
+        ]
+      },
+      {
+        "motif_id": "auto_e6e45adbf85456de823e7822cbd19e50",
+        "n_families": 3,
+        "category": "specific",
+        "families": [
+          "arithmetic",
+          "entanglement",
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "auto_51b81dd5bfaca6d01d0f947566ce5e22",
+        "n_families": 3,
+        "category": "specific",
+        "families": [
+          "arithmetic",
+          "machine_learning",
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "auto_9e22a2a296a17ee1f8bb857afaececd4",
+        "n_families": 3,
+        "category": "specific",
+        "families": [
+          "arithmetic",
+          "entanglement",
+          "machine_learning"
+        ]
+      },
+      {
+        "motif_id": "auto_55510e60cee8e707d80ee5a24639737b",
+        "n_families": 4,
+        "category": "common",
+        "families": [
+          "arithmetic",
+          "error_correction",
+          "oracle",
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "auto_ca58a79dbb567909bee8bccd4710f8ae",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "auto_7b4a86cbacce18dfef97dd68a77527b2",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "auto_16275c3a12e02c394eb8c50a35199403",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "auto_af0794e3c39b8f7d65480704bbefeb3b",
+        "n_families": 4,
+        "category": "common",
+        "families": [
+          "arithmetic",
+          "machine_learning",
+          "oracle",
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "auto_4767a5ac372c085e26069a6725157bf8",
+        "n_families": 3,
+        "category": "specific",
+        "families": [
+          "oracle",
+          "simulation",
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "auto_fed4704dc77489debd4991c762769a80",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "oracle",
+          "simulation"
+        ]
+      },
+      {
+        "motif_id": "auto_22c400174df6babd07582e7805d36df0",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "oracle",
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "auto_b0b60112e5bc97ee4236aabcbf402815",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "oracle",
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "auto_84ece6aed89e5672a554e51336bf404c",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "oracle",
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "auto_7d495f0205427371fcb334bb4d0d0513",
+        "n_families": 4,
+        "category": "common",
+        "families": [
+          "arithmetic",
+          "error_correction",
+          "protocol",
+          "simulation"
+        ]
+      },
+      {
+        "motif_id": "auto_4e116bbeabd9c504bd1d56eba3d26029",
+        "n_families": 3,
+        "category": "specific",
+        "families": [
+          "oracle",
+          "simulation",
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "auto_8747beebda4ab4b44edc402c36881009",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "oracle",
+          "simulation"
+        ]
+      },
+      {
+        "motif_id": "auto_19683e99c7d90e534288338e2e1daf27",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "auto_4983bc216ca87cc9f34ea24dc5db3c89",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "auto_b02b09112a40d9964820f58d6c9ca169",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "auto_6a08733127fb5b15272370d3ab63da48",
+        "n_families": 3,
+        "category": "specific",
+        "families": [
+          "oracle",
+          "simulation",
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "auto_1aa882be22cfc9767a0d342bf518c621",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "auto_39a9fcdb2b13f14dc6332ede58315b81",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "auto_c2a193c7b9e9e2e7abcaba002d28f7ed",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "arithmetic",
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "auto_7baac469e208af35e099faa5849b1ed7",
+        "n_families": 3,
+        "category": "specific",
+        "families": [
+          "arithmetic",
+          "oracle",
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "auto_22aa288b2ab47f13d5d24dce9e4f1144",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "auto_8685a8f7d709ea40656aea11ec0aad89",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "auto_a386c0863ab1139e16a66a063928aa5b",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "nbr_8d97a1cf05dd852417db1a2cf1f83877",
+        "n_families": 3,
+        "category": "specific",
+        "families": [
+          "arithmetic",
+          "oracle",
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_e753d3444bc97a282c84248603ef68b5",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "oracle",
+          "simulation"
+        ]
+      },
+      {
+        "motif_id": "nbr_06ee959d7a5cd40b1e0aec53bbf5bd9c",
+        "n_families": 4,
+        "category": "common",
+        "families": [
+          "arithmetic",
+          "error_correction",
+          "oracle",
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_9831919969ed8e149e26e25158305229",
+        "n_families": 4,
+        "category": "common",
+        "families": [
+          "arithmetic",
+          "error_correction",
+          "oracle",
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_f1a5cd4566322fc784777857b6b7c4b4",
+        "n_families": 3,
+        "category": "specific",
+        "families": [
+          "arithmetic",
+          "oracle",
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_8b1a537a383de2d8f1e8e08d5141ed5d",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "simulation",
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "nbr_e285dfb13d7d74f50709a6bb842346b3",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "simulation",
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "nbr_702345170c485d241c576e40b38d82a0",
+        "n_families": 3,
+        "category": "specific",
+        "families": [
+          "arithmetic",
+          "oracle",
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_1a85c3fd5f6809db4c8dc8ddff204e81",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "arithmetic",
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_83472da2917376e8279cdd752557abb2",
+        "n_families": 4,
+        "category": "common",
+        "families": [
+          "arithmetic",
+          "machine_learning",
+          "oracle",
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_b68ce7488d7e52f38a84f22f69b45d58",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "simulation",
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "nbr_7c2155e0cc46d6f92c673673fb9452ed",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "simulation",
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "nbr_8f631cd937b2165b7a499b3b3f22145b",
+        "n_families": 10,
+        "category": "universal",
+        "families": [
+          "arithmetic",
+          "distillation",
+          "entanglement",
+          "error_correction",
+          "machine_learning",
+          "oracle",
+          "protocol",
+          "simulation",
+          "transform",
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "nbr_bfa54a3631a991f5b6b557e896e008bc",
+        "n_families": 4,
+        "category": "common",
+        "families": [
+          "arithmetic",
+          "machine_learning",
+          "oracle",
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_7aee5bd6bba6f751b6478b70d1c35d51",
+        "n_families": 9,
+        "category": "universal",
+        "families": [
+          "distillation",
+          "entanglement",
+          "error_correction",
+          "machine_learning",
+          "oracle",
+          "protocol",
+          "simulation",
+          "transform",
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "nbr_dc977692f74f5993bc27e3f15fefcd12",
+        "n_families": 4,
+        "category": "common",
+        "families": [
+          "error_correction",
+          "simulation",
+          "transform",
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "nbr_0f064e2b3be660b518103f933d599758",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "arithmetic",
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_46f9c8738d62f13ce8421fc8806c044a",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "arithmetic",
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_0bb85daab9fb9b8db14711a657a6cfce",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "arithmetic",
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_988662164e46ead25918d82ff2fb42ac",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "arithmetic",
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_0a7c95ea37289d835c2f72cdf00ef26a",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "arithmetic",
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_8da2bbaa2ae7eb5116ad98161ab227ab",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "arithmetic",
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_3ab24c8298c04db5be237d20fc96755f",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "oracle",
+          "simulation"
+        ]
+      },
+      {
+        "motif_id": "nbr_b7db29155c49490e1d700bbb6ad45ffe",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "simulation",
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "nbr_0a88e8467ff4ac9eaf4218370fa69dfa",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "simulation",
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "nbr_8e66f4be32076746423ef88525b41f6d",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "simulation"
+        ]
+      },
+      {
+        "motif_id": "nbr_212e60f038d20a5655955ad959237af2",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "simulation"
+        ]
+      },
+      {
+        "motif_id": "nbr_e3c767eb924d4939f13e41c71a87385c",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "simulation"
+        ]
+      },
+      {
+        "motif_id": "nbr_e1d484c7965103983d72f98dc1939611",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "simulation"
+        ]
+      },
+      {
+        "motif_id": "nbr_ce035dc817fd7319a49af7900527fb9e",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "simulation"
+        ]
+      },
+      {
+        "motif_id": "nbr_88516e41580995afaa2eac366f1636f4",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "simulation"
+        ]
+      },
+      {
+        "motif_id": "nbr_020bf7386e4d5d05973bb277961ca92c",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "simulation"
+        ]
+      },
+      {
+        "motif_id": "nbr_8f2ed9384b2e8488a46b891a1768b391",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "simulation"
+        ]
+      },
+      {
+        "motif_id": "nbr_f959ec774f0c27df729adee0b18ee1cd",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "simulation"
+        ]
+      },
+      {
+        "motif_id": "nbr_06ac23f3fca17e71a04b5f5e0fcf4435",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "simulation"
+        ]
+      },
+      {
+        "motif_id": "nbr_162f6518bd345d4b5ab5d7787f2e2d40",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "simulation"
+        ]
+      },
+      {
+        "motif_id": "nbr_d21eb00aaaa1bbaa21a8f2d7025428bf",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "simulation"
+        ]
+      },
+      {
+        "motif_id": "nbr_402f6eeb71791edd69e86bf40c2e90c0",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "simulation"
+        ]
+      },
+      {
+        "motif_id": "nbr_a554135f5801fb34b8819715319c272a",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "simulation"
+        ]
+      },
+      {
+        "motif_id": "nbr_91303e1fb596091bd5b19842ea4209b5",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "simulation"
+        ]
+      },
+      {
+        "motif_id": "nbr_83cb5729ab67da0c4627698c1e4bdef4",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "machine_learning"
+        ]
+      },
+      {
+        "motif_id": "nbr_9108fc63b8ca771170f7214a7496d94f",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "machine_learning"
+        ]
+      },
+      {
+        "motif_id": "nbr_466278392884fae3272be28dbb0603a7",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "machine_learning"
+        ]
+      },
+      {
+        "motif_id": "nbr_eda70705ac4727adf2a7e28ea9299bcb",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "machine_learning"
+        ]
+      },
+      {
+        "motif_id": "nbr_5947656fcc96afddbcc107dcfbc63805",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "machine_learning"
+        ]
+      },
+      {
+        "motif_id": "nbr_3f75bd71e97d837fa4966abdb3e349c3",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "machine_learning"
+        ]
+      },
+      {
+        "motif_id": "nbr_cfd412a9da9e0b5ac6eab4d6d2e3567b",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "machine_learning"
+        ]
+      },
+      {
+        "motif_id": "nbr_1dcd05b45f12901357c1b680e430f99b",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "machine_learning"
+        ]
+      },
+      {
+        "motif_id": "nbr_e7f22dd71e52d3cdcb426ec88574c2d1",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "machine_learning"
+        ]
+      },
+      {
+        "motif_id": "nbr_7681a438fec399149e59a7bde69aadb8",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "machine_learning"
+        ]
+      },
+      {
+        "motif_id": "nbr_f3764a7356c68fff7bcaa4cc912c1bec",
+        "n_families": 7,
+        "category": "common",
+        "families": [
+          "distillation",
+          "entanglement",
+          "error_correction",
+          "machine_learning",
+          "protocol",
+          "simulation",
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "nbr_bd53349cb563431a3b2b0ef9e557e204",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_3c337fb49b663cd9c55eb91749313a17",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_813b46882509d778768ccdfcf4af741c",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_cae7cbf0b6550c71a78ea850204f0d96",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_099e9e1f2aaa69faba661d8160e4822b",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_f8ecf223458e63d764ad6d20d6c5705c",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "arithmetic",
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_29ec70713bbba9885e2fd5b5a98c7daf",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "arithmetic",
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_d272d012dc7bf5555c7db8037cc55daf",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "arithmetic",
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_a4a6c932833eb6e562e7b286ab0c6c36",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "arithmetic",
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_626848b6fee9cfb01dfdfaf48931c9dc",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "arithmetic",
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_9587c7f589bb08b11c528e674ef43578",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "arithmetic",
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_45f998fdb1dcd2f395e0bc4fa3e885d3",
+        "n_families": 3,
+        "category": "specific",
+        "families": [
+          "arithmetic",
+          "oracle",
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_516e6d9f14af3ed19cca990c69445b98",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "arithmetic",
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_6bbd2945ff0312256aa87fc7aec1ec85",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "arithmetic",
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_66eb95c5571e22105d52b33966508567",
+        "n_families": 3,
+        "category": "specific",
+        "families": [
+          "arithmetic",
+          "oracle",
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_593449444eaf489c748f91a1c00c4e5d",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "transform",
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "nbr_86398950d064cda1976807ca3b6d23c0",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "nbr_963bd9cbb095e8ebf38dfff854db3795",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "nbr_dab4de5ea0c9dc1f866f8a825bcbf893",
+        "n_families": 4,
+        "category": "common",
+        "families": [
+          "machine_learning",
+          "simulation",
+          "transform",
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "nbr_55ec35683eb6fdac74ee4b71067f098d",
+        "n_families": 4,
+        "category": "common",
+        "families": [
+          "machine_learning",
+          "simulation",
+          "transform",
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "nbr_2e90c5b6e116432bbc2a1906167b1728",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "simulation",
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "nbr_a84b57c31754d18e30984acc91b67222",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "simulation",
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "nbr_86f5abd54f5b2292f10798d6d4c96028",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "nbr_0296685c64fe671d5adb632c8c631be4",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "nbr_b32b9541bd5e28da1fbfb1711d7dd73f",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "nbr_03ecbac29260b6c6fc5d1b7606aca502",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "nbr_fe6f1c057bc914e2448236c117267c72",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "nbr_c60f09288f747bb9bc0afc2d349e74e3",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "nbr_f05ab67f4a5927ee3370ef7264d3491d",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "nbr_459fb16c178539d5f20f257907793b20",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "nbr_af96edc3620829c779908696f27ca742",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "nbr_ca8b8919fba8227a597e527d7bdfb44e",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "nbr_7d53aaaec6b2d8d233b09b1a05fc9b8f",
+        "n_families": 4,
+        "category": "common",
+        "families": [
+          "machine_learning",
+          "simulation",
+          "transform",
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "nbr_059410082b607f89f9cb8080866d5665",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "simulation",
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "nbr_62100fbfee16f00bf91d31ce670a30f9",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "simulation",
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "nbr_a33d701a582d49289a1aa4ae4a093fd4",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "simulation",
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "nbr_501016a28d3e17d7f3443fffef98d6bb",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "simulation",
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "nbr_6a40f538a6a47b414e1a388875eb5677",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "simulation"
+        ]
+      },
+      {
+        "motif_id": "nbr_851037c7fce24128f27e7486afc1141f",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "simulation"
+        ]
+      },
+      {
+        "motif_id": "nbr_6df04e80bdee37303878854d51c15e44",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "simulation"
+        ]
+      },
+      {
+        "motif_id": "nbr_00f2b3cdaaa91cd799dbd862dd7ffffb",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "simulation"
+        ]
+      },
+      {
+        "motif_id": "nbr_2241fd604b9a666479db5317efa1383a",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "simulation"
+        ]
+      },
+      {
+        "motif_id": "nbr_c3780bcc503c9202b95085ce5b22db7f",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "simulation"
+        ]
+      },
+      {
+        "motif_id": "nbr_33991a45f28121af90a89f7c59e3bc81",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "simulation"
+        ]
+      },
+      {
+        "motif_id": "nbr_2506782be8239bdacb760669b98919f6",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "simulation"
+        ]
+      },
+      {
+        "motif_id": "nbr_af9101fb8597e26eccf24ebc633c7ddd",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "simulation"
+        ]
+      },
+      {
+        "motif_id": "nbr_e4bc3b8d23159b92e66d5194a1585386",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "entanglement"
+        ]
+      },
+      {
+        "motif_id": "nbr_8461cd4f0fcbd81442df2acad843103f",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "entanglement"
+        ]
+      },
+      {
+        "motif_id": "nbr_f57af3eca06e42716bd2a4aa34d0a2aa",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "entanglement"
+        ]
+      },
+      {
+        "motif_id": "nbr_bf89b33727a327bdcb3142f36bd2d6f7",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "entanglement"
+        ]
+      },
+      {
+        "motif_id": "nbr_3660ff7c311ad431ab4825f3f9df877b",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "entanglement"
+        ]
+      },
+      {
+        "motif_id": "nbr_2e753dbb2866f75e065a9a345bff7726",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "entanglement"
+        ]
+      },
+      {
+        "motif_id": "nbr_914a8750939efaafeb949896df41f242",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "entanglement"
+        ]
+      },
+      {
+        "motif_id": "nbr_dc2c24d4737c7efd619fbdbdada4f918",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "entanglement"
+        ]
+      },
+      {
+        "motif_id": "nbr_f3a6234629358672866cb53610b0a64d",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "entanglement"
+        ]
+      },
+      {
+        "motif_id": "nbr_f5f8b51651ed683e17b0369d6051b626",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "entanglement"
+        ]
+      },
+      {
+        "motif_id": "nbr_7c5c4035b383abf03295d7a6cd48011b",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "entanglement"
+        ]
+      },
+      {
+        "motif_id": "nbr_d7e71efbfd335e1c6e3dca9198769b51",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "entanglement"
+        ]
+      },
+      {
+        "motif_id": "nbr_a06c43bb3fcb336938acc950000a44ca",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "entanglement"
+        ]
+      },
+      {
+        "motif_id": "nbr_48ea56febc3c4a55158e9c586e0635be",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "entanglement"
+        ]
+      },
+      {
+        "motif_id": "nbr_554631d374cfacc4077e2dae8c0840a2",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "entanglement"
+        ]
+      },
+      {
+        "motif_id": "nbr_6a864602851f13040c9cc9dcdc392717",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "entanglement"
+        ]
+      },
+      {
+        "motif_id": "nbr_851a5af04f7011709811ccdf6acb280f",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "machine_learning"
+        ]
+      },
+      {
+        "motif_id": "nbr_d3e2eda4f2a54523ae34e0efaf7ad403",
+        "n_families": 4,
+        "category": "common",
+        "families": [
+          "arithmetic",
+          "machine_learning",
+          "oracle",
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_5d8c6a0f0a51671b8c2e618b84811b37",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "machine_learning"
+        ]
+      },
+      {
+        "motif_id": "nbr_6417ff59050dcf96fdeb9b5e77c70f01",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "machine_learning"
+        ]
+      },
+      {
+        "motif_id": "nbr_d35645da6b00d33cca706a6a61522286",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "machine_learning"
+        ]
+      },
+      {
+        "motif_id": "nbr_1a322b41f4d93a41a8cc9fa13c6d2ed2",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "machine_learning",
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_965820339442f4735e0a0fcc5bc72e67",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "machine_learning"
+        ]
+      },
+      {
+        "motif_id": "nbr_89c814523119f429e702bfcf2d34d4cf",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "machine_learning"
+        ]
+      },
+      {
+        "motif_id": "nbr_10028d90b1a3b134ea81cc02eb9fb629",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "machine_learning"
+        ]
+      },
+      {
+        "motif_id": "nbr_8a75c91f08e77e81737fd428a680ee60",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "machine_learning"
+        ]
+      },
+      {
+        "motif_id": "nbr_b6212811bf1142ae0b738903664ee2bc",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "machine_learning"
+        ]
+      },
+      {
+        "motif_id": "nbr_9704bc840bb3bb6959f0c9d648808351",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "machine_learning"
+        ]
+      },
+      {
+        "motif_id": "nbr_6018e40b9463ed76784739e25c6ca0ae",
+        "n_families": 4,
+        "category": "common",
+        "families": [
+          "machine_learning",
+          "simulation",
+          "transform",
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "nbr_4e7bacc1ca02f9e7a587e80c46aec098",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "machine_learning"
+        ]
+      },
+      {
+        "motif_id": "nbr_ca15d6c1272b59e27481c7be0ac1dc4b",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "machine_learning"
+        ]
+      },
+      {
+        "motif_id": "nbr_c76ef8a02ac69a780f6975fa5178b4a6",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "machine_learning"
+        ]
+      },
+      {
+        "motif_id": "nbr_1024b4d4b0c9113b8a6f5760215cab7d",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "machine_learning"
+        ]
+      },
+      {
+        "motif_id": "nbr_acc1b10e9be5084744bc281a49287049",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "machine_learning"
+        ]
+      },
+      {
+        "motif_id": "nbr_85ebf4c35f14457873f873967e19295f",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "machine_learning"
+        ]
+      },
+      {
+        "motif_id": "nbr_3a2eb12f053e98b170d7d6da4d96a55b",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "machine_learning"
+        ]
+      },
+      {
+        "motif_id": "nbr_c5f088871ee06dabba539001a9013f6b",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "machine_learning"
+        ]
+      },
+      {
+        "motif_id": "nbr_6ec99f9f58acc95a20227e0c522e11d0",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "machine_learning"
+        ]
+      },
+      {
+        "motif_id": "nbr_9efbf449719ad029fa9ffdeef70cfe34",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "machine_learning"
+        ]
+      },
+      {
+        "motif_id": "nbr_ded304803b84b812049090e63e94d0c6",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "machine_learning",
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "nbr_0a14da08bffc73caae8f21fcfe8600dc",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "oracle",
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_45db3509caa3019a27b609ed1e240ea9",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_8faa9f4f510df4cd1dd70d6589cc0a63",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_4cdb9700aad0d3e908dbe4e7fb721b14",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_af81ef58fea2df8344aa2f3efc6bfe50",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_a7af07a86a9fed284c8adc52e7c190d0",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_1c2bf7612fbf45f93a2be0c2aaf42d9b",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_36c0e204a74d348c36042e9b7c289053",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_2ed30d4982f3b49f7acd3923676be368",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_af87d0f7af7e6184e25fa9c245dc7e1e",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_6a866f24392916f292c6acfa73f97090",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_1d82a06addf9865afac19711b2f91ccd",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_81e955583cf4e7d4a0c617d829b5f227",
+        "n_families": 3,
+        "category": "specific",
+        "families": [
+          "arithmetic",
+          "error_correction",
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "nbr_2dc4a8f0d053636100ceba35edf9c67a",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "error_correction",
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "nbr_de1faf748b90e671cff7b621db55987e",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "error_correction",
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "nbr_7f31f17e0ea5daf8cf3e6bd2d60492d3",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "nbr_d2a36c825b05a07b5bc919cf595310fd",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "nbr_e6b6c818e956f0cee0cf34e1ddebe49c",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "nbr_14e987f03b60764052986ca95e009099",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_5dde6da701107b01a92f1987b6570edb",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_961c427dc7e5ce566687a5e21aeabbb8",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_9fcc0b7ce12d161ca7cc6361e8462b88",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_d730bec95746b22c92fb727d99bafefb",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_9e0d852c9cdd3656cf50fe5546a50679",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_8c850bfe4ff935428a8f9a51380a31be",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_29dc4571e180c37ff775ecf739b502f6",
+        "n_families": 3,
+        "category": "specific",
+        "families": [
+          "arithmetic",
+          "machine_learning",
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_efdbc343e70099e5fe139228ea4959e5",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_3967e2f1df7d8a1b9fa2cd27d41694ad",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_3042c53d0ce22231676f6a2b8b1d1834",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_dc99cdc80a2e9cf9a1ed49898054e143",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_8fd812fd368171a121d832dad9c73a10",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_e078662be507759ce207a01c41f582ce",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_6850fad1c982beef8c7a5415d98cc055",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_4cc9ace7d7639a7746d9542152383a5d",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_8fd0c6109a1d43e66ed49dff015e2950",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_df1a0f5a51617f6102fabdc1654b8cf4",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_b6d6f1112798d83035eef0379c1f114b",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_176802f331f76bdf3b37063f351a8e6a",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_bdd6f12517d474e9ec14b75849347d74",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_7dfeae45042898f65cc002b5f4157e30",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_cc4a79b54658c638979db3077b7a8146",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_cbb403be9e3950c19923fb4b67f20027",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_303c15c8ff21bb1852d059878067387c",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_e85e4bbafbd9ed791fef3fcba3daf241",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_7e5c1ffe3d2c7b727437ef2951ebfea3",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "nbr_74395ecb71ecccb119f87fff862d2452",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "nbr_f355d8fc18512c91cdc111b8e2885a94",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "arithmetic",
+          "error_correction"
+        ]
+      },
+      {
+        "motif_id": "nbr_e9181b481dbcfa638c100c8c82e904cd",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "arithmetic",
+          "error_correction"
+        ]
+      },
+      {
+        "motif_id": "nbr_4b036bae3c6fd6ff3b62471c60539d7e",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "simulation",
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "nbr_1f7c641b7ec3065554d0feb997cb030a",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "simulation",
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "nbr_de17e41fb7ff33a9bd2e6f57f12088aa",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "simulation",
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "nbr_4a725fc6d60e2eac1d174a364c213bbd",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "arithmetic"
+        ]
+      },
+      {
+        "motif_id": "nbr_f5f19a59dd83dc073f899d61c648c34e",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "entanglement"
+        ]
+      },
+      {
+        "motif_id": "nbr_5083ac47a8dff974644b579966f424bd",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "entanglement"
+        ]
+      },
+      {
+        "motif_id": "nbr_9ae156487dd2d8026f9d43ac623d41c6",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "entanglement"
+        ]
+      },
+      {
+        "motif_id": "nbr_865ee0eda5a0fc3e728454d0fe4ce4a3",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "arithmetic"
+        ]
+      },
+      {
+        "motif_id": "nbr_b050291b986112da434808ff4e00a4e2",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "arithmetic"
+        ]
+      },
+      {
+        "motif_id": "nbr_80cf6ee5c270f3344a8fe29c46efd5ee",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "arithmetic"
+        ]
+      },
+      {
+        "motif_id": "nbr_b361082f80b0fa58ee45705082e2a6fb",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "arithmetic"
+        ]
+      },
+      {
+        "motif_id": "nbr_46876a788efb5ceccc26901894b7ccb1",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "arithmetic",
+          "error_correction"
+        ]
+      },
+      {
+        "motif_id": "nbr_1deea96f2d3807830799bb1d73b2e9a5",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "arithmetic"
+        ]
+      },
+      {
+        "motif_id": "nbr_9661ba309f9d119b9ab2815944f00bb5",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "arithmetic"
+        ]
+      },
+      {
+        "motif_id": "nbr_198fe0564cd157f2bcf92d92bca643a9",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "machine_learning",
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_2c0780bd6ddf8c01d7b8430822f49f50",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "machine_learning"
+        ]
+      },
+      {
+        "motif_id": "nbr_21fa90553e983329f49ff2a3ebcdb09a",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "machine_learning"
+        ]
+      },
+      {
+        "motif_id": "nbr_b4919e2917d96425e7ebba9c045ab6d7",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "machine_learning"
+        ]
+      },
+      {
+        "motif_id": "nbr_6573a5ce7f5a00d613fe31d4c675ada5",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "machine_learning"
+        ]
+      },
+      {
+        "motif_id": "nbr_241fbb025442733d87950d20b1b413d0",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "machine_learning"
+        ]
+      },
+      {
+        "motif_id": "nbr_7cefb3928a266a76e1a1b28c272a7e03",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "machine_learning"
+        ]
+      },
+      {
+        "motif_id": "nbr_93f78db337229517bee85e963365e4ef",
+        "n_families": 3,
+        "category": "specific",
+        "families": [
+          "machine_learning",
+          "simulation",
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "nbr_f584a39685e1edbf50df48269b247674",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "machine_learning"
+        ]
+      },
+      {
+        "motif_id": "nbr_2ad4f63f2703b340ff3e148ca71714f4",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "machine_learning"
+        ]
+      },
+      {
+        "motif_id": "nbr_9d7ab07303cf9dfcd885738cfc13c481",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "machine_learning"
+        ]
+      },
+      {
+        "motif_id": "nbr_33ac2a05277d12160507b92448189c66",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "machine_learning"
+        ]
+      },
+      {
+        "motif_id": "nbr_e678f7c68da1d0886ae74c93c470344d",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "machine_learning"
+        ]
+      },
+      {
+        "motif_id": "nbr_da05bd290acddf7fcaac2674ba4c6c18",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "machine_learning"
+        ]
+      },
+      {
+        "motif_id": "nbr_5b76917ba196bc9d04ac3230e395a7ec",
+        "n_families": 4,
+        "category": "common",
+        "families": [
+          "machine_learning",
+          "simulation",
+          "transform",
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "nbr_fb9e55001ece9e5a56eb110d38f91ae6",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_d933496cb224318c6874f7dd23da18c8",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_7d3cea063d21aa445bf96fde7672c6e7",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_86a60a0f95db2db97238809b28a5df55",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_a2f75acffa30c93d70760ac16ffdc5b8",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_64006f142f4ebe8f077def8db7100362",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_9774d38098838aa58c73c23f4ba39f04",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "oracle",
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_47833cacbc8fe2aabb25d0cb8ac26374",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "nbr_790d3d4d30db1d74d4d6938d65451711",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "nbr_64421e5aca5e9928f658d2de0287ecf8",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "nbr_d5fab54d19a446b116795b1e29876c2f",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "nbr_e124bf6be886ae5dd7a746cef9507c7f",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "nbr_00a3fc2284232ee974ba7751a20653b6",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "nbr_51e02fdd20238b96b700226126fc8fa5",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "nbr_e1fc12c97f6c73fd4d09bef8a22f2ee3",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "nbr_4165593e535b1006570b6693bcfbd911",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "arithmetic",
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "nbr_8e6e8fd7253b7261a058731238f1e8df",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "nbr_163cfe2d7be87de29fc5059425a26c1d",
+        "n_families": 2,
+        "category": "specific",
+        "families": [
+          "oracle",
+          "simulation"
+        ]
+      },
+      {
+        "motif_id": "nbr_f35e7bf08a51bd6a586291f4e05203c6",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "nbr_8ae4d2d2f8d080307876d1766c16a5fe",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "nbr_a58873764d958700ae830762ad66196f",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "nbr_8a205484a79159d531569231358f8cb7",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "nbr_6f0dfa1b149ef90d4e79eb20c49d5f0f",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "nbr_1da818c133d2f288b51bed8defeb41d2",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "nbr_6d4e5ee22f26b272addc6482812dd293",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "nbr_45553c2fbe9654ec1d8d51549745c8fb",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "nbr_0ae9777da6fe5c555965454a908c6896",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "nbr_f106c28be4aaf8edec6bf33dde7e64f8",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "nbr_067550d566d09d73cab973af33eca9a2",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "nbr_c746ff8417a7691dd3f82692cf3bf7a9",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "nbr_ca639c29cbf4732484c35ca7b52ea689",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "error_correction"
+        ]
+      },
+      {
+        "motif_id": "nbr_eb077f342555f948f81d5f4f84548e2e",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "error_correction"
+        ]
+      },
+      {
+        "motif_id": "nbr_17e0e6b64fd170bf688a83d0e9d8fb53",
+        "n_families": 4,
+        "category": "common",
+        "families": [
+          "arithmetic",
+          "error_correction",
+          "oracle",
+          "transform"
+        ]
+      },
+      {
+        "motif_id": "nbr_32e08ba2c38b4a38ca782e6a5cee0051",
+        "n_families": 6,
+        "category": "common",
+        "families": [
+          "distillation",
+          "entanglement",
+          "error_correction",
+          "machine_learning",
+          "simulation",
+          "variational"
+        ]
+      },
+      {
+        "motif_id": "nbr_eb4cf34bdfaacd5b9ea7d233f469608d",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "error_correction"
+        ]
+      },
+      {
+        "motif_id": "nbr_0dcd9126bd05151f7baeb5d30408f6bd",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "error_correction"
+        ]
+      },
+      {
+        "motif_id": "nbr_7a2db0eacb4c88b16b7096b8c0277773",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "error_correction"
+        ]
+      },
+      {
+        "motif_id": "nbr_6345ab7b40c9dbbba0d4a4c63c5b604d",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "error_correction"
+        ]
+      },
+      {
+        "motif_id": "nbr_e6e32b80616d0048224bbc2235cf71fe",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "arithmetic"
+        ]
+      },
+      {
+        "motif_id": "nbr_e18715b6e2b19a566f250a7d54c9c3f9",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "arithmetic"
+        ]
+      },
+      {
+        "motif_id": "nbr_9e04efc46b267920c07d7bff8dff4631",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "arithmetic"
+        ]
+      },
+      {
+        "motif_id": "nbr_769b72db9a3b7f890a9aa344db1f600a",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "arithmetic"
+        ]
+      },
+      {
+        "motif_id": "nbr_45e17307f199d16f2489bddb62599bbc",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "arithmetic"
+        ]
+      },
+      {
+        "motif_id": "nbr_45d4fc9992fb5e0babaabc6143097625",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "arithmetic"
+        ]
+      },
+      {
+        "motif_id": "nbr_fe34dbe77a94072e1013f889cca2cdcf",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "arithmetic"
+        ]
+      },
+      {
+        "motif_id": "nbr_f467063874c9a828a58dd23b239bb7ac",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "arithmetic"
+        ]
+      },
+      {
+        "motif_id": "nbr_8b521b5b4a5557bf6ec4079dd681d366",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "arithmetic"
+        ]
+      },
+      {
+        "motif_id": "nbr_f67ffca28ee293c0f739e050cb2ddd8d",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "arithmetic"
+        ]
+      },
+      {
+        "motif_id": "nbr_f86052f2212e18d414161d838bd6349e",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "nbr_8a3edd0bea3ef8c623946b97521df971",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "nbr_511278c20eb8d087f84dcb22010fc770",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "nbr_7fd0af4591628b0dabacf6dfdd27fd12",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "nbr_0694b58a85f2a6e59e8b6e3887ca792d",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "nbr_78af22be9373949042a648160fbe6a92",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "nbr_3379f1e4da70e04f884aecc4e2574133",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "nbr_0089563dee584ca0aa504f6d74845a4c",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "nbr_ba98a91687f51c466e370b38a2c09add",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "nbr_a02cd68de73cfc089dff0f554c945cc8",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "nbr_6263316e1f6c487918a62f9908139fec",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "nbr_b19457d8a9338c5536afbe7a8c04ff93",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "nbr_431023a6bd8705499b6b34692c125c7c",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "nbr_fc9993fefe23337d0a9f26b4b335c127",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "nbr_4923e62e5288df4340db920e7cbc6124",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "nbr_c936ed8a10f9e8f32c31323a82395447",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "nbr_29bac26325f7f3ed54c1c3045381e5f5",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "nbr_9f802504c0b0d07a9ba8225ab5b87756",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "nbr_fd9097ddba78d6607774b1fdf6444dfa",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "nbr_b41c82260beae79aa6b0e764588693e8",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "nbr_bc773630448750a8037be21955716e3e",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "nbr_726147b4e92650253387cad73e5e46e3",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "nbr_c3407016e77a0d9cec10614794860ad3",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "nbr_31d1008c74be124c09fe0f5d8b5f8475",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "nbr_220727d43c517a66cf7db1901bd51ffe",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "nbr_a07526e2ecb693f69ff6c9727976f67a",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "nbr_2c12f97196f639db61701660a9cc4405",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "oracle"
+        ]
+      },
+      {
+        "motif_id": "nbr_19421a073fa688d7ad7ca53ccc3a7d15",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "machine_learning"
+        ]
+      },
+      {
+        "motif_id": "nbr_90590103181f8e0a2571a36238aa0817",
+        "n_families": 1,
+        "category": "specific",
+        "families": [
+          "machine_learning"
+        ]
+      },
+      {
+        "motif_id": "nbr_2b128b9c38555288765e77d3d6e1f8cc",
+        "n_families": 3,
+        "category": "specific",
+        "families": [
+          "machine_learning",
+          "simulation",
+          "variational"
+        ]
+      }
+    ],
+    "category_counts": {
+      "unused": 7,
+      "universal": 8,
+      "specific": 323,
+      "common": 29
+    },
+    "n_families": 10
+  },
+  "cross_level_survival": {
+    "survivors_at_full_reduce": [
+      "phase_gadget_2t",
+      "phase_gadget_3t",
+      "hadamard_sandwich",
+      "cluster_chain"
+    ],
+    "n_representatives": 29
+  },
+  "surprises": [
+    {
+      "algo_a": "bbpssw_distillation_q4",
+      "family_a": "distillation",
+      "algo_b": "ghz_state_q6",
+      "family_b": "entanglement",
+      "cosine_similarity": 0.9902
+    },
+    {
+      "algo_a": "bbpssw_distillation_q4",
+      "family_a": "distillation",
+      "algo_b": "ghz_state_q5",
+      "family_b": "entanglement",
+      "cosine_similarity": 0.9818
+    },
+    {
+      "algo_a": "ghz_state_q3",
+      "family_a": "entanglement",
+      "algo_b": "teleportation_q3",
+      "family_b": "protocol",
+      "cosine_similarity": 0.978
+    },
+    {
+      "algo_a": "entanglement_swapping_q4",
+      "family_a": "protocol",
+      "algo_b": "ghz_state_q4",
+      "family_b": "entanglement",
+      "cosine_similarity": 0.9583
+    },
+    {
+      "algo_a": "bbpssw_distillation_q4",
+      "family_a": "distillation",
+      "algo_b": "ghz_state_q4",
+      "family_b": "entanglement",
+      "cosine_similarity": 0.9562
+    },
+    {
+      "algo_a": "entanglement_swapping_q4",
+      "family_a": "protocol",
+      "algo_b": "ghz_state_q5",
+      "family_b": "entanglement",
+      "cosine_similarity": 0.9529
+    },
+    {
+      "algo_a": "entanglement_swapping_q4",
+      "family_a": "protocol",
+      "algo_b": "ghz_state_q6",
+      "family_b": "entanglement",
+      "cosine_similarity": 0.9466
+    },
+    {
+      "algo_a": "qaoa_maxcut_q6",
+      "family_a": "variational",
+      "algo_b": "trotter_ising_q6",
+      "family_b": "simulation",
+      "cosine_similarity": 0.9364
+    },
+    {
+      "algo_a": "qaoa_maxcut_q5",
+      "family_a": "variational",
+      "algo_b": "trotter_ising_q6",
+      "family_b": "simulation",
+      "cosine_similarity": 0.9329
+    },
+    {
+      "algo_a": "qaoa_maxcut_q6",
+      "family_a": "variational",
+      "algo_b": "trotter_ising_q5",
+      "family_b": "simulation",
+      "cosine_similarity": 0.9308
+    },
+    {
+      "algo_a": "qaoa_maxcut_q5",
+      "family_a": "variational",
+      "algo_b": "trotter_ising_q5",
+      "family_b": "simulation",
+      "cosine_similarity": 0.9286
+    },
+    {
+      "algo_a": "qaoa_maxcut_q4",
+      "family_a": "variational",
+      "algo_b": "trotter_ising_q6",
+      "family_b": "simulation",
+      "cosine_similarity": 0.9255
+    },
+    {
+      "algo_a": "qaoa_maxcut_q4",
+      "family_a": "variational",
+      "algo_b": "trotter_ising_q5",
+      "family_b": "simulation",
+      "cosine_similarity": 0.9235
+    },
+    {
+      "algo_a": "ghz_state_q4",
+      "family_a": "entanglement",
+      "algo_b": "teleportation_q3",
+      "family_b": "protocol",
+      "cosine_similarity": 0.9231
+    },
+    {
+      "algo_a": "bbpssw_distillation_q4",
+      "family_a": "distillation",
+      "algo_b": "entanglement_swapping_q4",
+      "family_b": "protocol",
+      "cosine_similarity": 0.9163
+    },
+    {
+      "algo_a": "bell_state_q5",
+      "family_a": "entanglement",
+      "algo_b": "vqe_uccsd_q4",
+      "family_b": "variational",
+      "cosine_similarity": 0.9118
+    },
+    {
+      "algo_a": "qft_adder_q6",
+      "family_a": "arithmetic",
+      "algo_b": "qft_q3",
+      "family_b": "transform",
+      "cosine_similarity": 0.9112
+    },
+    {
+      "algo_a": "qaoa_maxcut_q3",
+      "family_a": "variational",
+      "algo_b": "trotter_ising_q5",
+      "family_b": "simulation",
+      "cosine_similarity": 0.9087
+    },
+    {
+      "algo_a": "qaoa_maxcut_q3",
+      "family_a": "variational",
+      "algo_b": "trotter_ising_q6",
+      "family_b": "simulation",
+      "cosine_similarity": 0.9064
+    },
+    {
+      "algo_a": "entanglement_swapping_q4",
+      "family_a": "protocol",
+      "algo_b": "ghz_state_q3",
+      "family_b": "entanglement",
+      "cosine_similarity": 0.9045
+    },
+    {
+      "algo_a": "qaoa_maxcut_q4",
+      "family_a": "variational",
+      "algo_b": "trotter_ising_q4",
+      "family_b": "simulation",
+      "cosine_similarity": 0.8974
+    },
+    {
+      "algo_a": "qaoa_maxcut_q5",
+      "family_a": "variational",
+      "algo_b": "trotter_ising_q4",
+      "family_b": "simulation",
+      "cosine_similarity": 0.8973
+    },
+    {
+      "algo_a": "qaoa_maxcut_q6",
+      "family_a": "variational",
+      "algo_b": "trotter_ising_q4",
+      "family_b": "simulation",
+      "cosine_similarity": 0.8963
+    },
+    {
+      "algo_a": "qaoa_maxcut_q3",
+      "family_a": "variational",
+      "algo_b": "trotter_ising_q4",
+      "family_b": "simulation",
+      "cosine_similarity": 0.8928
+    },
+    {
+      "algo_a": "ghz_state_q5",
+      "family_a": "entanglement",
+      "algo_b": "teleportation_q3",
+      "family_b": "protocol",
+      "cosine_similarity": 0.8837
+    },
+    {
+      "algo_a": "ghz_state_q6",
+      "family_a": "entanglement",
+      "algo_b": "teleportation_q3",
+      "family_b": "protocol",
+      "cosine_similarity": 0.8614
+    },
+    {
+      "algo_a": "qaoa_maxcut_q3",
+      "family_a": "variational",
+      "algo_b": "quantum_kernel_q6",
+      "family_b": "machine_learning",
+      "cosine_similarity": 0.8534
+    },
+    {
+      "algo_a": "qaoa_maxcut_q4",
+      "family_a": "variational",
+      "algo_b": "quantum_kernel_q6",
+      "family_b": "machine_learning",
+      "cosine_similarity": 0.8486
+    },
+    {
+      "algo_a": "qaoa_maxcut_q5",
+      "family_a": "variational",
+      "algo_b": "quantum_kernel_q6",
+      "family_b": "machine_learning",
+      "cosine_similarity": 0.8436
+    },
+    {
+      "algo_a": "qft_adder_q4",
+      "family_a": "arithmetic",
+      "algo_b": "qft_q2",
+      "family_b": "transform",
+      "cosine_similarity": 0.8428
+    }
+  ],
+  "coverage": {
+    "average_coverage_by_family": {
+      "arithmetic": 0.7936,
+      "distillation": 0.6111,
+      "entanglement": 0.8497,
+      "error_correction": 0.8549,
+      "machine_learning": 0.8343,
+      "oracle": 0.8203,
+      "protocol": 0.7048,
+      "simulation": 0.8616,
+      "transform": 0.8557,
+      "variational": 0.7363
+    },
+    "overall_mean_coverage": 0.8176,
+    "n_algorithms": 88
+  }
+}
