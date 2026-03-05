@@ -102,6 +102,48 @@ def _save_phase(ckpt: dict, target_key: str, phase: str, data: dict):
 # ═══════════════════════════════════════════════════════════════════════
 
 
+def _run_optimizer(energy_fn, x0, method, n_params, maxiter, rng):
+    """Run a single optimizer restart. Returns (best_fun, best_x, n_evals)."""
+    from scipy.optimize import minimize
+
+    if method == "SPSA":
+        x = x0.copy()
+        a0, c0, A, alpha, gamma = 0.1, 0.1, 10.0, 0.602, 0.101
+        best_spsa = float("inf")
+        best_x = x.copy()
+        n_evals = 0
+        for k in range(maxiter):
+            ak = a0 / (k + 1 + A) ** alpha
+            ck = c0 / (k + 1) ** gamma
+            delta = rng.choice([-1, 1], size=n_params)
+            fp = energy_fn(x + ck * delta)
+            fm = energy_fn(x - ck * delta)
+            g = (fp - fm) / (2 * ck * delta)
+            x = x - ak * g
+            n_evals += 2
+            # Evaluate at actual iterate every 50 steps
+            if (k + 1) % 50 == 0 or k == maxiter - 1:
+                val = energy_fn(x)
+                n_evals += 1
+                if val < best_spsa:
+                    best_spsa = val
+                    best_x = x.copy()
+        return best_spsa, best_x, n_evals
+    elif method == "L-BFGS-B":
+        res = minimize(
+            energy_fn, x0, method="L-BFGS-B",
+            jac="2-point",
+            options={"maxiter": maxiter, "maxfun": maxiter * 2},
+        )
+        return res.fun, res.x, getattr(res, "nfev", maxiter)
+    else:
+        opts = {"maxiter": maxiter}
+        if method == "COBYLA":
+            opts["rhobeg"] = 0.5
+        res = minimize(energy_fn, x0, method=method, options=opts)
+        return res.fun, res.x, getattr(res, "nfev", maxiter)
+
+
 def vqe_test_extended(
     entangler_qc: QuantumCircuit,
     n_qubits: int,
@@ -112,8 +154,6 @@ def vqe_test_extended(
     seed: int = 42,
 ) -> dict:
     """Run VQE with specified optimizer. Returns detailed results."""
-    from scipy.optimize import minimize
-
     n_params = 4 * n_qubits
 
     def energy(params):
@@ -138,44 +178,58 @@ def vqe_test_extended(
     for _ in range(n_restarts):
         x0 = rng.uniform(-np.pi, np.pi, n_params)
         try:
-            if method == "SPSA":
-                # Manual SPSA implementation
-                x = x0.copy()
-                a0, c0, A, alpha, gamma = 0.1, 0.1, 10.0, 0.602, 0.101
-                best_spsa = float("inf")
-                for k in range(maxiter):
-                    ak = a0 / (k + 1 + A) ** alpha
-                    ck = c0 / (k + 1) ** gamma
-                    delta = rng.choice([-1, 1], size=n_params)
-                    fp = energy(x + ck * delta)
-                    fm = energy(x - ck * delta)
-                    g = (fp - fm) / (2 * ck * delta)
-                    x = x - ak * g
-                    val = min(fp, fm)
-                    if val < best_spsa:
-                        best_spsa = val
-                    total_evals += 2
-                res_fun = best_spsa
-                res_x = x
-                res_nfev = maxiter * 2
-            elif method == "L-BFGS-B":
-                res = minimize(
-                    energy, x0, method="L-BFGS-B",
-                    jac="2-point",
-                    options={"maxiter": maxiter, "maxfun": maxiter * 2},
-                )
-                res_fun = res.fun
-                res_x = res.x
-                res_nfev = getattr(res, "nfev", maxiter)
-            else:
-                opts = {"maxiter": maxiter}
-                if method == "COBYLA":
-                    opts["rhobeg"] = 0.5
-                res = minimize(energy, x0, method=method, options=opts)
-                res_fun = res.fun
-                res_x = res.x
-                res_nfev = getattr(res, "nfev", maxiter)
+            res_fun, res_x, res_nfev = _run_optimizer(
+                energy, x0, method, n_params, maxiter, rng)
+            total_evals += res_nfev
+            all_energies.append(float(res_fun))
+            if res_fun < best_energy:
+                best_energy = float(res_fun)
+                best_params = res_x.tolist()
+            convergence_trace.append(float(best_energy))
+        except Exception:
+            convergence_trace.append(float(best_energy))
 
+    return {
+        "best_energy": best_energy,
+        "best_params": best_params,
+        "convergence_trace": convergence_trace,
+        "all_energies": all_energies,
+        "n_evals": total_evals,
+    }
+
+
+def vqe_test_ansatz(
+    build_fn,
+    n_qubits: int,
+    n_params: int,
+    H_matrix: np.ndarray,
+    method: str = "COBYLA",
+    n_restarts: int = 40,
+    maxiter: int = 800,
+    seed: int = 42,
+) -> dict:
+    """Run VQE with a fully-parameterized ansatz.
+
+    build_fn(n_qubits, params) -> QuantumCircuit
+    All rotation angles are variational — no fixed angles in the ansatz.
+    """
+    def energy(params):
+        qc = build_fn(n_qubits, params)
+        sv = Statevector.from_instruction(qc)
+        return float(np.real(np.array(sv.data).conj() @ H_matrix @ np.array(sv.data)))
+
+    rng = np.random.default_rng(seed)
+    best_energy = float("inf")
+    best_params = None
+    all_energies = []
+    convergence_trace = []
+    total_evals = 0
+
+    for _ in range(n_restarts):
+        x0 = rng.uniform(-np.pi, np.pi, n_params)
+        try:
+            res_fun, res_x, res_nfev = _run_optimizer(
+                energy, x0, method, n_params, maxiter, rng)
             total_evals += res_nfev
             all_energies.append(float(res_fun))
             if res_fun < best_energy:
@@ -290,78 +344,140 @@ def _build_random_2local_hamiltonian(n: int, seed: int = 42) -> np.ndarray:
 
 
 # ═══════════════════════════════════════════════════════════════════════
-# Phase 4 entangler builders
+# Parameterized ansatz builders (all rotations are variational)
 # ═══════════════════════════════════════════════════════════════════════
 
 
-def _build_full_hea_entangler(n: int, n_layers: int = 2) -> QuantumCircuit:
-    """Proper HEA: L layers of (RY per qubit -> CZ brick-layer)."""
+def _full_hea_n_params(n: int, n_layers: int = 2) -> int:
+    """Number of variational parameters for full HEA ansatz."""
+    return 2 * n * (n_layers + 1)  # (n_layers + 1 final) rotation layers
+
+
+def _build_full_hea_ansatz(n: int, params, n_layers: int = 2) -> QuantumCircuit:
+    """Full HEA: L layers of (RY(θ),RZ(θ) per qubit → CZ brick-layer) + final rotations.
+
+    All rotation angles are independently variational.
+    n_params = 2 * n * (n_layers + 1).
+    """
     qc = QuantumCircuit(n)
+    idx = 0
     for layer in range(n_layers):
         for i in range(n):
-            qc.ry(np.pi / 4, i)  # fixed angle — params handled by VQE wrapper
+            qc.ry(float(params[idx]), i); idx += 1
+            qc.rz(float(params[idx]), i); idx += 1
         start = layer % 2
         for i in range(start, n - 1, 2):
             qc.cz(i, i + 1)
-    return qc
-
-
-def _build_qaoa_flex_entangler(n: int) -> QuantumCircuit:
-    """QAOA-flex: ZZ backbone + RX mixer."""
-    qc = QuantumCircuit(n)
-    for i in range(n - 1):
-        qc.cx(i, i + 1)
-        qc.rz(np.pi / 4, i + 1)
-        qc.cx(i, i + 1)
+    # Final rotation layer
     for i in range(n):
-        qc.rx(np.pi / 4, i)
+        qc.ry(float(params[idx]), i); idx += 1
+        qc.rz(float(params[idx]), i); idx += 1
     return qc
 
 
-def _build_hva_heisenberg_entangler(n: int) -> QuantumCircuit:
-    """HVA Heisenberg: exp(-iθ XX)·exp(-iθ YY)·exp(-iθ ZZ) per pair."""
+def _qaoa_flex_n_params(n: int) -> int:
+    """Number of variational parameters for QAOA-flex ansatz."""
+    return 2 * n + (n - 1) + n + 2 * n  # init RY/RZ + gammas + betas + final RY/RZ
+
+
+def _build_qaoa_flex_ansatz(n: int, params) -> QuantumCircuit:
+    """QAOA-flex: RY/RZ → variational ZZ interactions → variational RX mixer → RY/RZ.
+
+    All angles are independently variational.
+    n_params = 2*n + (n-1) + n + 2*n = 6*n - 1.
+    """
     qc = QuantumCircuit(n)
-    theta = np.pi / 4
+    idx = 0
+    # Initial rotations
+    for i in range(n):
+        qc.ry(float(params[idx]), i); idx += 1
+        qc.rz(float(params[idx]), i); idx += 1
+    # ZZ interactions with variational angles
     for i in range(n - 1):
-        # XX interaction
-        qc.h(i)
-        qc.h(i + 1)
+        gamma = float(params[idx]); idx += 1
         qc.cx(i, i + 1)
-        qc.rz(theta, i + 1)
+        qc.rz(gamma, i + 1)
         qc.cx(i, i + 1)
-        qc.h(i)
-        qc.h(i + 1)
-        # YY interaction
-        qc.sdg(i)
-        qc.sdg(i + 1)
-        qc.h(i)
-        qc.h(i + 1)
-        qc.cx(i, i + 1)
-        qc.rz(theta, i + 1)
-        qc.cx(i, i + 1)
-        qc.h(i)
-        qc.h(i + 1)
-        qc.s(i)
-        qc.s(i + 1)
-        # ZZ interaction
-        qc.cx(i, i + 1)
-        qc.rz(theta, i + 1)
-        qc.cx(i, i + 1)
+    # RX mixer with variational angles
+    for i in range(n):
+        beta = float(params[idx]); idx += 1
+        qc.rx(beta, i)
+    # Final rotations
+    for i in range(n):
+        qc.ry(float(params[idx]), i); idx += 1
+        qc.rz(float(params[idx]), i); idx += 1
     return qc
 
 
-def _build_random_entangler(n: int, n_2q: int, seed: int = 0) -> QuantumCircuit:
-    """Random circuit with specified gate count distribution."""
+def _hva_heisenberg_n_params(n: int) -> int:
+    """Number of variational parameters for HVA Heisenberg ansatz."""
+    return 2 * n + 3 * (n - 1) + 2 * n  # init RY/RZ + θ_XX/YY/ZZ per pair + final RY/RZ
+
+
+def _build_hva_heisenberg_ansatz(n: int, params) -> QuantumCircuit:
+    """HVA Heisenberg: RY/RZ → variational exp(-iθ XX)·exp(-iθ YY)·exp(-iθ ZZ) per pair → RY/RZ.
+
+    All interaction angles and rotations are independently variational.
+    n_params = 2*n + 3*(n-1) + 2*n = 7*n - 3.
+    """
+    qc = QuantumCircuit(n)
+    idx = 0
+    # Initial rotations
+    for i in range(n):
+        qc.ry(float(params[idx]), i); idx += 1
+        qc.rz(float(params[idx]), i); idx += 1
+    # Variational XX/YY/ZZ interactions per pair
+    for i in range(n - 1):
+        theta_xx = float(params[idx]); idx += 1
+        theta_yy = float(params[idx]); idx += 1
+        theta_zz = float(params[idx]); idx += 1
+        # XX interaction: H⊗H → CX → RZ(θ) → CX → H⊗H
+        qc.h(i); qc.h(i + 1)
+        qc.cx(i, i + 1); qc.rz(theta_xx, i + 1); qc.cx(i, i + 1)
+        qc.h(i); qc.h(i + 1)
+        # YY interaction: Sdg⊗Sdg → H⊗H → CX → RZ(θ) → CX → H⊗H → S⊗S
+        qc.sdg(i); qc.sdg(i + 1)
+        qc.h(i); qc.h(i + 1)
+        qc.cx(i, i + 1); qc.rz(theta_yy, i + 1); qc.cx(i, i + 1)
+        qc.h(i); qc.h(i + 1)
+        qc.s(i); qc.s(i + 1)
+        # ZZ interaction: CX → RZ(θ) → CX
+        qc.cx(i, i + 1); qc.rz(theta_zz, i + 1); qc.cx(i, i + 1)
+    # Final rotations
+    for i in range(n):
+        qc.ry(float(params[idx]), i); idx += 1
+        qc.rz(float(params[idx]), i); idx += 1
+    return qc
+
+
+def _build_random_entangler(
+    n: int, n_2q: int, seed: int = 0,
+    allowed_edges: set | None = None,
+) -> QuantumCircuit:
+    """Random circuit with specified gate count, respecting connectivity constraints.
+
+    If allowed_edges is provided, 2Q gates are placed only on those edges.
+    Otherwise falls back to nearest-neighbor connectivity.
+    """
     rng = np.random.default_rng(seed)
     qc = QuantumCircuit(n)
-    gates_1q = [("h", 0), ("s", 0), ("t", 0), ("rx", np.pi / 4), ("ry", np.pi / 4), ("rz", np.pi / 4)]
+    gates_1q = [("h", 0), ("s", 0), ("t", 0),
+                ("rx", np.pi / 4), ("ry", np.pi / 4), ("rz", np.pi / 4)]
+
+    if allowed_edges is None:
+        # Default: nearest-neighbor (not all-to-all)
+        allowed_edges = {(i, i + 1) for i in range(n - 1)}
+
+    edge_list = list(allowed_edges)
+    if not edge_list:
+        return qc
+
     for _ in range(n_2q):
-        q0, q1 = sorted(rng.choice(n, 2, replace=False))
+        q0, q1 = edge_list[rng.integers(len(edge_list))]
         if rng.random() < 0.5:
             qc.cx(int(q0), int(q1))
         else:
             qc.cz(int(q0), int(q1))
-        # Add some 1Q gates
         for q in [q0, q1]:
             gate_name, angle = gates_1q[rng.integers(len(gates_1q))]
             if angle == 0:
@@ -710,7 +826,7 @@ def verify_reproducibility(
 def test_full_hea_baseline(
     target: dict, scored: dict, templates: dict,
 ) -> dict:
-    """1.5: Test with proper full HEA baseline."""
+    """1.5: Test with proper full HEA baseline (all rotations variational)."""
     nq = target["n_qubits"]
     model = target["model"]
     H = _build_hamiltonian_matrix(nq, model)
@@ -728,14 +844,16 @@ def test_full_hea_baseline(
     if cand_qc is None:
         return {"error": "failed to build candidate"}
 
-    full_hea = _build_full_hea_entangler(nq, n_layers=2)
+    n_hea_params = _full_hea_n_params(nq, n_layers=2)
 
     print("    candidate...")
     cand_res = vqe_test_extended(cand_qc, nq, H, n_restarts=40, maxiter=800)
     cand_err = abs(cand_res["best_energy"] - exact_gs) / abs(exact_gs)
 
-    print("    full HEA...")
-    hea_res = vqe_test_extended(full_hea, nq, H, n_restarts=40, maxiter=800)
+    print(f"    full HEA ({n_hea_params} params)...")
+    hea_res = vqe_test_ansatz(
+        lambda n, p: _build_full_hea_ansatz(n, p, n_layers=2),
+        nq, n_hea_params, H, n_restarts=40, maxiter=800)
     hea_err = abs(hea_res["best_energy"] - exact_gs) / abs(exact_gs)
 
     return {
@@ -743,8 +861,9 @@ def test_full_hea_baseline(
         "full_hea_error": hea_err,
         "candidate_beats_full_hea": cand_err < hea_err,
         "improvement": hea_err - cand_err,
+        "candidate_n_params": 4 * nq,
+        "hea_n_params": n_hea_params,
         "candidate_2q_gates": _count_2q(cand_qc),
-        "hea_2q_gates": _count_2q(full_hea),
     }
 
 
@@ -1204,7 +1323,7 @@ def qubit_scaling_study(target: dict, scored: dict, templates: dict) -> dict:
             continue
 
         n_2q = _count_2q(cand_qc)
-        full_hea = _build_full_hea_entangler(nq, n_layers=2)
+        n_hea_params = _full_hea_n_params(nq, n_layers=2)
 
         for model in ["heisenberg", "tfim"]:
             H = _build_hamiltonian_matrix(nq, model)
@@ -1215,7 +1334,9 @@ def qubit_scaling_study(target: dict, scored: dict, templates: dict) -> dict:
             cand_res = vqe_test_extended(cand_qc, nq, H, n_restarts=20, maxiter=400)
             cx_res = vqe_test_extended(
                 _cx_chain_entangler(nq, max(1, n_2q)), nq, H, n_restarts=20, maxiter=400)
-            hea_res = vqe_test_extended(full_hea, nq, H, n_restarts=20, maxiter=400)
+            hea_res = vqe_test_ansatz(
+                lambda n, p: _build_full_hea_ansatz(n, p, n_layers=2),
+                nq, n_hea_params, H, n_restarts=20, maxiter=400)
 
             cand_err = abs(cand_res["best_energy"] - exact_gs) / abs(exact_gs)
             cx_err = abs(cx_res["best_energy"] - exact_gs) / abs(exact_gs)
@@ -1240,7 +1361,7 @@ def hamiltonian_generality_study(target: dict, scored: dict, templates: dict) ->
 
     n_2q = _count_2q(cand_qc)
     cx_qc = _cx_chain_entangler(nq, max(1, n_2q))
-    full_hea = _build_full_hea_entangler(nq, n_layers=2)
+    n_hea_params = _full_hea_n_params(nq, n_layers=2)
 
     hamiltonians = {
         "heisenberg": _build_hamiltonian_matrix(nq, "heisenberg"),
@@ -1258,7 +1379,9 @@ def hamiltonian_generality_study(target: dict, scored: dict, templates: dict) ->
         print(f"    {hname}...")
         cand_res = vqe_test_extended(cand_qc, nq, H, n_restarts=20, maxiter=400)
         cx_res = vqe_test_extended(cx_qc, nq, H, n_restarts=20, maxiter=400)
-        hea_res = vqe_test_extended(full_hea, nq, H, n_restarts=20, maxiter=400)
+        hea_res = vqe_test_ansatz(
+            lambda n, p: _build_full_hea_ansatz(n, p, n_layers=2),
+            nq, n_hea_params, H, n_restarts=20, maxiter=400)
         results[hname] = {
             "exact_gs": exact_gs,
             "candidate_error": abs(cand_res["best_energy"] - exact_gs) / abs(exact_gs),
@@ -1383,6 +1506,8 @@ def topology_analysis(target: dict, scored: dict, templates: dict) -> dict:
         "swaps_linear": _swaps(edges, linear),
         "swaps_ring": _swaps(edges, ring),
         "swaps_heavy_hex": _swaps(edges, heavy_hex),
+        "note": "SWAP counts are approximate lower bounds (1 per non-native edge). "
+                "Real routing may require more SWAPs depending on graph distance.",
     }
 
 
@@ -1419,8 +1544,18 @@ def run_phase3(target: dict, scored: dict, templates: dict, ckpt: dict) -> dict:
 # ═══════════════════════════════════════════════════════════════════════
 
 
+def _extract_candidate_edges(qc: QuantumCircuit) -> set:
+    """Extract the set of qubit-pair edges used by 2Q gates in the circuit."""
+    edges = set()
+    for inst in qc.data:
+        if inst.operation.num_qubits >= 2:
+            qubits = tuple(qc.find_bit(q).index for q in inst.qubits)
+            edges.add((min(qubits), max(qubits)))
+    return edges
+
+
 def run_phase4(target: dict, scored: dict, templates: dict, ckpt: dict) -> dict:
-    """Test against stronger baselines."""
+    """Test against stronger baselines (all with variational parameters)."""
     tk = target["key"]
     if _phase_done(ckpt, tk, "phase4"):
         print("  Phase 4 (cached)")
@@ -1438,15 +1573,13 @@ def run_phase4(target: dict, scored: dict, templates: dict, ckpt: dict) -> dict:
         return r
 
     n_2q = _count_2q(cand_qc)
+    cand_edges = _extract_candidate_edges(cand_qc)
 
-    # Named baselines
-    baselines = {
+    # Fixed-structure baselines (used with vqe_test_extended wrapper)
+    fixed_baselines = {
         "candidate": cand_qc,
         "cx_chain": _cx_chain_entangler(nq, max(1, n_2q)),
         "hea_cz_brick": _hea_entangler(nq, max(1, n_2q)),
-        "full_hea_2L": _build_full_hea_entangler(nq, n_layers=2),
-        "qaoa_flex": _build_qaoa_flex_entangler(nq),
-        "hva_heisenberg": _build_hva_heisenberg_entangler(nq),
     }
 
     # Shuffled candidate: same gates, random qubit permutation
@@ -1459,25 +1592,57 @@ def run_phase4(target: dict, scored: dict, templates: dict, ckpt: dict) -> dict:
             shuffled_qc.append(inst.operation, [qubits[0]])
         elif inst.operation.num_qubits == 2:
             shuffled_qc.append(inst.operation, qubits[:2])
-    baselines["shuffled_candidate"] = shuffled_qc
+    fixed_baselines["shuffled_candidate"] = shuffled_qc
+
+    # Fully-parameterized ansatze (used with vqe_test_ansatz)
+    param_baselines = {
+        "full_hea_2L": (
+            lambda n, p: _build_full_hea_ansatz(n, p, n_layers=2),
+            _full_hea_n_params(nq, n_layers=2),
+        ),
+        "qaoa_flex": (
+            _build_qaoa_flex_ansatz,
+            _qaoa_flex_n_params(nq),
+        ),
+        "hva_heisenberg": (
+            _build_hva_heisenberg_ansatz,
+            _hva_heisenberg_n_params(nq),
+        ),
+    }
 
     results = {}
-    total = len(baselines) + 20  # 20 random circuits
+    total = len(fixed_baselines) + len(param_baselines) + 20
     done = 0
 
-    for bname, bqc in baselines.items():
+    # Run fixed-structure baselines (with standard 2-layer RY/RZ wrapper)
+    for bname, bqc in fixed_baselines.items():
         done += 1
         print(f"    [{done}/{total}] {bname}")
         res = vqe_test_extended(bqc, nq, H, n_restarts=40, maxiter=800)
         err = abs(res["best_energy"] - exact_gs) / abs(exact_gs) if exact_gs != 0 else 0
-        results[bname] = {"error": err, "best_energy": res["best_energy"]}
+        results[bname] = {
+            "error": err, "best_energy": res["best_energy"],
+            "n_params": 4 * nq, "convergence": res["convergence_trace"],
+        }
 
-    # 20 random circuits
+    # Run fully-parameterized baselines
+    for bname, (build_fn, n_params) in param_baselines.items():
+        done += 1
+        print(f"    [{done}/{total}] {bname} ({n_params} params)")
+        res = vqe_test_ansatz(build_fn, nq, n_params, H, n_restarts=40, maxiter=800)
+        err = abs(res["best_energy"] - exact_gs) / abs(exact_gs) if exact_gs != 0 else 0
+        results[bname] = {
+            "error": err, "best_energy": res["best_energy"],
+            "n_params": n_params, "convergence": res["convergence_trace"],
+        }
+
+    # 20 random circuits (constrained to candidate's connectivity)
     random_errors = []
     for i in range(20):
         done += 1
         print(f"    [{done}/{total}] random_{i}")
-        rqc = _build_random_entangler(nq, max(1, n_2q), seed=i)
+        rqc = _build_random_entangler(nq, max(1, n_2q), seed=i,
+                                       allowed_edges=cand_edges)
         res = vqe_test_extended(rqc, nq, H, n_restarts=20, maxiter=400)
         err = abs(res["best_energy"] - exact_gs) / abs(exact_gs) if exact_gs != 0 else 0
         random_errors.append(err)
@@ -1489,8 +1654,9 @@ def run_phase4(target: dict, scored: dict, templates: dict, ckpt: dict) -> dict:
     results["random_errors"] = random_errors
 
     # Candidate rank
-    all_errors = [results[k]["error"] for k in baselines if k != "candidate"]
-    all_errors.extend(random_errors)
+    named_errors = [results[k]["error"] for k in
+                    list(fixed_baselines) + list(param_baselines) if k != "candidate"]
+    all_errors = named_errors + random_errors
     cand_err = results["candidate"]["error"]
     rank = 1 + sum(1 for e in all_errors if e < cand_err)
     results["candidate_rank"] = rank
@@ -1505,8 +1671,37 @@ def run_phase4(target: dict, scored: dict, templates: dict, ckpt: dict) -> dict:
 # ═══════════════════════════════════════════════════════════════════════
 
 
+def _identify_motif_gate_ranges(
+    spec_motif_ids: list[str], n_qubits: int, templates: dict,
+) -> list[tuple[str, int, int]]:
+    """Build the circuit motif-by-motif and track which gate indices belong to each motif.
+
+    Returns list of (motif_id, start_gate_idx, end_gate_idx).
+    Mirrors the round-robin logic of _build_template_circuit.
+    """
+    ranges = []
+    offset = 0
+    gate_idx = 0
+    for mid in spec_motif_ids:
+        if mid not in templates:
+            continue
+        tpl_qubits, apply_fn = templates[mid]
+        if offset + tpl_qubits > n_qubits:
+            offset = 0
+        probe = QuantumCircuit(n_qubits)
+        try:
+            apply_fn(probe, offset)
+        except Exception:
+            continue
+        n_gates = probe.size()
+        ranges.append((mid, gate_idx, gate_idx + n_gates))
+        gate_idx += n_gates
+        offset = (offset + 1) % max(1, n_qubits - tpl_qubits + 1)
+    return ranges
+
+
 def motif_ablation_study(target: dict, scored: dict, templates: dict) -> dict:
-    """5.1: Remove each motif one at a time, test VQE."""
+    """5.1: Remove each motif's gates (replace with identity) from the existing circuit."""
     nq = target["n_qubits"]
     model = target["model"]
     H = _build_hamiltonian_matrix(nq, model)
@@ -1521,35 +1716,38 @@ def motif_ablation_study(target: dict, scored: dict, templates: dict) -> dict:
     top_motifs = score_entry.get("top_motifs", [])
     motif_ids = [mid for mid, _ in top_motifs[:6]]
 
-    # Full circuit baseline
     full_qc, _ = _get_candidate_qc(target, scored, templates)
     if full_qc is None:
         return {"error": "failed to build candidate"}
+
     full_res = vqe_test_extended(full_qc, nq, H, n_restarts=20, maxiter=400)
     full_err = abs(full_res["best_energy"] - exact_gs) / abs(exact_gs)
 
+    # Identify which gates belong to each motif
+    gate_ranges = _identify_motif_gate_ranges(motif_ids, nq, templates)
+
     results = {"full_error": full_err, "ablations": {}}
 
-    for i, mid in enumerate(motif_ids):
-        reduced_ids = [m for j, m in enumerate(motif_ids) if j != i]
-        spec = CandidateSpec(
-            name=f"ablation_remove_{mid}",
-            strategy=score_entry.get("strategy", "unknown"),
-            motif_ids=reduced_ids,
-            n_qubits=nq,
-            source_algo_a=score_entry.get("nearest_algorithm"),
-        )
-        qc = build_circuit_from_spec(spec, templates)
-        if qc is None or qc.size() == 0:
-            results["ablations"][mid] = {"error": "failed to build"}
+    for mid, g_start, g_end in gate_ranges:
+        # Build ablated circuit: skip gates in [g_start, g_end)
+        ablated = QuantumCircuit(nq)
+        for idx, inst in enumerate(full_qc.data):
+            if g_start <= idx < g_end:
+                continue  # replace with identity (omit)
+            qubits = [full_qc.find_bit(q).index for q in inst.qubits]
+            ablated.append(inst.operation, qubits)
+
+        if ablated.size() == 0:
+            results["ablations"][mid] = {"error": "all gates removed"}
             continue
 
-        print(f"    remove {mid}...")
-        res = vqe_test_extended(qc, nq, H, n_restarts=20, maxiter=400)
+        print(f"    remove {mid} (gates {g_start}:{g_end})...")
+        res = vqe_test_extended(ablated, nq, H, n_restarts=20, maxiter=400)
         err = abs(res["best_energy"] - exact_gs) / abs(exact_gs)
         results["ablations"][mid] = {
             "error": err,
             "error_increase": err - full_err,
+            "gates_removed": g_end - g_start,
             "critical": (err - full_err) > 0.05,
         }
 
@@ -1983,6 +2181,36 @@ def plot_ablation_study(phase5: dict, target: dict):
     plt.close(fig)
 
 
+def plot_convergence(phase4: dict, target: dict):
+    """Plot 9: Convergence traces — best energy vs restart for candidate and baselines."""
+    if "error" in phase4:
+        return
+
+    fig, ax = plt.subplots(figsize=(10, 6))
+    colors = {
+        "candidate": "#4daf4a", "cx_chain": "#2166ac", "hea_cz_brick": "#984ea3",
+        "full_hea_2L": "#e41a1c", "qaoa_flex": "#ff7f00", "hva_heisenberg": "#a65628",
+        "shuffled_candidate": "#999999",
+    }
+    for name, color in colors.items():
+        data = phase4.get(name, {})
+        trace = data.get("convergence")
+        if trace:
+            ax.plot(range(1, len(trace) + 1), trace, "-", color=color,
+                    label=f"{name} ({data.get('n_params', '?')}p)", linewidth=1.5,
+                    alpha=0.8)
+
+    ax.set_xlabel("Restart")
+    ax.set_ylabel("Best Energy Found")
+    ax.set_title(f"Convergence: {target['candidate']} "
+                 f"{target['n_qubits']}q {target['model']}")
+    ax.legend(fontsize=7, loc="upper right")
+    ax.grid(True, alpha=0.3)
+    fig.tight_layout()
+    fig.savefig(OUTPUT_DIR / "convergence.png", dpi=150)
+    plt.close(fig)
+
+
 # ═══════════════════════════════════════════════════════════════════════
 # Phase 6: Report & QASM export
 # ═══════════════════════════════════════════════════════════════════════
@@ -2078,6 +2306,8 @@ def generate_verification_report(all_results: dict, target: dict, elapsed: float
         L.append(f"  95% CI for improvement: [{stat.get('ci_95_low', 0):.4f}, "
                  f"{stat.get('ci_95_high', 0):.4f}]")
         L.append(f"  Significant at 0.05: {stat.get('significant_at_005', False)}")
+        L.append(f"  Note: Each trial uses 10 restarts / 400 iter (reduced from 40/800 deep benchmark).")
+        L.append(f"  Absolute errors are higher but comparison is valid (same settings for both).")
 
     # 1.4 Reproducibility
     repro = p1.get("reproducibility", {})
@@ -2180,6 +2410,8 @@ def generate_verification_report(all_results: dict, target: dict, elapsed: float
     L.append("=" * 80)
     L.append("PHASE 4: STRONGER BASELINES")
     L.append("=" * 80)
+    L.append("Full HEA, QAOA-flex, HVA-Heisenberg use fully variational parameters.")
+    L.append("Random circuits are constrained to the candidate's qubit connectivity.")
     p4 = all_results.get("phase4", {})
     L.append("")
     if "error" not in p4:
@@ -2189,12 +2421,14 @@ def generate_verification_report(all_results: dict, target: dict, elapsed: float
                  f"± {p4.get('random_std_error', 0):.4f}")
         L.append("")
         # Show all baselines sorted
-        items = [(k, v["error"]) for k, v in p4.items()
+        items = [(k, v["error"], v.get("n_params", "?")) for k, v in p4.items()
                  if isinstance(v, dict) and "error" in v]
         items.sort(key=lambda x: x[1])
-        for name, err in items:
-            marker = " <-- candidate" if name == "candidate" else ""
-            L.append(f"  {name:30s} {err:.4f}{marker}")
+        L.append(f"  {'Name':30s} {'Error':>8s} {'Params':>8s}")
+        L.append(f"  {'-'*48}")
+        for name, err, np_ in items:
+            marker = " <--" if name == "candidate" else ""
+            L.append(f"  {name:30s} {err:8.4f} {str(np_):>8s}{marker}")
 
     # Phase 5
     L.append("")
@@ -2362,6 +2596,8 @@ def main():
         print("  baseline_comparison.png")
         plot_ablation_study(target_results["phase5"], target)
         print("  ablation_study.png")
+        plot_convergence(target_results["phase4"], target)
+        print("  convergence.png")
 
         export_qasm(target, scored, templates)
         print("  candidate_circuit.qasm")
