@@ -121,6 +121,46 @@ class TestEntanglementStructure:
         assert "ry" in gate_names
 
 
+class TestDistillationStructure:
+    def test_bbpssw_uses_only_h_cx(self):
+        """BBPSSW uses only H + CX gates."""
+        from zx_motifs.algorithms.registry import make_bbpssw_distillation
+
+        qc = make_bbpssw_distillation()
+        gate_names = {inst.operation.name for inst in qc.data}
+        assert gate_names <= {"h", "cx"}, f"Unexpected gates: {gate_names}"
+
+    def test_dejmps_includes_ry(self):
+        """DEJMPS adds RY rotations for twirling."""
+        from zx_motifs.algorithms.registry import make_dejmps_distillation
+
+        qc = make_dejmps_distillation()
+        gate_names = {inst.operation.name for inst in qc.data}
+        assert "ry" in gate_names
+
+    def test_recurrence_more_cx_than_bbpssw(self):
+        """Recurrence distillation has more CX gates than single-round BBPSSW."""
+        from zx_motifs.algorithms.registry import (
+            make_bbpssw_distillation,
+            make_recurrence_distillation,
+        )
+
+        bbpssw_cx = sum(1 for inst in make_bbpssw_distillation().data
+                        if inst.operation.name == "cx")
+        recurrence_cx = sum(1 for inst in make_recurrence_distillation().data
+                            if inst.operation.name == "cx")
+        assert recurrence_cx > bbpssw_cx
+
+    def test_pumping_nontrivial_zx(self):
+        """Pumping distillation produces a non-trivial ZX graph."""
+        from zx_motifs.algorithms.registry import make_pumping_distillation
+
+        qc = make_pumping_distillation()
+        g = qiskit_to_zx(qc).to_graph()
+        assert g.num_vertices() > 10
+        assert g.num_edges() > 10
+
+
 class TestMotifGenerators:
     """New hand-crafted motifs have valid structure."""
 

@@ -637,6 +637,96 @@ def make_entanglement_swapping(n_qubits=4, **kwargs) -> QuantumCircuit:
     return qc
 
 
+# ── Distillation Generators ──────────────────────────────────────
+
+
+def _bell_pair(qc: QuantumCircuit, q0: int, q1: int) -> None:
+    """Create a Bell pair on qubits (q0, q1)."""
+    qc.h(q0)
+    qc.cx(q0, q1)
+
+
+def make_bbpssw_distillation(n_qubits=4, **kwargs) -> QuantumCircuit:
+    """BBPSSW entanglement distillation (Bennett et al. 1996).
+
+    Foundational bilateral CNOT protocol. Two noisy Bell pairs are combined
+    via bilateral CNOTs; measurement of the sacrificial pair heralds success.
+    Qubits 0,1: pair to keep; 2,3: pair to sacrifice.
+    """
+    qc = QuantumCircuit(4)
+    # Two Bell pairs
+    _bell_pair(qc, 0, 1)
+    _bell_pair(qc, 2, 3)
+    # Bilateral CNOTs
+    qc.cx(0, 2)
+    qc.cx(1, 3)
+    return qc
+
+
+def make_dejmps_distillation(n_qubits=4, **kwargs) -> QuantumCircuit:
+    """DEJMPS entanglement distillation (Deutsch et al. 1996).
+
+    Adds bilateral Ry(pi/4) rotations before CNOTs to handle asymmetric noise.
+    Qubits 0,1: pair to keep; 2,3: pair to sacrifice.
+    """
+    qc = QuantumCircuit(4)
+    # Two Bell pairs
+    _bell_pair(qc, 0, 1)
+    _bell_pair(qc, 2, 3)
+    # Twirling rotations
+    qc.ry(np.pi / 4, 0)
+    qc.ry(np.pi / 4, 1)
+    qc.ry(np.pi / 4, 2)
+    qc.ry(np.pi / 4, 3)
+    # Bilateral CNOTs
+    qc.cx(0, 2)
+    qc.cx(1, 3)
+    return qc
+
+
+def make_recurrence_distillation(n_qubits=8, **kwargs) -> QuantumCircuit:
+    """Two-round recurrence distillation.
+
+    Cascades two BBPSSW rounds. Round 1 distills (0,1) from (0,1)+(2,3)
+    and (4,5) from (4,5)+(6,7). Round 2 distills (0,1) from (0,1)+(4,5).
+    """
+    qc = QuantumCircuit(8)
+    # Four Bell pairs
+    _bell_pair(qc, 0, 1)
+    _bell_pair(qc, 2, 3)
+    _bell_pair(qc, 4, 5)
+    _bell_pair(qc, 6, 7)
+    # Round 1: bilateral CNOTs
+    qc.cx(0, 2)
+    qc.cx(1, 3)
+    qc.cx(4, 6)
+    qc.cx(5, 7)
+    # Round 2: bilateral CNOTs on surviving pairs
+    qc.cx(0, 4)
+    qc.cx(1, 5)
+    return qc
+
+
+def make_pumping_distillation(n_qubits=6, **kwargs) -> QuantumCircuit:
+    """Pumping entanglement distillation.
+
+    One target pair (0,1) is repeatedly purified by sacrificing fresh pairs.
+    Sacrificial pairs: (2,3) then (4,5).
+    """
+    qc = QuantumCircuit(6)
+    # Target Bell pair
+    _bell_pair(qc, 0, 1)
+    # First sacrificial pair
+    _bell_pair(qc, 2, 3)
+    qc.cx(0, 2)
+    qc.cx(1, 3)
+    # Second sacrificial pair
+    _bell_pair(qc, 4, 5)
+    qc.cx(0, 4)
+    qc.cx(1, 5)
+    return qc
+
+
 # ── Phase 2: Machine Learning Family ──────────────────────────────
 
 
@@ -800,6 +890,23 @@ REGISTRY = [
     AlgorithmEntry(
         "entanglement_swapping", "protocol", make_entanglement_swapping, (4, 4),
         tags=["bell_measurement", "relay", "teleportation_variant"],
+    ),
+    # ── Distillation ──────────────────────────────────────────────
+    AlgorithmEntry(
+        "bbpssw_distillation", "distillation", make_bbpssw_distillation, (4, 4),
+        tags=["distillation", "bell_pair", "bilateral_cnot"],
+    ),
+    AlgorithmEntry(
+        "dejmps_distillation", "distillation", make_dejmps_distillation, (4, 4),
+        tags=["distillation", "bell_pair", "bilateral_cnot", "twirling"],
+    ),
+    AlgorithmEntry(
+        "recurrence_distillation", "distillation", make_recurrence_distillation, (8, 8),
+        tags=["distillation", "bell_pair", "bilateral_cnot", "multi_round"],
+    ),
+    AlgorithmEntry(
+        "pumping_distillation", "distillation", make_pumping_distillation, (6, 6),
+        tags=["distillation", "bell_pair", "bilateral_cnot", "pumping"],
     ),
     # ── Phase 2: Machine Learning ──────────────────────────────────
     AlgorithmEntry(
