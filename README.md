@@ -38,6 +38,7 @@ Qiskit Circuits ──► ZX Diagrams ──► Labeled Graphs ──► Motif D
 | Error Correction | Bit-flip code, Phase-flip code, Steane code, Shor code |
 | Simulation | Trotter Ising, Trotter Heisenberg, Quantum walk |
 | Arithmetic | Ripple-carry adder, QFT adder |
+| Distillation | BBPSSW, DEJMPS, Recurrence, Pumping |
 | Machine Learning | Quantum kernel, Data re-uploading |
 
 ## Setup
