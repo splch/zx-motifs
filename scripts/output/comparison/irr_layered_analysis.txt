@@ -1,0 +1,440 @@
+========================================================================
+        COMPREHENSIVE ANALYSIS: irr_layered
+        A Data-Driven Quantum Circuit from ZX Motif Phylogeny
+========================================================================
+
+1. EXECUTIVE SUMMARY
+------------------------------------------------------------------------
+
+irr_layered is a 5-qubit, 18-gate quantum circuit automatically
+discovered by the Irreducible Composition strategy of the ZX Motif
+Phylogeny pipeline. It was constructed by identifying three structural
+motifs that survive full ZX-calculus reduction — phase_gadget_2t,
+hadamard_sandwich, and cluster_chain — and composing them in a
+two-layer architecture with round-robin qubit allocation.
+
+The circuit is structurally novel (composite novelty 0.513, PCA
+isolation 0.779) and exhibits clean ZX properties: 38.2% vertex
+compression, 11 irreducible interior vertices, and verified tensor
+preservation. Its ZX simplification trajectory and motif survival
+pattern make it a useful case study for illustrating the pipeline.
+
+However, honest evaluation shows this circuit has no identified
+operational advantage. Its output state factors into single-qubit
+rotations and a rotated Bell pair — producible with ~8 gates instead
+of 18. The 10 extra gates are overhead from the motif composition
+procedure, not useful computation. The head-to-head comparisons
+against industry standards (QFT, Grover, QAOA, etc.) that appeared
+in the initial comparison report are not meaningful: these circuits
+solve entirely different problems, and generic metric comparisons
+between unrelated algorithms do not establish operational competitiveness.
+
+irr_layered is best understood as a pipeline demonstration specimen,
+not a candidate for practical deployment.
+
+
+2. CIRCUIT CONSTRUCTION
+------------------------------------------------------------------------
+
+2.1 Strategy: Irreducible Composition
+
+The Irreducible Composition strategy identifies motifs that survive
+the most aggressive ZX-calculus simplification (full_reduce). These
+"irreducible" patterns represent structural elements that cannot be
+eliminated by the spider fusion, interior complementation, pivot, or
+local complementation rules.
+
+From the full corpus of 78 algorithms, the pipeline identified 10
+motifs surviving full reduction. Three with qubit footprints <= 2
+were selected for layered composition:
+
+  1. phase_gadget_2t  (2 qubits)  — CX-T-CX sandwich
+  2. hadamard_sandwich (1 qubit)  — H-S-H basis rotation
+  3. cluster_chain     (2 qubits) — H-CZ graph state link
+
+2.2 Layered Architecture
+
+The three motifs are applied sequentially with round-robin qubit
+offset shifting (+1 per motif), then the entire sequence repeats for
+a second layer:
+
+  Layer 1:
+    phase_gadget_2t   on q[0,1]  — offset 0
+    hadamard_sandwich on q[1]    — offset 1
+    cluster_chain     on q[2,3]  — offset 2
+
+  Layer 2 (shifted):
+    cluster_chain     on q[3,4]  — offset 0 (wrapped)
+    phase_gadget_2t   on q[3,4]  — offset 1
+    hadamard_sandwich on q[0]    — offset 2
+    cluster_chain     on q[1,2]  — offset 0 (final)
+
+2.3 Resulting Gate Sequence
+
+  ┌─────────────────────────────────────────────────────────────┐
+  │  #   Gate    Qubits   Motif               Layer            │
+  ├─────────────────────────────────────────────────────────────┤
+  │   0  CX      [0,1]    phase_gadget_2t     Layer 1          │
+  │   1  T       [1]      phase_gadget_2t     Layer 1          │
+  │   2  CX      [0,1]    phase_gadget_2t     Layer 1          │
+  │   3  H       [1]      hadamard_sandwich   Layer 1          │
+  │   4  S       [1]      hadamard_sandwich   Layer 1          │
+  │   5  H       [1]      hadamard_sandwich   Layer 1          │
+  │   6  H       [2]      cluster_chain       Layer 1          │
+  │   7  CZ      [2,3]    cluster_chain       Layer 1          │
+  │   8  H       [3]      cluster_chain       Layer 2          │
+  │   9  CZ      [3,4]    cluster_chain       Layer 2          │
+  │  10  CX      [3,4]    phase_gadget_2t     Layer 2          │
+  │  11  T       [4]      phase_gadget_2t     Layer 2          │
+  │  12  CX      [3,4]    phase_gadget_2t     Layer 2          │
+  │  13  H       [0]      hadamard_sandwich   Layer 2          │
+  │  14  S       [0]      hadamard_sandwich   Layer 2          │
+  │  15  H       [0]      hadamard_sandwich   Layer 2          │
+  │  16  H       [1]      cluster_chain       Layer 2          │
+  │  17  CZ      [1,2]    cluster_chain       Layer 2          │
+  └─────────────────────────────────────────────────────────────┘
+
+  Gate summary:  H x 8,  CX x 4,  T x 2,  S x 2,  CZ x 2
+  Total: 18 gates  (12 single-qubit, 6 two-qubit)
+  2Q ratio: 0.333
+  Depth: 9
+
+  Qubit interaction topology:
+    q0 --- q1 --- q2 --- q3 --- q4
+  Linear nearest-neighbour chain.
+
+
+3. ZX-CALCULUS ANALYSIS
+------------------------------------------------------------------------
+
+3.1 Simplification Trajectory
+
+  ┌──────────────────┬───────┬───────┬────────┬──────────┬──────────┐
+  │ Level            │ Vert. │ Edges │ T-gates│ Density  │ H-ratio  │
+  ├──────────────────┼───────┼───────┼────────┼──────────┼──────────┤
+  │ RAW              │    34 │    35 │      2 │  0.0624  │  0.286   │
+  │ SPIDER_FUSED     │    26 │    27 │      2 │  0.0831  │  0.370   │
+  │ INTERIOR_CLIFF   │    21 │    22 │      2 │  0.1048  │  0.818   │
+  │ CLIFFORD_SIMP    │    21 │    22 │      2 │  0.1048  │  0.818   │
+  │ FULL_REDUCE      │    21 │    22 │      2 │  0.1048  │  0.818   │
+  │ TELEPORT_REDUCE  │    34 │    35 │      2 │  0.0624  │  0.286   │
+  └──────────────────┴───────┴───────┴────────┴──────────┴──────────┘
+
+  Compression:  34V -> 21V  (38.2% vertex reduction)
+  Tensor preserved: YES (verified by zx.compare_tensors)
+
+Key observations:
+
+  - The graph is STABLE from INTERIOR_CLIFFORD through FULL_REDUCE
+    (21V/22E at all three levels). This means the pivot and local
+    complementation rules of full_reduce find nothing further to
+    simplify beyond what interior_clifford_simp already captured.
+    The remaining 11 interior vertices are genuinely irreducible.
+
+  - Spider fusion eliminates 8 vertices (34->26), merging adjacent
+    same-type spiders with compatible phases.
+
+  - Interior Clifford simplification removes 5 more (26->21),
+    absorbing degree-1 Clifford spiders into their neighbours.
+
+  - The Hadamard-edge ratio jumps from 0.286 (raw) to 0.818
+    (reduced), indicating the simplified form is dominated by
+    Hadamard connections — characteristic of graph-state-like
+    structure.
+
+3.2 Surviving Interior Structure (after full_reduce)
+
+  11 interior Z-spiders:
+    Phase 0   : 7 vertices (structural backbone)
+    Phase pi/4 : 2 vertices (T-gate contributions — irreducible)
+    Phase pi/2 : 2 vertices (Clifford phases, Hadamard-edge blocked)
+
+  Edge composition:
+    18 Hadamard edges (82%)
+    4 Simple edges   (18%)
+
+  The two T-phase (pi/4) vertices cannot be eliminated by any ZX
+  rewrite rule. They represent the non-Clifford computational content
+  of the circuit. The two pi/2 vertices survive because they are
+  sandwiched between Hadamard edges that block absorption.
+
+3.3 Motif Survival Through Simplification
+
+  ┌────────────────────────────┬─────┬───────┬────────┬──────┐
+  │ Motif                      │ raw │ fused │ int_cl │ full │
+  ├────────────────────────────┼─────┼───────┼────────┼──────┤
+  │ cluster_chain              │   4 │    10 │      8 │    8 │
+  │ cx_pair                    │   4 │     4 │      0 │    0 │
+  │ syndrome_extraction_param  │   4 │     8 │      0 │    0 │
+  │ hadamard_sandwich          │   0 │     2 │      2 │    2 │
+  │ syndrome_extraction        │   0 │     4 │      0 │    0 │
+  └────────────────────────────┴─────┴───────┴────────┴──────┘
+
+  cluster_chain is the dominant surviving pattern (8 instances through
+  full reduction). hadamard_sandwich also survives (2 instances). The
+  cx_pair and syndrome_extraction motifs are absorbed during interior
+  Clifford simplification — they are "digestible" structure. The fact
+  that cluster_chain and hadamard_sandwich resist simplification is
+  precisely why they were selected by the Irreducible Composition
+  strategy.
+
+
+4. OUTPUT STATE ANALYSIS
+------------------------------------------------------------------------
+
+4.1 State Factorisation
+
+The 5-qubit output state |psi> = U|00000> decomposes as a tensor
+product:
+
+  |psi> = |phi_0> (x) |phi_12> (x) |phi_3> (x) |0>_4
+
+where:
+  q0:   |phi_0> = (|0> - i|1>) / sqrt(2)       (a Y+ eigenstate)
+  q1-2: |phi_12> = (|00> + i|11>) / sqrt(2)     (rotated Bell pair)
+  q3:   |phi_3>  ~ 0.707|0> + (0.5+0.5i)|1>     (single-qubit rotation)
+  q4:   |0>                                      (untouched)
+
+This was confirmed by SVD rank-1 decomposition at each partition:
+  - SVD of (q1q2q3, q0): singular values [1.0, 0.0]  (rank 1)
+  - SVD of (q3, q1q2):   singular values [1.0, 0.0]  (rank 1)
+
+The q1-q2 pair is in a maximally entangled state with concurrence
+1.0, but it is NOT one of the four standard Bell states (fidelity
+0.5 against each). It is locally equivalent to |Phi+> via a pi/2
+phase rotation on q2.
+
+4.2 What This Means
+
+The circuit uses 18 gates and 5 qubits to produce:
+  - Two single-qubit rotations (q0, q3)
+  - One rotated Bell pair (q1, q2)
+  - One idle qubit (q4)
+
+A purpose-built circuit achieving the same output state needs:
+  - q0: Ry + Rz = 2 gates
+  - q3: Ry + Rz = 2 gates
+  - q1-q2: H + CX + Rz = 3 gates
+  - q4: 0 gates
+  - TOTAL: 7 gates, depth ~3
+
+The 18-gate circuit has ~2.5x the gate count necessary to produce
+its own output. The overhead comes from the motif composition
+procedure: each motif is applied as an opaque template without
+knowledge of what the preceding motifs have done, so there is no
+cross-motif cancellation. ZX-calculus could in principle simplify
+this (the full_reduce form is more compact), but circuit extraction
+from the reduced graph actually produces 24 gates (more than the
+original), because the reduced graph's Hadamard-dominated structure
+doesn't map efficiently back to a gate sequence.
+
+4.3 Bipartite Entanglement (all cuts)
+
+  ┌─────────────────────────┬─────────┬─────────┬────────┐
+  │ Partition               │ S (bits)│ Max S   │ Purity │
+  ├─────────────────────────┼─────────┼─────────┼────────┤
+  │ {0} | {1,2,3,4}        │  0.0000 │  1      │ 1.0000 │
+  │ {0,1} | {2,3,4}        │  1.0000 │  2      │ 0.5000 │
+  │ {0,1,2} | {3,4}        │  0.0000 │  2      │ 1.0000 │
+  │ {0,1,2,3} | {4}        │  0.0000 │  1      │ 1.0000 │
+  └─────────────────────────┴─────────┴─────────┴────────┘
+
+  Entanglement is entirely localised to the q1-q2 pair. All other
+  bipartite cuts show zero entropy, confirming the product structure.
+
+4.4 Pairwise Concurrence
+
+  Only one nonzero pair: q1-q2 = 1.000 (all others = 0.000).
+
+4.5 Comparison to Trivial Bell Pair Generation
+
+  Under depolarising noise at p = 0.01:
+    H+CX (2 gates, 1 two-qubit):        F = 0.989
+    irr_layered (18 gates, 6 two-qubit): F = 0.930
+
+  For the specific task of "produce an entangled pair on q1-q2,"
+  the minimal circuit is 6x better on gate overhead and 6% higher
+  fidelity. The three extra qubits and 16 extra gates do not
+  contribute to the entanglement.
+
+
+5. EIGENVALUE SPECTRUM
+------------------------------------------------------------------------
+
+The unitary has 22 distinct eigenvalue phases (in units of pi):
+
+  -0.962   -0.936(x2) -0.852(x2) -0.788   -0.712   -0.538
+  -0.424   -0.389(x2) -0.250(x2) -0.111(x2) -0.076
+  +0.038   +0.212     +0.288     +0.352(x2) +0.436(x2)
+  +0.462   +0.576     +0.602(x2) +0.750(x2) +0.898(x2) +0.924
+
+22 distinct phases across 32 eigenvalues. The spectrum is
+aperiodic and non-Clifford (from the T-gate contributions).
+Fidelity vs Identity: 0.107 — the circuit performs a substantial
+transformation, not a near-identity.
+
+
+6. ZX-CALCULUS ANALYSIS
+------------------------------------------------------------------------
+
+6.1 Noise Resilience
+
+  Analytical model: F = (1-p)^6 x (1-p/10)^12
+
+  ┌──────────┬────────────┬────────────┐
+  │ p        │ Fidelity   │ Infidelity │
+  ├──────────┼────────────┼────────────┤
+  │ 0.001    │  0.992823  │  7.18e-03  │
+  │ 0.005    │  0.964566  │  3.54e-02  │
+  │ 0.01     │  0.930244  │  6.98e-02  │
+  │ 0.05     │  0.692179  │  3.08e-01  │
+  └──────────┴────────────┴────────────┘
+
+  The 2Q gate count (6) is the dominant noise factor. At p = 0.01,
+  93% fidelity is reasonable for an 18-gate circuit, but this is not
+  a meaningful comparison without a shared task. Any circuit with
+  fewer 2Q gates will have higher fidelity regardless of what it
+  computes.
+
+6.2 Scaling Behaviour
+
+  ┌────────┬───────┬───────┬───────┬───────┬────────┐
+  │ Qubits │ Gates │ Depth │ Raw V │ Red V │ Comp.  │
+  ├────────┼───────┼───────┼───────┼───────┼────────┤
+  │      3 │    18 │    14 │    30 │    12 │  60.0% │
+  │      4 │    18 │    12 │    32 │    17 │  46.9% │
+  │      5 │    18 │     9 │    34 │    21 │  38.2% │
+  │      6 │    18 │     9 │    36 │    23 │  36.1% │
+  │      7 │    18 │     9 │    38 │    26 │  31.6% │
+  │      8 │    18 │     9 │    40 │    28 │  30.0% │
+  └────────┴───────┴───────┴───────┴───────┴────────┘
+
+  The gate count is fixed at 18 regardless of qubit count because the
+  same 6 motif applications hit different qubit subsets via wrapping.
+  This is a weakness, not a strength: the circuit does less per qubit
+  as you scale. At 8 qubits, most qubits are barely touched (2.25
+  gates per qubit). Compression drops from 60% at 3 qubits to 30% at
+  8 because boundary vertices accumulate without additional
+  computational content. The circuit is a fixed-size computation being
+  zero-padded with extra qubits.
+
+
+7. STRUCTURAL NOVELTY
+------------------------------------------------------------------------
+
+7.1 Fingerprint Profile
+
+  The circuit's 777-dimensional motif fingerprint is dominated by:
+
+    cluster_chain                   20.0%
+    syndrome_extraction_param       16.0%
+    auto_56c28531...                12.0%
+    auto_55510e60...                 8.0%
+    cx_pair                          8.0%
+    auto_12206b7d...                 8.0%
+    syndrome_extraction              8.0%
+
+  This fingerprint combines entanglement-family motifs (cluster_chain)
+  with error-correction-family motifs (syndrome_extraction) — a
+  combination not found in any existing algorithm in the corpus.
+
+7.2 Family Distance
+
+  Nearest family:  entanglement (distance 0.040)
+  Farthest family: cryptography (distance 0.332)
+  Nearest algorithm: graph_state_q4 (similarity 0.671)
+
+7.3 Novelty Scores
+
+    Cosine novelty:   0.329  x 0.35 = 0.115
+    PCA isolation:    0.779  x 0.25 = 0.195
+    Motif diversity:  0.017  x 0.20 = 0.003
+    Tensor bonus:     1.000  x 0.20 = 0.200
+    ──────────────────────────────────
+    Composite:        0.513
+
+  Ranked #6 out of 48 candidates by composite novelty, #4 by PCA
+  isolation. The high PCA score means the circuit occupies a genuinely
+  empty region of the structural fingerprint space. The low motif
+  diversity (0.017) reflects concentrated rather than diverse motif
+  usage. The cosine novelty (0.329) confirms 33% divergence from the
+  nearest corpus algorithm.
+
+  Structural novelty does not imply operational advantage. A circuit
+  can be structurally unique simply because no one had reason to build
+  it. The novelty scores measure how different the circuit is from
+  known algorithms, not whether that difference is useful.
+
+
+8. WHAT THIS ANALYSIS DEMONSTRATES ABOUT THE PIPELINE
+------------------------------------------------------------------------
+
+irr_layered is useful as a case study — not because it outperforms
+known algorithms, but because it illustrates concretely how each stage
+of the pipeline works and where the current approach falls short.
+
+What works:
+
+  (a) MOTIF SELECTION: The irreducible composition strategy correctly
+      identifies ZX-surviving motifs. The three selected motifs
+      (phase_gadget_2t, hadamard_sandwich, cluster_chain) do survive
+      full_reduce in the composed circuit — 8 cluster_chain instances
+      and 2 hadamard_sandwich instances persist through all
+      simplification levels.
+
+  (b) STRUCTURAL NOVELTY: The motif fingerprint genuinely differs
+      from all corpus algorithms. The combination of entanglement
+      and error-correction motifs produces a structural profile that
+      occupies uncharted PCA space. The pipeline discovers circuits
+      that are structurally unlike known algorithms.
+
+  (c) VALID CIRCUITS: The output is a verified unitary (error
+      2.47e-16) with preserved tensor semantics through ZX reduction.
+      The pipeline does not produce garbage.
+
+  (d) ZX ANALYSIS PIPELINE: The full simplification trajectory, motif
+      survival table, and compression metrics provide genuine insight
+      into the circuit's structure.
+
+What does not work:
+
+  (e) NO TASK AWARENESS: The composition procedure has no objective
+      function. It composes motifs because they are irreducible, not
+      because the resulting circuit does something useful. The output
+      state — single-qubit rotations plus a rotated Bell pair —
+      is an artefact of the specific motif overlap, not a designed
+      capability. A pipeline that optimises for a target task (e.g.,
+      entanglement fidelity, ansatz expressibility, error detection
+      probability) would produce more meaningful circuits.
+
+  (f) COMPOSITION OVERHEAD: The motif-by-motif construction creates
+      ~2.5x gate overhead versus a purpose-built circuit producing
+      the same output state. Cross-motif cancellations are invisible
+      to the template-based builder. ZX simplification can identify
+      these redundancies (the reduced graph is 38% smaller) but
+      circuit extraction from the reduced graph doesn't recover them
+      efficiently (24 gates vs 18 original).
+
+  (g) MEANINGLESS COMPARISONS: Comparing irr_layered against QFT or
+      Grover on generic metrics (gate count, depth, entropy) does not
+      establish competitiveness. These circuits solve different
+      problems. bit_flip_code needs redundant gates because redundancy
+      IS error correction. Beating it on gate count is not a finding.
+
+  (h) SCALING IS PADDING: Fixed gate count across varying qubit counts
+      means additional qubits are idle. This is an artefact of the
+      composition procedure, not a scaling property.
+
+Implication for the paper:
+
+  irr_layered demonstrates that the ZX motif phylogeny pipeline can
+  (1) identify structurally irreducible building blocks, (2) compose
+  them into novel valid circuits, and (3) characterise the results
+  through multi-level ZX analysis. It does not demonstrate that the
+  pipeline discovers operationally useful algorithms. The gap between
+  structural novelty and practical utility is the central open
+  problem this work surfaces.
+
+========================================================================
+                          END OF ANALYSIS
+========================================================================

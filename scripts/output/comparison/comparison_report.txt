@@ -1,204 +1,626 @@
-========================================================================
-COMPARISON REPORT: New Candidates vs Industry Standards
-========================================================================
+================================================================================
+COMPREHENSIVE HONEST COMPARISON: Candidates vs Industry Standards
+================================================================================
 
-Total circuits analysed: 64
-  Industry standards:    15
-  Discovery candidates:  49
-  Elapsed time:          4.7s
+Circuits: 64 (15 standards, 49 candidates)
+Elapsed: 1446.0s
 
-------------------------------------------------------------------------
-GATE EFFICIENCY (ranked by total gates, ascending)
-------------------------------------------------------------------------
-Rank  Name                                      Gates  Depth    2Q%          Cat
-   1  std_bell_state                                2      2   0.50     standard
-   2  irr_pair16_q4                                 3      3   0.33  irreducible
-   3  irr_pair17_q6                                 3      3   0.33  irreducible
-   4  irr_pair18_q6                                 3      3   0.33  irreducible
-   5  irr_pair19_q5                                 3      3   0.33  irreducible
-   6  irr_pair23_q6                                 3      3   0.33  irreducible
-   7  irr_pair24_q6                                 3      3   0.33  irreducible
-   8  std_ghz_state                                 4      4   0.75     standard
-   9  std_teleportation                             4      4   0.50     standard
-  10  std_bb84_encode                               4      2   0.00     standard
-  11  bridge_dist_enta_q4                           5      5   1.00 cross_family
-  12  irr_pair20_q5                                 5      4   0.40  irreducible
-  13  irr_pair21_q5                                 5      4   0.40  irreducible
-  14  irr_pair26_q6                                 5      4   0.40  irreducible
-  15  irr_pair32_q6                                 5      4   0.40  irreducible
-  16  std_bbpssw_distillation                       6      3   0.67     standard
-  17  covgap_distillation_q5                        6      6   1.00 coverage_gap
-  18  irr_pair30_q6                                 6      3   0.17  irreducible
-  19  irr_pair31_q6                                 6      5   0.33  irreducible
-  20  irr_pair33_q6                                 6      5   0.33  irreducible
-  21  irr_pair34_q6                                 6      5   0.33  irreducible
-  22  std_cluster_state                             7      4   0.43     standard
-  23  bridge_line_mach_q4                           8      8   1.00 cross_family
-  24  bridge_mach_vari_q4                           8      8   1.00 cross_family
-  25  irr_pair25_q6                                 8      7   0.38  irreducible
-  26  irr_pair27_q6                                 8      7   0.38  irreducible
-  27  irr_pair29_q6                                 8      7   0.25  irreducible
-  28  std_vqe_uccsd                                 9      8   0.67     standard
-  29  bridge_comm_prot_q4                           9      6   0.78 cross_family
-  30  covgap_cryptography_q4                       10      9   1.00 coverage_gap
+================================================================================
+1. EXECUTIVE SUMMARY
+================================================================================
 
-------------------------------------------------------------------------
-ZX COMPRESSION (ranked by compression ratio, descending)
-------------------------------------------------------------------------
-Rank  Name                                      Raw V  Red V  Ratio  T-cnt          Cat
-   1  std_phase_estimation                         91     24  0.736      6     standard
-   2  legacy_icc                                   63     19  0.698      3       legacy
-   3  legacy_tvh                                   86     27  0.686      0       legacy
-   4  irr_pair01_q6                                35     12  0.657      1  irreducible
-   5  std_qft                                      66     26  0.606      9     standard
-   6  irr_pair08_q6                                35     15  0.571      3  irreducible
-   7  irr_layered_q5                               37     16  0.568      2  irreducible
-   8  irr_pair09_q6                                34     15  0.559      2  irreducible
-   9  irr_pair15_q6                                36     16  0.556      1  irreducible
-  10  std_iqp_sampling                             26     12  0.538      2     standard
-  11  bridge_enta_prot_q4                          28     13  0.536      0 cross_family
-  12  irr_pair13_q6                                32     15  0.531      2  irreducible
-  13  void_0_q5                                    27     13  0.519      0     pca_void
-  14  void_1_q5                                    27     13  0.519      0     pca_void
-  15  void_3_q5                                    27     13  0.519      0     pca_void
-  16  void_2_q5                                    31     15  0.516      0     pca_void
-  17  covgap_sampling_q4                           28     14  0.500      0 coverage_gap
-  18  bridge_prot_vari_q4                          28     14  0.500      0 cross_family
-  19  irr_pair04_q6                                32     16  0.500      2  irreducible
-  20  irr_pair05_q6                                32     16  0.500      2  irreducible
-  21  std_grover                                  130     68  0.477      0     standard
-  22  irr_pair12_q6                                34     18  0.471      2  irreducible
-  23  irr_pair03_q5                                32     17  0.469      2  irreducible
-  24  irr_pair11_q6                                30     16  0.467      2  irreducible
-  25  irr_pair02_q4                                28     15  0.464      2  irreducible
-  26  irr_pair10_q5                                28     15  0.464      2  irreducible
-  27  irr_pair06_q6                                31     17  0.452      1  irreducible
-  28  irr_pair07_q6                                31     17  0.452      3  irreducible
-  29  irr_pair14_q6                                31     17  0.452      3  irreducible
-  30  std_w_state                                  39     22  0.436      2     standard
+Key findings:
+  - 9/49 candidates produce entangled states
+  - 0/49 produce only |0...0> (circuit = identity on zero state)
+  - Average gate overhead: 3.72x (actual gates / minimal equivalent)
+  - 19/49 candidates have entangling power above median standard (0.643)
+  - 24/39 candidates significantly beat CX-chain baseline in VQE (>5pp), 2 marginal
+  - 5 candidates show interesting conditional-state properties
 
-------------------------------------------------------------------------
-NOISE RESILIENCE at p=0.01 (ranked by fidelity, descending)
-------------------------------------------------------------------------
-Rank  Name                                      p=0.001   p=0.01   p=0.05          Cat
-   1  std_bb84_encode                           0.99960  0.99601  0.98015     standard
-   2  std_bell_state                            0.99890  0.98901  0.94525     standard
-   3  irr_pair16_q4                             0.99880  0.98802  0.94052  irreducible
-   4  irr_pair17_q6                             0.99880  0.98802  0.94052  irreducible
-   5  irr_pair18_q6                             0.99880  0.98802  0.94052  irreducible
-   6  irr_pair19_q5                             0.99880  0.98802  0.94052  irreducible
-   7  irr_pair23_q6                             0.99880  0.98802  0.94052  irreducible
-   8  irr_pair24_q6                             0.99880  0.98802  0.94052  irreducible
-   9  irr_pair30_q6                             0.99850  0.98506  0.92649  irreducible
-  10  std_teleportation                         0.99780  0.97814  0.89350     standard
-  11  irr_pair20_q5                             0.99770  0.97716  0.88903  irreducible
-  12  irr_pair21_q5                             0.99770  0.97716  0.88903  irreducible
-  13  irr_pair26_q6                             0.99770  0.97716  0.88903  irreducible
-  14  irr_pair32_q6                             0.99770  0.97716  0.88903  irreducible
-  15  irr_pair31_q6                             0.99760  0.97619  0.88458  irreducible
-  16  irr_pair33_q6                             0.99760  0.97619  0.88458  irreducible
-  17  irr_pair34_q6                             0.99760  0.97619  0.88458  irreducible
-  18  irr_pair29_q6                             0.99740  0.97423  0.87576  irreducible
-  19  std_ghz_state                             0.99690  0.96933  0.85309     standard
-  20  std_cluster_state                         0.99660  0.96642  0.84036     standard
-  21  irr_pair25_q6                             0.99650  0.96546  0.83615  irreducible
-  22  irr_pair27_q6                             0.99650  0.96546  0.83615  irreducible
-  23  std_bbpssw_distillation                   0.99581  0.95868  0.80638     standard
-  24  std_iqp_sampling                          0.99501  0.95103  0.77469     standard
-  25  bridge_dist_enta_q4                       0.99501  0.95099  0.77378 cross_family
-  26  std_grover                                0.99481  0.94922  0.76875     standard
-  27  legacy_deb                                0.99431  0.94435  0.74710       legacy
-  28  covgap_distillation_q5                    0.99401  0.94148  0.73509 coverage_gap
-  29  std_vqe_uccsd                             0.99372  0.93866  0.72412     standard
-  30  std_w_state                               0.99332  0.93491  0.70975     standard
+--------------------------------------------------------------------------------
+2. ENTANGLING POWER (average entanglement over random inputs)
+--------------------------------------------------------------------------------
 
-------------------------------------------------------------------------
-ENTANGLEMENT QUALITY (ranked by von Neumann entropy, descending)
-------------------------------------------------------------------------
-Rank  Name                                      Entropy   Concur   Purity          Cat
-   1  irr_pair04_q6                              2.0000   0.0000   0.2500  irreducible
-   2  irr_pair05_q6                              2.0000   0.0000   0.2500  irreducible
-   3  std_iqp_sampling                           2.0000   0.0000   0.2500     standard
-   4  legacy_icc                                 1.2018   0.0000   0.5625       legacy
-   5  void_0_q5                                  1.0000   0.0000   0.5000     pca_void
-   6  void_1_q5                                  1.0000   0.0000   0.5000     pca_void
-   7  void_3_q5                                  1.0000   0.0000   0.5000     pca_void
-   8  irr_pair03_q5                              1.0000   0.0000   0.5000  irreducible
-   9  irr_pair13_q6                              1.0000   0.0000   0.5000  irreducible
-  10  std_bell_state                             1.0000   0.0000   0.5000     standard
-  11  std_ghz_state                              1.0000   0.0000   0.5000     standard
-  12  std_cluster_state                          1.0000   0.0000   0.5000     standard
-  13  legacy_deb                                 0.8113   0.5000   0.6250       legacy
-  14  legacy_tvh                                 0.7803   0.0000   0.6919       legacy
-  15  std_qaoa_maxcut                            0.6644   0.3058   0.7834     standard
-  16  irr_layered_q5                             0.6009   0.0000   0.7500  irreducible
-  17  irr_pair12_q6                              0.6009   0.0000   0.7500  irreducible
-  18  std_w_state                                0.6009   0.0000   0.7500     standard
-  19  std_grover                                 0.4250   0.1875   0.8418     standard
-  20  std_trotter_ising                          0.0000   0.0000   1.0000     standard
-  21  std_phase_estimation                       0.0000   0.0000   1.0000     standard
-  22  std_teleportation                          0.0000   0.0000   1.0000     standard
-  23  std_bbpssw_distillation                    0.0000   1.0000   1.0000     standard
-  24  std_bb84_encode                            0.0000   0.0000   1.0000     standard
-  25  irr_pair06_q6                              0.0000   0.0000   1.0000  irreducible
-  26  irr_pair08_q6                              0.0000   0.0000   1.0000  irreducible
-  27  irr_pair30_q6                              0.0000   0.0000   1.0000  irreducible
-  28  std_qft                                    0.0000   0.0000   1.0000     standard
-  29  std_bit_flip_code                          0.0000   0.0000   1.0000     standard
-  30  irr_pair31_q6                              0.0000   0.0000   1.0000  irreducible
+EP = avg half-cut entropy over Haar-random product inputs.
+EPD = std dev (low = input-agnostic entangler; high = input-sensitive).
 
-========================================================================
-CANDIDATES THAT OUTPERFORM ALL INDUSTRY STANDARDS
-========================================================================
+Rank  Name                                     EP     EPD  BestEnt  Gates   2Q          Cat
+------------------------------------------------------------------------------------------
+   1  irr_pair15_q6                        1.3504  0.3492   1.9812     16   12  irreducible
+   2  std_iqp_sampling                     1.3100  0.3653   1.9530     14    4     standard
+   3  void_2_q5                            1.2152  0.4116   1.8962     14    9     pca_void
+   4  legacy_deb                           1.1833  0.3235   1.8035     12    5       legacy
+   5  irr_pair10_q5                        1.1787  0.3752   1.9926     11    9  irreducible
+   6  irr_pair03_q5                        1.1172  0.2804   1.9042     14   10  irreducible
+   7  irr_pair08_q6                        1.1015  0.3756   1.9378     16   11  irreducible
+   8  irr_pair01_q6                        1.0799  0.4518   1.9711     14   13  irreducible
+   9  covgap_cryptography_q4               1.0370  0.2981   1.7683     10   10 coverage_gap
+  10  legacy_icc                           1.0079  0.1432   1.5229     39   16       legacy
+  11  std_bbpssw_distillation              0.8998  0.4151   1.8697      6    4     standard
+  12  bridge_enta_prot_q4                  0.8926  0.4185   1.9892     10   10 cross_family
+  13  legacy_tvh                           0.8734  0.1956   1.4102     60   18       legacy
+  14  irr_pair02_q4                        0.8623  0.4221   1.9521     11    9  irreducible
+  15  std_bit_flip_code                    0.8485  0.3185   1.5107     21   12     standard
+  16  std_phase_estimation                 0.8259  0.3366   1.5516     18   11     standard
+  17  covgap_distillation_q5               0.8081  0.1967   0.9996      6    6 coverage_gap
+  18  std_ghz_state                        0.7553  0.2202   0.9989      4    3     standard
+  19  irr_pair13_q6                        0.6897  0.2513   0.9999     14   10  irreducible
+  20  irr_pair06_q6                        0.6897  0.2513   0.9999     13   10  irreducible
+  21  irr_pair07_q6                        0.6897  0.2513   0.9999     13   10  irreducible
+  22  irr_pair12_q6                        0.6897  0.2513   0.9999     15   11  irreducible
+  23  irr_pair14_q6                        0.6897  0.2513   0.9999     13   10  irreducible
+  24  irr_pair11_q6                        0.6897  0.2513   0.9999     12   10  irreducible
+  25  std_cluster_state                    0.6473  0.2544   0.9997      7    3     standard
+  26  std_teleportation                    0.6455  0.2824   0.9961      4    2     standard
+  27  std_grover                           0.6425  0.3431   1.3142     34    2     standard
+  28  std_bell_state                       0.6244  0.2782   0.9993      2    1     standard
+  29  bridge_comm_prot_q4                  0.6181  0.2900   0.9995      9    7 cross_family
+  30  bridge_line_mach_q4                  0.5892  0.2934   0.9997      8    8 cross_family
 
-  irr_pair17_q6 — beats standards on 1 metric(s):
-    gates_per_qubit               : 0.7500 vs std_ghz_state's 1.0000 (margin: +25.0%)
+  Candidates above median standard EP (0.6425):
+    irr_pair15_q6: EP=1.3504 (16 gates)
+    void_2_q5: EP=1.2152 (14 gates)
+    legacy_deb: EP=1.1833 (12 gates)
+    irr_pair10_q5: EP=1.1787 (11 gates)
+    irr_pair03_q5: EP=1.1172 (14 gates)
+    irr_pair08_q6: EP=1.1015 (16 gates)
+    irr_pair01_q6: EP=1.0799 (14 gates)
+    covgap_cryptography_q4: EP=1.0370 (10 gates)
+    legacy_icc: EP=1.0079 (39 gates)
+    bridge_enta_prot_q4: EP=0.8926 (10 gates)
+    legacy_tvh: EP=0.8734 (60 gates)
+    irr_pair02_q4: EP=0.8623 (11 gates)
+    covgap_distillation_q5: EP=0.8081 (6 gates)
+    irr_pair13_q6: EP=0.6897 (14 gates)
+    irr_pair06_q6: EP=0.6897 (13 gates)
+    irr_pair07_q6: EP=0.6897 (13 gates)
+    irr_pair12_q6: EP=0.6897 (15 gates)
+    irr_pair14_q6: EP=0.6897 (13 gates)
+    irr_pair11_q6: EP=0.6897 (12 gates)
 
-  irr_pair24_q6 — beats standards on 1 metric(s):
-    gates_per_qubit               : 0.7500 vs std_ghz_state's 1.0000 (margin: +25.0%)
+--------------------------------------------------------------------------------
+3. HAMILTONIAN REVERSE-ENGINEERING (what does U = exp(-iH) simulate?)
+--------------------------------------------------------------------------------
 
-  irr_pair16_q4 — beats standards on 1 metric(s):
-    gates_per_qubit               : 0.7500 vs std_ghz_state's 1.0000 (margin: +25.0%)
+For each circuit, extract H via matrix log, Pauli-decompose,
+and match against reference Hamiltonians (Heisenberg, Ising, TFIM, XY).
 
-  irr_pair19_q5 — beats standards on 1 metric(s):
-    gates_per_qubit               : 0.7500 vs std_ghz_state's 1.0000 (margin: +25.0%)
+Name                                Best Match        Score  Terms  Dominant Body
+----------------------------------------------------------------------------------
+std_trotter_ising                   ising_zz          0.839     28              2-body
+    IIZZ: +0.4768
+    ZZII: +0.4768
+    IZZI: +0.4755
 
-  irr_pair23_q6 — beats standards on 1 metric(s):
-    gates_per_qubit               : 0.7500 vs std_ghz_state's 1.0000 (margin: +25.0%)
 
-  irr_pair18_q6 — beats standards on 1 metric(s):
-    gates_per_qubit               : 0.7500 vs std_ghz_state's 1.0000 (margin: +25.0%)
+--------------------------------------------------------------------------------
+4. VQE PROBE: Can any candidate serve as a useful entangling layer?
+--------------------------------------------------------------------------------
 
-  irr_pair15_q6 — beats standards on 1 metric(s):
-    t_count                       : 1.0000 vs std_w_state's 2.0000 (margin: +50.0%)
+Test: RY/RZ params → candidate → RY/RZ params, optimised for Heisenberg GS.
+Baseline: same structure but CX-chain entangler with same 2Q gate count.
+Settings: 5 restarts, 150 iterations, COBYLA.
 
-  irr_pair27_q6 — beats standards on 1 metric(s):
-    t_count                       : 1.0000 vs std_w_state's 2.0000 (margin: +50.0%)
+Name                                 CandErr  BaseErr   Improv   2Q  Wins?
+------------------------------------------------------------------------------
+covgap_cryptography_q4                0.0527   0.2847  +0.2320   10    YES
+bridge_dist_enta_q4                   0.0578   0.3364  +0.2786    5    YES
+covgap_sampling_q4                    0.0649   0.2847  +0.2198   10    YES
+bridge_prot_vari_q4                   0.0649   0.2847  +0.2198   10    YES
+irr_pair12_q6                         0.0962   0.3780  +0.2818   11    YES
+irr_pair15_q6                         0.1032   0.3958  +0.2925   12    YES
+irr_pair03_q5                         0.1057   0.2927  +0.1870   10    YES
+irr_pair11_q6                         0.1179   0.5012  +0.3833   10    YES
+legacy_tvh                            0.1580   0.5363  +0.3783   18    YES
+void_0_q5                             0.1675   0.2728  +0.1054    6    YES
+void_1_q5                             0.1675   0.2728  +0.1054    6    YES
+void_3_q5                             0.1675   0.2728  +0.1054    6    YES
+covgap_distillation_q5                0.1700   0.2728  +0.1028    6    YES
+void_2_q5                             0.1791   0.3398  +0.1607    9    YES
+legacy_icc                            0.1946   0.2983  +0.1037   16    YES
+irr_pair13_q6                         0.2376   0.5012  +0.2637   10    YES
+irr_pair04_q6                         0.2583   0.5012  +0.2429   10    YES
+irr_pair05_q6                         0.2583   0.5012  +0.2429   10    YES
+irr_pair27_q6                         0.2667   0.2605  -0.0063    3     no
+irr_pair08_q6                         0.2716   0.3780  +0.1064   11    YES
+irr_pair20_q5                         0.2748   0.2747  -0.0001    2     no
+irr_pair21_q5                         0.2748   0.2747  -0.0001    2     no
+irr_pair02_q4                         0.2764   0.0548  -0.2215    9     no
+irr_pair10_q5                         0.2777   0.3398  +0.0621    9    YES
+irr_layered_q5                        0.2817   0.1743  -0.1074   11     no
+irr_pair07_q6                         0.2884   0.5012  +0.2128   10    YES
+irr_pair14_q6                         0.2884   0.5012  +0.2128   10    YES
+irr_pair09_q6                         0.2910   0.3958  +0.1047   12    YES
+irr_pair01_q6                         0.2964   0.2727  -0.0237   13     no
+bridge_line_mach_q4                   0.2996   0.2851  -0.0145    8     no
+bridge_mach_vari_q4                   0.2996   0.2851  -0.0145    8     no
+bridge_enta_prot_q4                   0.3013   0.2847  -0.0165   10     no
+irr_pair19_q5                         0.3219   0.3213  -0.0006    1     no
+legacy_deb                            0.3256   0.3364  +0.0108    5    YES
+irr_pair25_q6                         0.3411   0.2605  -0.0806    3     no
+irr_pair29_q6                         0.3424   0.3396  -0.0028    2     no
+irr_pair16_q4                         0.3447   0.3449  +0.0002    1    YES
+bridge_comm_prot_q4                   0.3609   0.3437  -0.0172    7     no
+irr_pair06_q6                         0.3951   0.5012  +0.1062   10    YES
 
-  irr_pair29_q6 — beats standards on 1 metric(s):
-    t_count                       : 1.0000 vs std_w_state's 2.0000 (margin: +50.0%)
+  SIGNIFICANT VQE WINNERS (24 candidates, >5pp improvement):
+    covgap_cryptography_q4: error 0.0527 vs baseline 0.2847 (improvement: +0.2320)
+    legacy_icc: error 0.1946 vs baseline 0.2983 (improvement: +0.1037)
+    legacy_tvh: error 0.1580 vs baseline 0.5363 (improvement: +0.3783)
+    bridge_dist_enta_q4: error 0.0578 vs baseline 0.3364 (improvement: +0.2786)
+    covgap_sampling_q4: error 0.0649 vs baseline 0.2847 (improvement: +0.2198)
+    bridge_prot_vari_q4: error 0.0649 vs baseline 0.2847 (improvement: +0.2198)
+    void_2_q5: error 0.1791 vs baseline 0.3398 (improvement: +0.1607)
+    irr_pair10_q5: error 0.2777 vs baseline 0.3398 (improvement: +0.0621)
+    irr_pair03_q5: error 0.1057 vs baseline 0.2927 (improvement: +0.1870)
+    covgap_distillation_q5: error 0.1700 vs baseline 0.2728 (improvement: +0.1028)
+    void_0_q5: error 0.1675 vs baseline 0.2728 (improvement: +0.1054)
+    void_1_q5: error 0.1675 vs baseline 0.2728 (improvement: +0.1054)
+    void_3_q5: error 0.1675 vs baseline 0.2728 (improvement: +0.1054)
+    irr_pair15_q6: error 0.1032 vs baseline 0.3958 (improvement: +0.2925)
+    irr_pair08_q6: error 0.2716 vs baseline 0.3780 (improvement: +0.1064)
+    irr_pair13_q6: error 0.2376 vs baseline 0.5012 (improvement: +0.2637)
+    irr_pair06_q6: error 0.3951 vs baseline 0.5012 (improvement: +0.1062)
+    irr_pair07_q6: error 0.2884 vs baseline 0.5012 (improvement: +0.2128)
+    irr_pair12_q6: error 0.0962 vs baseline 0.3780 (improvement: +0.2818)
+    irr_pair14_q6: error 0.2884 vs baseline 0.5012 (improvement: +0.2128)
+    irr_pair11_q6: error 0.1179 vs baseline 0.5012 (improvement: +0.3833)
+    irr_pair04_q6: error 0.2583 vs baseline 0.5012 (improvement: +0.2429)
+    irr_pair05_q6: error 0.2583 vs baseline 0.5012 (improvement: +0.2429)
+    irr_pair09_q6: error 0.2910 vs baseline 0.3958 (improvement: +0.1047)
+  MARGINAL (likely noise, <=5pp):
+    legacy_deb: error 0.3256 vs baseline 0.3364 (improvement: +0.0108)
+    irr_pair16_q4: error 0.3447 vs baseline 0.3449 (improvement: +0.0002)
 
-  irr_pair01_q6 — beats standards on 1 metric(s):
-    t_count                       : 1.0000 vs std_w_state's 2.0000 (margin: +50.0%)
+--------------------------------------------------------------------------------
+4b. DEEP VQE BENCHMARK (rigorous validation of top candidates)
+--------------------------------------------------------------------------------
 
-  irr_pair26_q6 — beats standards on 1 metric(s):
-    t_count                       : 1.0000 vs std_w_state's 2.0000 (margin: +50.0%)
+Settings: 40 restarts, 800 iterations, COBYLA. Baselines: CX-chain + HEA brick-layer (same 2Q gate count).
+Significance threshold: >5 percentage points improvement over best baseline.
 
-  irr_pair25_q6 — beats standards on 1 metric(s):
-    t_count                       : 1.0000 vs std_w_state's 2.0000 (margin: +50.0%)
+Config                                         CandErr   CX Err  HEA Err   Improv  Sig?
+--------------------------------------------------------------------------------
+irr_pair11_q6 8q tfim                           0.0369   0.0313   0.0313  -0.0056    no
+irr_pair15_q6 8q tfim                           0.0404   0.0350   0.0409  -0.0054    no
+irr_pair11_q6 6q tfim                           0.0466   0.0540   0.0540  +0.0074    no
+irr_pair11_q6 4q tfim                           0.0485   0.0490   0.0490  +0.0005    no
+irr_pair15_q6 4q tfim                           0.0615   0.0746   0.0746  +0.0131    no
+irr_pair15_q6 6q heisenberg                     0.0652   0.3357   0.2686  +0.2034   YES
+irr_pair15_q6 6q tfim                           0.0667   0.0422   0.0442  -0.0245    no
+irr_pair11_q6 6q heisenberg                     0.0670   0.4987   0.4987  +0.4317   YES
+irr_pair11_q6 8q heisenberg                     0.2609   0.2600   0.2258  -0.0351    no
+irr_pair11_q6 4q heisenberg                     0.2789   0.2843   0.2843  +0.0054    no
+irr_pair15_q6 8q heisenberg                     0.3043   0.3590   0.3509  +0.0466    no
+irr_pair15_q6 4q heisenberg                     0.3061   0.5359   0.5359  +0.2298   YES
 
-  irr_pair06_q6 — beats standards on 1 metric(s):
-    t_count                       : 1.0000 vs std_w_state's 2.0000 (margin: +50.0%)
+  3 configurations show SIGNIFICANT improvement (confirmed at higher restarts/iterations).
 
-  irr_pair32_q6 — beats standards on 1 metric(s):
-    t_count                       : 1.0000 vs std_w_state's 2.0000 (margin: +50.0%)
+--------------------------------------------------------------------------------
+5. SYMMETRY DETECTION (Pauli strings commuting with U)
+--------------------------------------------------------------------------------
 
-  irr_pair21_q5 — beats standards on 1 metric(s):
-    t_count                       : 1.0000 vs std_w_state's 2.0000 (margin: +50.0%)
+Name                                 #Sym Notable                                 
+-------------------------------------------------------------------------------------
+irr_pair17_q6                          66 XXIIII, XYIIII, XZIIII                  
+irr_pair18_q6                          66 XXIIII, XYIIII, XZIIII                  
+irr_pair23_q6                          66 XXIIII, XYIIII, XZIIII                  
+irr_pair24_q6                          66 XXIIII, XYIIII, XZIIII                  
+irr_pair26_q6                          46 XXIIII, XYIIII, XZIIII                  
+irr_pair29_q6                          46 XXIIII, XYIIII, XZIIII                  
+irr_pair30_q6                          46 XXIIII, XYIIII, XZIIII                  
+irr_pair31_q6                          46 XXIIII, XYIIII, XZIIII                  
+irr_pair32_q6                          46 XXIIII, XYIIII, XZIIII                  
+irr_pair33_q6                          46 XXIIII, XYIIII, XZIIII                  
+irr_pair34_q6                          46 XXIIII, XYIIII, XZIIII                  
+std_vqe_uccsd                          41 XXII, XYII, YXII                        
+irr_pair19_q5                          36 XXIII, XYIII, XZIII                     
+irr_pair25_q6                          36 XXIIII, XYIIII, XZIIII                  
+irr_pair09_q6                          30 XXIIII, XYIIII, XZIIII                  
+irr_pair27_q6                          30 XXIIII, XYIIII, XZIIII                  
+irr_pair20_q5                          22 XXIII, XYIII, XZIII                     
+irr_pair21_q5                          22 XXIII, XYIII, XZIII                     
+std_bb84_encode                        20 YYII, YZII, IXYI                        
+irr_pair07_q6                          16 XXIIII, XYIIII, XZIIII                  
+irr_pair14_q6                          16 XXIIII, XYIIII, XZIIII                  
+irr_pair16_q4                          15 XXII, XYII, XZII                        
+std_iqp_sampling                       11 XXII, XIXI, XIIX                        
+irr_pair04_q6                          11 XIZIII, XIIZII, IIXXII                  
+irr_pair05_q6                          11 XIZIII, XIIZII, IIXXII                  
+covgap_distillation_q5                 10 XIIZI, XIIIX, YIIIY                     
+bridge_comm_prot_q4                    10 IZZI, IZIZ, IIXX                        
+bridge_enta_prot_q4                    10 XXII, XIIZ, IXIZ                        
+irr_pair01_q6                           8 XIZIII, XIIIXI, IIZIXI                  
+covgap_sampling_q4                      7 XIXI, XIYI, IZZI                        
+bridge_prot_vari_q4                     7 XIXI, XIYI, IZZI                        
+irr_pair06_q6                           7 XXIIII, XYIIII, XZIIII                  
+irr_pair03_q5                           6 XXIII, YYZZX, YYZZY                     
+irr_pair08_q6                           6 ZIIIZI, ZIIIIZ, IIIIZZ                  
+irr_pair10_q5                           6 XIIZI, XIIIZ, IIIZZ                     
+irr_pair02_q4                           5 XIIZ, IZZI, XZZZ                        
+void_2_q5                               5 ZIIZI, ZXYXZ, ZXYYZ                     
+bridge_dist_enta_q4                     3 XXII, YXII                              
+irr_layered_q5                          3 (weight-1 only)                         
+void_0_q5                               3 ZIIIY                                   
+void_1_q5                               3 ZIIIY                                   
+void_3_q5                               3 ZIIIY                                   
+irr_pair11_q6                           2 IIIZZI                                  
+std_bell_state                          1 (weight-1 only)                         
+std_ghz_state                           1 (weight-1 only)                         
+std_w_state                             1 (weight-1 only)                         
+std_teleportation                       1 (weight-1 only)                         
+std_qft                                 1 ZIIX                                    
+std_trotter_ising                       1 XXXX                                    
+std_bit_flip_code                       1 (weight-1 only)                         
+std_bbpssw_distillation                 1 (weight-1 only)                         
+bridge_line_mach_q4                     1 (weight-1 only)                         
+bridge_mach_vari_q4                     1 (weight-1 only)                         
+irr_pair12_q6                           1 IIIZZI                                  
+irr_pair13_q6                           1 (weight-1 only)                         
+irr_pair15_q6                           1 (weight-1 only)                         
+legacy_tvh                              1 XXXX                                    
+legacy_icc                              1 YZZY                                    
 
-  irr_pair20_q5 — beats standards on 1 metric(s):
-    t_count                       : 1.0000 vs std_w_state's 2.0000 (margin: +50.0%)
+--------------------------------------------------------------------------------
+6. CONDITIONAL STATE ANALYSIS (measure spare qubits)
+--------------------------------------------------------------------------------
 
-========================================================================
-Outputs saved to: /Users/churchill/GitHub/zx-diagram-components/scripts/output/comparison
-========================================================================
+  irr_pair03_q5:
+    Spare qubits: [0, 1], Data qubits: [2, 3, 4]
+    Avg concurrence/purity: 1.0000 (std: 0.0000)
+    All outcomes high entanglement: YES
+      |00>: prob=0.500, C/P=1.0000
+      |10>: prob=0.500, C/P=1.0000
+
+  irr_pair15_q6:
+    Spare qubits: [0, 1, 2], Data qubits: [3, 4, 5]
+    Avg concurrence/purity: 1.0000 (std: 0.0000)
+    All outcomes high entanglement: YES
+      |000>: prob=0.500, C/P=1.0000
+      |100>: prob=0.500, C/P=1.0000
+
+  void_0_q5:
+    Spare qubits: [0, 3, 4], Data qubits: [1, 2]
+    Avg concurrence/purity: 1.0000 (std: 0.0000)
+    All outcomes high entanglement: YES
+      |000>: prob=0.500, C/P=1.0000
+      |010>: prob=0.500, C/P=1.0000
+
+  void_1_q5:
+    Spare qubits: [0, 3, 4], Data qubits: [1, 2]
+    Avg concurrence/purity: 1.0000 (std: 0.0000)
+    All outcomes high entanglement: YES
+      |000>: prob=0.500, C/P=1.0000
+      |010>: prob=0.500, C/P=1.0000
+
+  void_3_q5:
+    Spare qubits: [0, 3, 4], Data qubits: [1, 2]
+    Avg concurrence/purity: 1.0000 (std: 0.0000)
+    All outcomes high entanglement: YES
+      |000>: prob=0.500, C/P=1.0000
+      |010>: prob=0.500, C/P=1.0000
+
+
+--------------------------------------------------------------------------------
+7. OPERATOR ENTANGLEMENT (how entangling is U as a bipartite operator?)
+--------------------------------------------------------------------------------
+
+Rank  Name                                   OpEnt  Gates   2Q          Cat
+   1  std_qft                               4.0000     12    8     standard
+   2  covgap_cryptography_q4                3.0000     10   10 coverage_gap
+   3  irr_pair15_q6                         3.0000     16   12  irreducible
+   4  void_2_q5                             3.0000     14    9     pca_void
+   5  std_bit_flip_code                     2.8113     21   12     standard
+   6  std_phase_estimation                  2.6009     18   11     standard
+   7  legacy_icc                            2.6009     39   16       legacy
+   8  legacy_tvh                            2.0894     60   18       legacy
+   9  std_bbpssw_distillation               2.0000      6    4     standard
+  10  std_iqp_sampling                      2.0000     14    4     standard
+  11  covgap_distillation_q5                2.0000      6    6 coverage_gap
+  12  covgap_sampling_q4                    2.0000     10   10 coverage_gap
+  13  bridge_dist_enta_q4                   2.0000      5    5 cross_family
+  14  bridge_enta_prot_q4                   2.0000     10   10 cross_family
+  15  bridge_line_mach_q4                   2.0000      8    8 cross_family
+  16  bridge_mach_vari_q4                   2.0000      8    8 cross_family
+  17  bridge_prot_vari_q4                   2.0000     10   10 cross_family
+  18  irr_pair01_q6                         2.0000     14   13  irreducible
+  19  irr_pair02_q4                         2.0000     11    9  irreducible
+  20  irr_pair03_q5                         2.0000     14   10  irreducible
+
+--------------------------------------------------------------------------------
+8. OUTPUT STATE ANALYSIS & GATE OVERHEAD
+--------------------------------------------------------------------------------
+
+Name                                  Q  Gates  Idle  Ent  MinG     OH Output                                  
+--------------------------------------------------------------------------------------------------------------
+bridge_comm_prot_q4                   4      9     3    0     0    n/a q3:|0> | 3 idle                         
+bridge_dist_enta_q4                   4      5     3    0     0    n/a q3:|0> | 3 idle                         
+bridge_enta_prot_q4                   4     10     3    0     0    n/a q3:|0> | 3 idle                         
+bridge_line_mach_q4                   4      8     3    0     0    n/a q3:|0> | 3 idle                         
+bridge_mach_vari_q4                   4      8     3    0     0    n/a q3:|0> | 3 idle                         
+bridge_prot_vari_q4                   4     10     3    0     0    n/a q3:|0> | 3 idle                         
+covgap_cryptography_q4                4     10     3    0     0    n/a q3:|0> | 3 idle                         
+covgap_distillation_q5                5      6     4    0     0    n/a q4:|0> | 4 idle                         
+covgap_sampling_q4                    4     10     3    0     0    n/a q3:|0> | 3 idle                         
+irr_layered_q5                        5     18     2    2     5   3.6x q3:|+> | q[1,2]:weak_entangled_2q | 2 idle
+irr_pair01_q6                         6     14     5    0     0    n/a q5:|0> | 5 idle                         
+irr_pair02_q4                         4     11     3    0     0    n/a q3:|0> | 3 idle                         
+irr_pair03_q5                         5     14     1    3     4   3.5x q1:|+> | q[2,3,4]:ghz | 1 idle          
+irr_pair04_q6                         6     14     3    0     2   7.0x q0:|+> | q1:|+> | q5:|0> | 3 idle       
+irr_pair05_q6                         6     14     3    0     2   7.0x q0:|+> | q1:|+> | q5:|0> | 3 idle       
+irr_pair06_q6                         6     13     3    0     2   6.5x q0:|+> | q1:|+> | q5:|0> | 3 idle       
+irr_pair07_q6                         6     13     5    0     0    n/a q5:|0> | 5 idle                         
+irr_pair08_q6                         6     16     3    0     3   5.3x q3:rotation | q4:|+> | q5:|0> | 3 idle  
+irr_pair09_q6                         6     14     5    0     0    n/a q5:|0> | 5 idle                         
+irr_pair10_q5                         5     11     4    0     0    n/a q4:|0> | 4 idle                         
+irr_pair11_q6                         6     12     5    0     0    n/a q5:|0> | 5 idle                         
+irr_pair12_q6                         6     15     4    0     2   7.5x q4:|+> | q5:|+> | 4 idle                
+irr_pair13_q6                         6     14     3    0     2   7.0x q3:|+> | q4:|+> | q5:|0> | 3 idle       
+irr_pair14_q6                         6     13     5    0     0    n/a q5:|0> | 5 idle                         
+irr_pair15_q6                         6     16     2    3     7   2.3x q2:|+> | q[3,4,5]:highly_entangled | 2 idle
+irr_pair16_q4                         4      3     1    0     2   1.5x q0:|+> | q1:|+> | q3:|0> | 1 idle       
+irr_pair17_q6                         6      3     3    0     2   1.5x q0:|+> | q1:|+> | q5:|0> | 3 idle       
+irr_pair18_q6                         6      3     3    0     2   1.5x q0:|+> | q1:|+> | q5:|0> | 3 idle       
+irr_pair19_q5                         5      3     2    0     2   1.5x q0:|+> | q1:|+> | q4:|0> | 2 idle       
+irr_pair20_q5                         5      5     2    0     2   2.5x q0:|+> | q1:|+> | q4:|0> | 2 idle       
+irr_pair21_q5                         5      5     2    0     2   2.5x q0:|+> | q1:|+> | q4:|0> | 2 idle       
+irr_pair23_q6                         6      3     3    0     2   1.5x q0:|+> | q1:|+> | q5:|0> | 3 idle       
+irr_pair24_q6                         6      3     3    0     2   1.5x q0:|+> | q1:|+> | q5:|0> | 3 idle       
+irr_pair25_q6                         6      8     3    0     2   4.0x q0:|+> | q2:|+> | q5:|0> | 3 idle       
+irr_pair26_q6                         6      5     3    0     2   2.5x q0:|+> | q1:|+> | q5:|0> | 3 idle       
+irr_pair27_q6                         6      8     3    0     2   4.0x q0:|+> | q2:|+> | q5:|0> | 3 idle       
+irr_pair29_q6                         6      8     3    0     2   4.0x q0:|+> | q1:|+> | q5:|0> | 3 idle       
+irr_pair30_q6                         6      6     2    0     3   2.0x q0:|Y-> | q1:|+> | q2:|+> | q5:|0> | 2 idle
+irr_pair31_q6                         6      6     3    0     2   3.0x q0:|+> | q1:|+> | q5:|0> | 3 idle       
+irr_pair32_q6                         6      5     3    0     2   2.5x q0:|+> | q1:|+> | q5:|0> | 3 idle       
+irr_pair33_q6                         6      6     3    0     2   3.0x q0:|+> | q1:|+> | q5:|0> | 3 idle       
+irr_pair34_q6                         6      6     3    0     2   3.0x q0:|+> | q1:|+> | q5:|0> | 3 idle       
+legacy_deb                            4     12     0    4     6   2.0x q[0,1,2,3]:partially_entangled          
+legacy_icc                            4     39     0    4     6   6.5x q[0,1,2,3]:partially_entangled          
+legacy_tvh                            4     60     0    4     6  10.0x q[0,1,2,3]:partially_entangled          
+void_0_q5                             5     13     2    2     5   2.6x q3:|+> | q[1,2]:weak_entangled_2q | 2 idle
+void_1_q5                             5     13     2    2     5   2.6x q3:|+> | q[1,2]:weak_entangled_2q | 2 idle
+void_2_q5                             5     14     1    0     3   4.7x q0:|+> | q2:|+> | q3:|+> | q4:|0> | 1 idle
+void_3_q5                             5     13     2    2     5   2.6x q3:|+> | q[1,2]:weak_entangled_2q | 2 idle
+
+--------------------------------------------------------------------------------
+9. CANDIDATE PROFILES (top 15 by entangling power)
+--------------------------------------------------------------------------------
+
+  irr_pair15_q6
+    Output:  q2:|+> | q[3,4,5]:highly_entangled | 2 idle
+    Overhead: 2.3x (16g vs 7 min)
+    EP: 1.3504 (EPD: 0.3492, best input: 1.9812)
+    OpEnt: 3.0000
+    Symmetries: 1 total
+    Conditional: avg C/P=1.0000, all_high=True
+    VQE: error=0.1032 vs baseline=0.3958 (WINS)
+    Novelty: composite=0.280
+    Best property: EP=1.350, OpEnt=3.000, VQE winner, deterministic conditional entanglement
+
+  void_2_q5
+    Output:  q0:|+> | q2:|+> | q3:|+> | q4:|0> | 1 idle
+    Overhead: 4.7x (14g vs 3 min)
+    EP: 1.2152 (EPD: 0.4116, best input: 1.8962)
+    OpEnt: 3.0000
+    Hamiltonian: best match = ising_zz (0.018)
+      IXYZX: -0.2725
+      ZXYII: -0.2725
+      ZIYIZ: +0.2725
+    Symmetries: 5 total, notable: ZIIZI, ZXYXZ, ZXYYZ
+    VQE: error=0.1791 vs baseline=0.3398 (WINS)
+    Novelty: composite=0.386
+    Best property: EP=1.215, OpEnt=3.000, VQE winner
+
+  legacy_deb
+    Output:  q[0,1,2,3]:partially_entangled
+    Overhead: 2.0x (12g vs 6 min)
+    EP: 1.1833 (EPD: 0.3235, best input: 1.8035)
+    OpEnt: 2.0000
+    Hamiltonian: best match = heisenberg (0.000)
+      IYIZ: -0.4972
+      IYXZ: -0.4972
+      ZIYZ: +0.4257
+    VQE: error=0.3256 vs baseline=0.3364 (WINS)
+    Best property: EP=1.183, VQE winner
+
+  irr_pair10_q5
+    Output:  q4:|0> | 4 idle
+    Overhead: n/a
+    EP: 1.1787 (EPD: 0.3752, best input: 1.9926)
+    OpEnt: 2.0000
+    Hamiltonian: best match = tfim (0.002)
+      XIIZI: -0.5890
+      IYZII: -0.2565
+      IYZIZ: -0.2565
+    Symmetries: 6 total, notable: XIIZI, XIIIZ, IIIZZ
+    VQE: error=0.2777 vs baseline=0.3398 (WINS)
+    Novelty: composite=0.279
+    Best property: EP=1.179, VQE winner
+
+  irr_pair03_q5
+    Output:  q1:|+> | q[2,3,4]:ghz | 1 idle
+    Overhead: 3.5x (14g vs 4 min)
+    EP: 1.1172 (EPD: 0.2804, best input: 1.9042)
+    OpEnt: 2.0000
+    Hamiltonian: best match = tfim (0.049)
+      XIIIZ: +0.6017
+      IIXYI: -0.3927
+      XXXYI: +0.3927
+    Symmetries: 6 total, notable: XXIII, YYZZX, YYZZY
+    Conditional: avg C/P=1.0000, all_high=True
+    VQE: error=0.1057 vs baseline=0.2927 (WINS)
+    Novelty: composite=0.474
+    Best property: EP=1.117, VQE winner, deterministic conditional entanglement
+
+  irr_pair08_q6
+    Output:  q3:rotation | q4:|+> | q5:|0> | 3 idle
+    Overhead: 5.3x (16g vs 3 min)
+    EP: 1.1015 (EPD: 0.3756, best input: 1.9378)
+    OpEnt: 2.0000
+    Symmetries: 6 total, notable: ZIIIZI, ZIIIIZ, IIIIZZ
+    VQE: error=0.2716 vs baseline=0.3780 (WINS)
+    Novelty: composite=0.316
+    Best property: EP=1.102, VQE winner
+
+  irr_pair01_q6
+    Output:  q5:|0> | 5 idle
+    Overhead: n/a
+    EP: 1.0799 (EPD: 0.4518, best input: 1.9711)
+    OpEnt: 2.0000
+    Symmetries: 8 total, notable: XIZIII, XIIIXI, IIZIXI
+    VQE: error=0.2964 vs baseline=0.2727 (loses)
+    Novelty: composite=0.284
+    Best property: EP=1.080
+
+  covgap_cryptography_q4
+    Output:  q3:|0> | 3 idle
+    Overhead: n/a
+    EP: 1.0370 (EPD: 0.2981, best input: 1.7683)
+    OpEnt: 3.0000
+    Hamiltonian: best match = heisenberg (0.000)
+      YYYZ: -0.2991
+      IIYX: +0.2991
+      YIIZ: +0.2991
+    VQE: error=0.0527 vs baseline=0.2847 (WINS)
+    Novelty: composite=0.340
+    Best property: EP=1.037, OpEnt=3.000, VQE winner
+
+  legacy_icc
+    Output:  q[0,1,2,3]:partially_entangled
+    Overhead: 6.5x (39g vs 6 min)
+    EP: 1.0079 (EPD: 0.1432, best input: 1.5229)
+    OpEnt: 2.6009
+    Hamiltonian: best match = tfim (0.012)
+      YZZY: +0.7854
+      ZXXZ: -0.4737
+      IXYY: -0.3604
+    Symmetries: 1 total, notable: YZZY
+    VQE: error=0.1946 vs baseline=0.2983 (WINS)
+    Best property: EP=1.008, OpEnt=2.601, VQE winner
+
+  bridge_enta_prot_q4
+    Output:  q3:|0> | 3 idle
+    Overhead: n/a
+    EP: 0.8926 (EPD: 0.4185, best input: 1.9892)
+    OpEnt: 2.0000
+    Hamiltonian: best match = heisenberg (0.153)
+      ZZII: +0.3927
+      IIIZ: +0.3927
+      IXXI: +0.3927
+    Symmetries: 10 total, notable: XXII, XIIZ, IXIZ
+    VQE: error=0.3013 vs baseline=0.2847 (loses)
+    Novelty: composite=0.217
+    Best property: EP=0.893
+
+  legacy_tvh
+    Output:  q[0,1,2,3]:partially_entangled
+    Overhead: 10.0x (60g vs 6 min)
+    EP: 0.8734 (EPD: 0.1956, best input: 1.4102)
+    OpEnt: 2.0894
+    Hamiltonian: best match = tfim (0.028)
+      XXIX: -0.6296
+      XIXX: -0.4664
+      IXXX: -0.4107
+    Symmetries: 1 total, notable: XXXX
+    VQE: error=0.1580 vs baseline=0.5363 (WINS)
+    Best property: EP=0.873, OpEnt=2.089, VQE winner
+
+  irr_pair02_q4
+    Output:  q3:|0> | 3 idle
+    Overhead: n/a
+    EP: 0.8623 (EPD: 0.4221, best input: 1.9521)
+    OpEnt: 2.0000
+    Hamiltonian: best match = ising_zz (0.000)
+      XIIZ: -0.7854
+      IXYI: +0.3927
+      IXYZ: -0.3927
+    Symmetries: 5 total, notable: XIIZ, IZZI, XZZZ
+    VQE: error=0.2764 vs baseline=0.0548 (loses)
+    Novelty: composite=0.279
+    Best property: EP=0.862
+
+  covgap_distillation_q5
+    Output:  q4:|0> | 4 idle
+    Overhead: n/a
+    EP: 0.8081 (EPD: 0.1967, best input: 0.9996)
+    OpEnt: 2.0000
+    Hamiltonian: best match = heisenberg (0.094)
+      IIIZI: +0.3927
+      IIZII: +0.3927
+      IXIZI: +0.3927
+    Symmetries: 10 total, notable: XIIZI, XIIIX, YIIIY
+    VQE: error=0.1700 vs baseline=0.2728 (WINS)
+    Novelty: composite=0.266
+    Best property: EP=0.808, VQE winner
+
+  irr_pair13_q6
+    Output:  q3:|+> | q4:|+> | q5:|0> | 3 idle
+    Overhead: 7.0x (14g vs 2 min)
+    EP: 0.6897 (EPD: 0.2513, best input: 0.9999)
+    OpEnt: 2.0000
+    Symmetries: 1 total
+    VQE: error=0.2376 vs baseline=0.5012 (WINS)
+    Novelty: composite=0.257
+    Best property: EP=0.690, VQE winner
+
+  irr_pair06_q6
+    Output:  q0:|+> | q1:|+> | q5:|0> | 3 idle
+    Overhead: 6.5x (13g vs 2 min)
+    EP: 0.6897 (EPD: 0.2513, best input: 0.9999)
+    OpEnt: 2.0000
+    Symmetries: 7 total, notable: XXIIII, XYIIII, XZIIII
+    VQE: error=0.3951 vs baseline=0.5012 (WINS)
+    Novelty: composite=0.291
+    Best property: EP=0.690, VQE winner
+
+================================================================================
+10. HONEST VERDICT
+================================================================================
+
+GENUINE ADVANTAGES FOUND (34):
+
+  * VQE (quick): covgap_cryptography_q4 significantly beats CX-chain by +0.2320 relative error on Heisenberg
+  * VQE (quick): legacy_icc significantly beats CX-chain by +0.1037 relative error on Heisenberg
+  * VQE (quick): legacy_tvh significantly beats CX-chain by +0.3783 relative error on Heisenberg
+  * VQE (quick): bridge_dist_enta_q4 significantly beats CX-chain by +0.2786 relative error on Heisenberg
+  * VQE (quick): covgap_sampling_q4 significantly beats CX-chain by +0.2198 relative error on Heisenberg
+  * VQE (quick): bridge_prot_vari_q4 significantly beats CX-chain by +0.2198 relative error on Heisenberg
+  * VQE (quick): void_2_q5 significantly beats CX-chain by +0.1607 relative error on Heisenberg
+  * VQE (quick): irr_pair10_q5 significantly beats CX-chain by +0.0621 relative error on Heisenberg
+  * VQE (quick): irr_pair03_q5 significantly beats CX-chain by +0.1870 relative error on Heisenberg
+  * VQE (quick): covgap_distillation_q5 significantly beats CX-chain by +0.1028 relative error on Heisenberg
+  * VQE (quick): void_0_q5 significantly beats CX-chain by +0.1054 relative error on Heisenberg
+  * VQE (quick): void_1_q5 significantly beats CX-chain by +0.1054 relative error on Heisenberg
+  * VQE (quick): void_3_q5 significantly beats CX-chain by +0.1054 relative error on Heisenberg
+  * VQE (quick): irr_pair15_q6 significantly beats CX-chain by +0.2925 relative error on Heisenberg
+  * VQE (quick): irr_pair08_q6 significantly beats CX-chain by +0.1064 relative error on Heisenberg
+  * VQE (quick): irr_pair13_q6 significantly beats CX-chain by +0.2637 relative error on Heisenberg
+  * VQE (quick): irr_pair06_q6 significantly beats CX-chain by +0.1062 relative error on Heisenberg
+  * VQE (quick): irr_pair07_q6 significantly beats CX-chain by +0.2128 relative error on Heisenberg
+  * VQE (quick): irr_pair12_q6 significantly beats CX-chain by +0.2818 relative error on Heisenberg
+  * VQE (quick): irr_pair14_q6 significantly beats CX-chain by +0.2128 relative error on Heisenberg
+  * VQE (quick): irr_pair11_q6 significantly beats CX-chain by +0.3833 relative error on Heisenberg
+  * VQE (quick): irr_pair04_q6 significantly beats CX-chain by +0.2429 relative error on Heisenberg
+  * VQE (quick): irr_pair05_q6 significantly beats CX-chain by +0.2429 relative error on Heisenberg
+  * VQE (quick): irr_pair09_q6 significantly beats CX-chain by +0.1047 relative error on Heisenberg
+  * VQE (deep): irr_pair11_q6 6q heisenberg beats best baseline by +0.4317 (40 restarts, 800 iter)
+  * VQE (deep): irr_pair15_q6 4q heisenberg beats best baseline by +0.2298 (40 restarts, 800 iter)
+  * VQE (deep): irr_pair15_q6 6q heisenberg beats best baseline by +0.2034 (40 restarts, 800 iter)
+  * Conditional: irr_pair03_q5 produces high entanglement for ALL measurement outcomes (DEB-like property)
+  * Conditional: irr_pair15_q6 produces high entanglement for ALL measurement outcomes (DEB-like property)
+  * Conditional: void_0_q5 produces high entanglement for ALL measurement outcomes (DEB-like property)
+  * Conditional: void_1_q5 produces high entanglement for ALL measurement outcomes (DEB-like property)
+  * Conditional: void_3_q5 produces high entanglement for ALL measurement outcomes (DEB-like property)
+  * EP: irr_pair15_q6 has higher entangling power (1.3504) than any standard at similar gate count
+  * EP: legacy_icc has higher entangling power (1.0079) than any standard at similar gate count
+
+These are provisional — each needs further investigation:
+  - VQE wins: test with more restarts, larger systems, different Hamiltonians
+  - Conditional properties: verify robustness under noise
+  - EP advantages: compare against optimised circuits at same gate budget
+  - Hamiltonian matches: verify Trotter step efficiency vs standard decomposition
+
+================================================================================
+Outputs: /Users/churchill/GitHub/zx-diagram-components/scripts/output/comparison
+================================================================================
