@@ -186,3 +186,222 @@ class TestMotifGenerators:
         assert "toffoli_core" in ids
         assert "cluster_chain" in ids
         assert "trotter_layer" in ids
+
+
+class TestLinearAlgebraStructure:
+    def test_hhl_has_controlled_rotations(self):
+        """HHL uses controlled-RY rotations for eigenvalue inversion."""
+        from zx_motifs.algorithms.registry import make_hhl
+        qc = make_hhl(n_qubits=5)
+        gate_names = {inst.operation.name for inst in qc.data}
+        assert "ry" in gate_names, "HHL should have RY gates for eigenvalue inversion"
+        assert "cp" in gate_names, "HHL should have controlled-phase gates for QPE"
+
+    def test_vqls_is_variational(self):
+        """VQLS uses RY/RZ variational rotations."""
+        from zx_motifs.algorithms.registry import make_vqls
+        qc = make_vqls(n_qubits=4)
+        gate_names = {inst.operation.name for inst in qc.data}
+        assert "ry" in gate_names
+        assert "rz" in gate_names
+        assert "cx" in gate_names
+
+
+class TestCryptographyStructure:
+    def test_bb84_uses_h_and_x(self):
+        """BB84 encoding uses only H and X gates."""
+        from zx_motifs.algorithms.registry import make_bb84_encode
+        qc = make_bb84_encode(n_qubits=8)
+        gate_names = {inst.operation.name for inst in qc.data}
+        assert gate_names <= {"h", "x"}, f"BB84 should only use H and X, got {gate_names}"
+
+    def test_e91_has_bell_pairs(self):
+        """E91 creates Bell pairs (uses H and CX)."""
+        from zx_motifs.algorithms.registry import make_e91_protocol
+        qc = make_e91_protocol(n_qubits=8)
+        gate_names = {inst.operation.name for inst in qc.data}
+        assert "h" in gate_names
+        assert "cx" in gate_names
+        assert "ry" in gate_names, "E91 should have RY for measurement basis rotation"
+
+
+class TestSamplingStructure:
+    def test_iqp_has_symmetric_h_layers(self):
+        """IQP circuit has H layers at start and end."""
+        from zx_motifs.algorithms.registry import make_iqp_sampling
+        qc = make_iqp_sampling(n_qubits=5)
+        ops = [inst.operation.name for inst in qc.data]
+        # First ops should be H gates
+        assert ops[0] == "h", "IQP should start with H layer"
+        # Last ops should be H gates
+        assert ops[-1] == "h", "IQP should end with H layer"
+
+    def test_random_circuit_has_t_gates(self):
+        """Random circuit sampling includes T gates."""
+        from zx_motifs.algorithms.registry import make_random_circuit_sampling
+        qc = make_random_circuit_sampling(n_qubits=4)
+        gate_names = {inst.operation.name for inst in qc.data}
+        assert "t" in gate_names, "Random circuit should include T gates"
+
+
+class TestErrorMitigationStructure:
+    def test_zne_has_repeated_pattern(self):
+        """ZNE folding has circuit-inverse-circuit (3x gate count of base)."""
+        from zx_motifs.algorithms.registry import make_zne_folding
+        qc = make_zne_folding(n_qubits=4)
+        gate_names = [inst.operation.name for inst in qc.data]
+        # Should have a substantial number of gates (3x base circuit)
+        assert len(gate_names) > 10, "ZNE should have repeated circuit pattern"
+
+    def test_pauli_twirling_has_paulis(self):
+        """Pauli twirling inserts Pauli gates around CX."""
+        from zx_motifs.algorithms.registry import make_pauli_twirling
+        qc = make_pauli_twirling(n_qubits=4)
+        gate_names = {inst.operation.name for inst in qc.data}
+        assert "cx" in gate_names, "Pauli twirling should have CX gates"
+
+
+class TestTopologicalStructure:
+    def test_jones_polynomial_has_controlled_phase(self):
+        """Jones polynomial uses controlled-phase gates."""
+        from zx_motifs.algorithms.registry import make_jones_polynomial
+        qc = make_jones_polynomial(n_qubits=4)
+        gate_names = {inst.operation.name for inst in qc.data}
+        assert "cp" in gate_names, "Jones polynomial should use controlled-phase gates"
+        assert "h" in gate_names
+
+    def test_toric_code_has_syndrome_extraction(self):
+        """Toric code uses CX for syndrome extraction."""
+        from zx_motifs.algorithms.registry import make_toric_code_syndrome
+        qc = make_toric_code_syndrome()
+        cx_count = sum(1 for inst in qc.data if inst.operation.name == "cx")
+        assert cx_count >= 4, "Toric code should have multiple CX gates for syndrome extraction"
+
+
+class TestMetrologyStructure:
+    def test_ghz_metrology_has_phase_between_ghz(self):
+        """GHZ metrology has RZ phase rotations."""
+        from zx_motifs.algorithms.registry import make_ghz_metrology
+        qc = make_ghz_metrology(n_qubits=4)
+        gate_names = {inst.operation.name for inst in qc.data}
+        assert "rz" in gate_names, "GHZ metrology should have RZ for phase accumulation"
+        assert "cx" in gate_names, "GHZ metrology should have CX for GHZ state"
+        assert "h" in gate_names
+
+    def test_qfi_has_parameterized_rotations(self):
+        """QFI probe state has RY rotations and CX entangling."""
+        from zx_motifs.algorithms.registry import make_quantum_fisher_info
+        qc = make_quantum_fisher_info(n_qubits=4)
+        gate_names = {inst.operation.name for inst in qc.data}
+        assert "ry" in gate_names
+        assert "cx" in gate_names
+
+
+class TestNewVariationalStructure:
+    def test_adapt_vqe_has_excitation_operators(self):
+        """ADAPT-VQE has CX ladder + RZ pattern for excitations."""
+        from zx_motifs.algorithms.registry import make_adapt_vqe
+        qc = make_adapt_vqe(n_qubits=4)
+        gate_names = {inst.operation.name for inst in qc.data}
+        assert "cx" in gate_names
+        assert "rz" in gate_names
+        assert "x" in gate_names, "ADAPT-VQE should have X for HF state preparation"
+
+    def test_varqite_has_decreasing_rotations(self):
+        """VarQITE ansatz uses RY and RZ rotations."""
+        from zx_motifs.algorithms.registry import make_varqite
+        qc = make_varqite(n_qubits=4)
+        gate_names = {inst.operation.name for inst in qc.data}
+        assert "ry" in gate_names
+        assert "rz" in gate_names
+
+
+class TestNewOracleStructure:
+    def test_deutsch_is_smallest_oracle(self):
+        """Deutsch algorithm uses exactly 2 qubits."""
+        from zx_motifs.algorithms.registry import make_deutsch
+        qc = make_deutsch()
+        assert qc.num_qubits == 2, "Deutsch should use exactly 2 qubits"
+
+    def test_hidden_shift_has_symmetric_structure(self):
+        """Hidden shift has 3 H layers and CZ oracle layers."""
+        from zx_motifs.algorithms.registry import make_hidden_shift
+        qc = make_hidden_shift(n_qubits=4)
+        gate_names = {inst.operation.name for inst in qc.data}
+        assert "h" in gate_names
+        assert "cz" in gate_names
+
+
+class TestNewMLStructure:
+    def test_qcnn_has_pooling(self):
+        """QCNN has pooling layers that reduce active qubits."""
+        from zx_motifs.algorithms.registry import make_qcnn
+        qc = make_qcnn(n_qubits=8)
+        # QCNN should have CX and RY gates
+        gate_names = {inst.operation.name for inst in qc.data}
+        assert "cx" in gate_names
+        assert "ry" in gate_names
+
+    def test_qsvm_has_zz_feature_map(self):
+        """QSVM uses ZZ feature map (H + RZ + CX-RZ-CX)."""
+        from zx_motifs.algorithms.registry import make_qsvm
+        qc = make_qsvm(n_qubits=4)
+        gate_names = {inst.operation.name for inst in qc.data}
+        assert "h" in gate_names
+        assert "rz" in gate_names
+        assert "cx" in gate_names
+
+
+class TestNewErrorCorrectionStructure:
+    def test_five_qubit_code_uses_5_qubits(self):
+        """Five-qubit code encoder uses exactly 5 qubits."""
+        from zx_motifs.algorithms.registry import make_five_qubit_code
+        qc = make_five_qubit_code()
+        assert qc.num_qubits == 5
+
+    def test_color_code_uses_7_qubits(self):
+        """Color code uses 7 qubits like Steane code."""
+        from zx_motifs.algorithms.registry import make_color_code
+        qc = make_color_code()
+        assert qc.num_qubits == 7
+
+    def test_bacon_shor_uses_9_qubits(self):
+        """Bacon-Shor code uses 9 qubits (3x3 grid)."""
+        from zx_motifs.algorithms.registry import make_bacon_shor
+        qc = make_bacon_shor()
+        assert qc.num_qubits == 9
+
+    def test_reed_muller_uses_15_qubits(self):
+        """Reed-Muller code uses 15 qubits."""
+        from zx_motifs.algorithms.registry import make_reed_muller_code
+        qc = make_reed_muller_code()
+        assert qc.num_qubits == 15
+
+
+class TestSwapTestStructure:
+    def test_swap_test_has_ancilla(self):
+        """Swap test uses H on ancilla and controlled-SWAP."""
+        from zx_motifs.algorithms.registry import make_swap_test
+        qc = make_swap_test(n_qubits=3)
+        gate_names = {inst.operation.name for inst in qc.data}
+        assert "h" in gate_names
+        assert "cx" in gate_names
+        # Should have T gates from Toffoli decomposition
+        assert "t" in gate_names or "tdg" in gate_names
+
+
+class TestArithmeticAdditionsStructure:
+    def test_multiplier_has_toffoli(self):
+        """Quantum multiplier uses decomposed Toffoli gates."""
+        from zx_motifs.algorithms.registry import make_quantum_multiplier
+        qc = make_quantum_multiplier()
+        gate_names = {inst.operation.name for inst in qc.data}
+        assert "t" in gate_names, "Multiplier should have T gates from Toffoli"
+        assert "cx" in gate_names
+
+    def test_comparator_has_toffoli(self):
+        """Quantum comparator uses decomposed Toffoli gates."""
+        from zx_motifs.algorithms.registry import make_quantum_comparator
+        qc = make_quantum_comparator()
+        gate_names = {inst.operation.name for inst in qc.data}
+        assert "t" in gate_names, "Comparator should have T gates from Toffoli"

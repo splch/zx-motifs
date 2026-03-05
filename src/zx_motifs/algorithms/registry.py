@@ -3315,6 +3315,7 @@ def make_vqs_real_time(n_qubits=4, layers=2, dt=0.3, **kwargs) -> QuantumCircuit
 # ── Registry ────────────────────────────────────────────────────────
 
 REGISTRY = [
+    # ── Entanglement ──────────────────────────────────────────
     AlgorithmEntry(
         "bell_state", "entanglement", make_bell_state, (2, 8),
         tags=["entanglement", "baseline"],
@@ -3324,13 +3325,39 @@ REGISTRY = [
         tags=["entanglement", "multipartite"],
     ),
     AlgorithmEntry(
+        "w_state", "entanglement", make_w_state, (3, 8),
+        tags=["entanglement", "multipartite", "arbitrary_rotation"],
+    ),
+    AlgorithmEntry(
+        "cluster_state", "entanglement", make_cluster_state, (2, 8),
+        tags=["graph_state", "mbqc", "cz_only"],
+    ),
+    AlgorithmEntry(
+        "dicke_state", "entanglement", make_dicke_state, (3, 8),
+        tags=["symmetric_state", "entanglement"],
+    ),
+    AlgorithmEntry(
+        "graph_state", "entanglement", make_graph_state, (3, 8),
+        tags=["graph_state", "multipartite"],
+    ),
+    # ── Protocol ──────────────────────────────────────────────
+    AlgorithmEntry(
         "teleportation", "protocol", make_teleportation, (3, 3),
         tags=["communication", "bell_measurement"],
     ),
     AlgorithmEntry(
-        "qft", "transform", make_qft, (2, 7),
-        tags=["phase_rotation", "butterfly"],
+        "superdense_coding", "protocol", make_superdense_coding, (2, 2),
+        tags=["communication", "bell_pair", "dense_coding"],
     ),
+    AlgorithmEntry(
+        "entanglement_swapping", "protocol", make_entanglement_swapping, (4, 4),
+        tags=["bell_measurement", "relay", "teleportation_variant"],
+    ),
+    AlgorithmEntry(
+        "swap_test", "protocol", make_swap_test, (3, 7),
+        tags=["fidelity", "comparison"],
+    ),
+    # ── Oracle ────────────────────────────────────────────────
     AlgorithmEntry(
         "grover", "oracle", make_grover, (3, 6),
         tags=["amplitude_amplification", "diffusion", "oracle"],
@@ -3344,119 +3371,13 @@ REGISTRY = [
         tags=["decision_problem", "oracle"],
     ),
     AlgorithmEntry(
-        "phase_estimation", "transform", make_phase_estimation, (4, 8),
-        tags=["phase_kickback", "inverse_qft"],
-    ),
-    AlgorithmEntry(
-        "qaoa_maxcut", "variational", make_qaoa_maxcut, (3, 8),
-        tags=["combinatorial", "zz_interaction", "mixer"],
-    ),
-    AlgorithmEntry(
-        "vqe_uccsd", "variational", make_vqe_uccsd_fragment, (4, 4),
-        tags=["chemistry", "excitation"],
-    ),
-    AlgorithmEntry(
-        "hw_efficient_ansatz", "variational", make_hardware_efficient_ansatz, (3, 8),
-        tags=["hardware_efficient", "brick_layer"],
-    ),
-    # ── Error Correction ───────────────────────────────────────────
-    AlgorithmEntry(
-        "bit_flip_code", "error_correction", make_bit_flip_code, (5, 5),
-        tags=["repetition_code", "syndrome_extraction", "toffoli"],
-    ),
-    AlgorithmEntry(
-        "phase_flip_code", "error_correction", make_phase_flip_code, (5, 5),
-        tags=["repetition_code", "hadamard_basis", "toffoli"],
-    ),
-    AlgorithmEntry(
-        "steane_code", "error_correction", make_steane_code, (7, 7),
-        tags=["css_code", "hamming", "stabilizer"],
-    ),
-    # ── Simulation ─────────────────────────────────────────────────
-    AlgorithmEntry(
-        "trotter_ising", "simulation", make_trotter_ising, (2, 8),
-        tags=["hamiltonian_simulation", "zz_interaction", "trotter"],
-    ),
-    AlgorithmEntry(
-        "trotter_heisenberg", "simulation", make_trotter_heisenberg, (2, 8),
-        tags=["hamiltonian_simulation", "trotter", "mixed_interaction"],
-    ),
-    # ── Arithmetic ─────────────────────────────────────────────────
-    AlgorithmEntry(
-        "ripple_carry_adder", "arithmetic", make_ripple_carry_adder, (5, 5),
-        tags=["toffoli", "addition", "classical_reversible"],
-    ),
-    # ── Additional Oracle ──────────────────────────────────────────
-    AlgorithmEntry(
         "simon", "oracle", make_simon, (4, 8),
         tags=["hidden_structure", "oracle", "xor_mask"],
     ),
-    # ── Additional Entanglement ────────────────────────────────────
-    AlgorithmEntry(
-        "w_state", "entanglement", make_w_state, (3, 8),
-        tags=["entanglement", "multipartite", "arbitrary_rotation"],
-    ),
-    AlgorithmEntry(
-        "cluster_state", "entanglement", make_cluster_state, (2, 8),
-        tags=["graph_state", "mbqc", "cz_only"],
-    ),
-    # ── Additional Protocol ────────────────────────────────────────
-    AlgorithmEntry(
-        "superdense_coding", "protocol", make_superdense_coding, (2, 2),
-        tags=["communication", "bell_pair", "dense_coding"],
-    ),
-    # ── Error Correction ──────────────────────────────────
-    AlgorithmEntry(
-        "shor_code", "error_correction", make_shor_code, (9, 9),
-        tags=["concatenated_code", "nine_qubit"],
-    ),
-    # ── Simulation ────────────────────────────────────────
-    AlgorithmEntry(
-        "quantum_walk", "simulation", make_quantum_walk, (3, 6),
-        tags=["discrete_walk", "coin_operator"],
-    ),
-    # ── Arithmetic ────────────────────────────────────────
-    AlgorithmEntry(
-        "qft_adder", "arithmetic", make_qft_adder, (4, 8),
-        tags=["addition", "controlled_phase", "qft_based"],
-    ),
-    # ── Oracle ────────────────────────────────────────────
     AlgorithmEntry(
         "quantum_counting", "oracle", make_quantum_counting, (5, 8),
         tags=["grover_qpe", "counting", "hybrid"],
     ),
-    # ── Protocol ──────────────────────────────────────────
-    AlgorithmEntry(
-        "entanglement_swapping", "protocol", make_entanglement_swapping, (4, 4),
-        tags=["bell_measurement", "relay", "teleportation_variant"],
-    ),
-    # ── Distillation ──────────────────────────────────────────────
-    AlgorithmEntry(
-        "bbpssw_distillation", "distillation", make_bbpssw_distillation, (4, 4),
-        tags=["distillation", "bell_pair", "bilateral_cnot"],
-    ),
-    AlgorithmEntry(
-        "dejmps_distillation", "distillation", make_dejmps_distillation, (4, 4),
-        tags=["distillation", "bell_pair", "bilateral_cnot", "twirling"],
-    ),
-    AlgorithmEntry(
-        "recurrence_distillation", "distillation", make_recurrence_distillation, (8, 8),
-        tags=["distillation", "bell_pair", "bilateral_cnot", "multi_round"],
-    ),
-    AlgorithmEntry(
-        "pumping_distillation", "distillation", make_pumping_distillation, (6, 6),
-        tags=["distillation", "bell_pair", "bilateral_cnot", "pumping"],
-    ),
-    # ── Machine Learning ──────────────────────────────────
-    AlgorithmEntry(
-        "quantum_kernel", "machine_learning", make_quantum_kernel, (2, 8),
-        tags=["feature_map", "zz_interaction", "kernel_method"],
-    ),
-    AlgorithmEntry(
-        "data_reuploading", "machine_learning", make_data_reuploading, (2, 6),
-        tags=["classifier", "reuploading", "variational"],
-    ),
-    # ── New Oracle Algorithms ─────────────────────────────────
     AlgorithmEntry(
         "deutsch", "oracle", make_deutsch, (2, 2),
         tags=["decision_problem", "oracle"],
@@ -3469,7 +3390,40 @@ REGISTRY = [
         "element_distinctness", "oracle", make_element_distinctness, (5, 8),
         tags=["quantum_walk", "oracle"],
     ),
-    # ── New Variational Algorithms ────────────────────────────
+    AlgorithmEntry(
+        "quantum_walk_search", "oracle", make_quantum_walk_search, (3, 8),
+        tags=["quantum_walk", "search"],
+    ),
+    # ── Transform ─────────────────────────────────────────────
+    AlgorithmEntry(
+        "qft", "transform", make_qft, (2, 7),
+        tags=["phase_rotation", "butterfly"],
+    ),
+    AlgorithmEntry(
+        "phase_estimation", "transform", make_phase_estimation, (4, 8),
+        tags=["phase_kickback", "inverse_qft"],
+    ),
+    AlgorithmEntry(
+        "iterative_qpe", "transform", make_iterative_qpe, (2, 2),
+        tags=["phase_estimation", "iterative"],
+    ),
+    AlgorithmEntry(
+        "amplitude_estimation", "transform", make_amplitude_estimation, (4, 8),
+        tags=["amplitude_estimation", "grover_qpe"],
+    ),
+    # ── Variational ───────────────────────────────────────────
+    AlgorithmEntry(
+        "qaoa_maxcut", "variational", make_qaoa_maxcut, (3, 8),
+        tags=["combinatorial", "zz_interaction", "mixer"],
+    ),
+    AlgorithmEntry(
+        "vqe_uccsd", "variational", make_vqe_uccsd_fragment, (4, 4),
+        tags=["chemistry", "excitation"],
+    ),
+    AlgorithmEntry(
+        "hw_efficient_ansatz", "variational", make_hardware_efficient_ansatz, (3, 8),
+        tags=["hardware_efficient", "brick_layer"],
+    ),
     AlgorithmEntry(
         "adapt_vqe", "variational", make_adapt_vqe, (4, 8),
         tags=["chemistry", "adaptive", "excitation"],
@@ -3486,7 +3440,31 @@ REGISTRY = [
         "varqite", "variational", make_varqite, (3, 8),
         tags=["imaginary_time", "variational"],
     ),
-    # ── Error Correction Additions ────────────────────────────
+    AlgorithmEntry(
+        "qaoa_weighted", "variational", make_qaoa_weighted, (3, 8),
+        tags=["combinatorial", "weighted"],
+    ),
+    AlgorithmEntry(
+        "quantum_boltzmann", "variational", make_quantum_boltzmann, (4, 8),
+        tags=["generative", "thermal"],
+    ),
+    # ── Error Correction ──────────────────────────────────────
+    AlgorithmEntry(
+        "bit_flip_code", "error_correction", make_bit_flip_code, (5, 5),
+        tags=["repetition_code", "syndrome_extraction", "toffoli"],
+    ),
+    AlgorithmEntry(
+        "phase_flip_code", "error_correction", make_phase_flip_code, (5, 5),
+        tags=["repetition_code", "hadamard_basis", "toffoli"],
+    ),
+    AlgorithmEntry(
+        "steane_code", "error_correction", make_steane_code, (7, 7),
+        tags=["css_code", "hamming", "stabilizer"],
+    ),
+    AlgorithmEntry(
+        "shor_code", "error_correction", make_shor_code, (9, 9),
+        tags=["concatenated_code", "nine_qubit"],
+    ),
     AlgorithmEntry(
         "five_qubit_code", "error_correction", make_five_qubit_code, (5, 5),
         tags=["perfect_code", "stabilizer"],
@@ -3494,6 +3472,110 @@ REGISTRY = [
     AlgorithmEntry(
         "surface_code_patch", "error_correction", make_surface_code_patch, (9, 9),
         tags=["topological_code", "surface_code", "stabilizer"],
+    ),
+    AlgorithmEntry(
+        "color_code", "error_correction", make_color_code, (7, 7),
+        tags=["topological_code", "color_code"],
+    ),
+    AlgorithmEntry(
+        "bacon_shor", "error_correction", make_bacon_shor, (9, 9),
+        tags=["subsystem_code", "stabilizer"],
+    ),
+    AlgorithmEntry(
+        "reed_muller_code", "error_correction", make_reed_muller_code, (15, 15),
+        tags=["reed_muller", "transversal_t"],
+    ),
+    # ── Simulation ────────────────────────────────────────────
+    AlgorithmEntry(
+        "trotter_ising", "simulation", make_trotter_ising, (2, 8),
+        tags=["hamiltonian_simulation", "zz_interaction", "trotter"],
+    ),
+    AlgorithmEntry(
+        "trotter_heisenberg", "simulation", make_trotter_heisenberg, (2, 8),
+        tags=["hamiltonian_simulation", "trotter", "mixed_interaction"],
+    ),
+    AlgorithmEntry(
+        "quantum_walk", "simulation", make_quantum_walk, (3, 6),
+        tags=["discrete_walk", "coin_operator"],
+    ),
+    AlgorithmEntry(
+        "qdrift", "simulation", make_qdrift, (2, 8),
+        tags=["hamiltonian_simulation", "randomized"],
+    ),
+    AlgorithmEntry(
+        "higher_order_trotter", "simulation", make_higher_order_trotter, (2, 8),
+        tags=["hamiltonian_simulation", "trotter", "higher_order"],
+    ),
+    AlgorithmEntry(
+        "hubbard_trotter", "simulation", make_hubbard_trotter, (2, 8),
+        tags=["hamiltonian_simulation", "fermionic", "trotter"],
+    ),
+    AlgorithmEntry(
+        "ctqw", "simulation", make_ctqw, (2, 8),
+        tags=["quantum_walk", "continuous_time"],
+    ),
+    AlgorithmEntry(
+        "vqs_real_time", "simulation", make_vqs_real_time, (2, 8),
+        tags=["variational", "real_time"],
+    ),
+    # ── Arithmetic ────────────────────────────────────────────
+    AlgorithmEntry(
+        "ripple_carry_adder", "arithmetic", make_ripple_carry_adder, (5, 5),
+        tags=["toffoli", "addition", "classical_reversible"],
+    ),
+    AlgorithmEntry(
+        "qft_adder", "arithmetic", make_qft_adder, (4, 8),
+        tags=["addition", "controlled_phase", "qft_based"],
+    ),
+    AlgorithmEntry(
+        "quantum_multiplier", "arithmetic", make_quantum_multiplier, (6, 6),
+        tags=["multiplication", "classical_reversible"],
+    ),
+    AlgorithmEntry(
+        "quantum_comparator", "arithmetic", make_quantum_comparator, (5, 5),
+        tags=["comparison", "classical_reversible"],
+    ),
+    # ── Distillation ──────────────────────────────────────────
+    AlgorithmEntry(
+        "bbpssw_distillation", "distillation", make_bbpssw_distillation, (4, 4),
+        tags=["distillation", "bell_pair", "bilateral_cnot"],
+    ),
+    AlgorithmEntry(
+        "dejmps_distillation", "distillation", make_dejmps_distillation, (4, 4),
+        tags=["distillation", "bell_pair", "bilateral_cnot", "twirling"],
+    ),
+    AlgorithmEntry(
+        "recurrence_distillation", "distillation", make_recurrence_distillation, (8, 8),
+        tags=["distillation", "bell_pair", "bilateral_cnot", "multi_round"],
+    ),
+    AlgorithmEntry(
+        "pumping_distillation", "distillation", make_pumping_distillation, (6, 6),
+        tags=["distillation", "bell_pair", "bilateral_cnot", "pumping"],
+    ),
+    # ── Machine Learning ──────────────────────────────────────
+    AlgorithmEntry(
+        "quantum_kernel", "machine_learning", make_quantum_kernel, (2, 8),
+        tags=["feature_map", "zz_interaction", "kernel_method"],
+    ),
+    AlgorithmEntry(
+        "data_reuploading", "machine_learning", make_data_reuploading, (2, 6),
+        tags=["classifier", "reuploading", "variational"],
+    ),
+    AlgorithmEntry(
+        "qsvm", "machine_learning", make_qsvm, (2, 8),
+        tags=["kernel_method", "classification"],
+    ),
+    AlgorithmEntry(
+        "qcnn", "machine_learning", make_qcnn, (4, 8),
+        tags=["neural_network", "classification"],
+    ),
+    AlgorithmEntry(
+        "qgan_generator", "machine_learning", make_qgan_generator, (2, 8),
+        tags=["generative", "adversarial"],
+    ),
+    AlgorithmEntry(
+        "quantum_autoencoder", "machine_learning", make_quantum_autoencoder, (4, 8),
+        tags=["compression", "autoencoder"],
     ),
     # ── Linear Algebra ────────────────────────────────────────
     AlgorithmEntry(
@@ -3531,23 +3613,6 @@ REGISTRY = [
         "pauli_twirling", "error_mitigation", make_pauli_twirling, (2, 8),
         tags=["noise_mitigation", "randomized_compiling"],
     ),
-    # ── Simulation Additions ──────────────────────────────────
-    AlgorithmEntry(
-        "qdrift", "simulation", make_qdrift, (2, 8),
-        tags=["hamiltonian_simulation", "randomized"],
-    ),
-    AlgorithmEntry(
-        "higher_order_trotter", "simulation", make_higher_order_trotter, (2, 8),
-        tags=["hamiltonian_simulation", "trotter", "higher_order"],
-    ),
-    AlgorithmEntry(
-        "hubbard_trotter", "simulation", make_hubbard_trotter, (2, 8),
-        tags=["hamiltonian_simulation", "fermionic", "trotter"],
-    ),
-    AlgorithmEntry(
-        "ctqw", "simulation", make_ctqw, (2, 8),
-        tags=["quantum_walk", "continuous_time"],
-    ),
     # ── Topological ───────────────────────────────────────────
     AlgorithmEntry(
         "jones_polynomial", "topological", make_jones_polynomial, (3, 8),
@@ -3566,95 +3631,20 @@ REGISTRY = [
         "quantum_fisher_info", "metrology", make_quantum_fisher_info, (2, 8),
         tags=["sensing", "parameter_estimation"],
     ),
-    # ── Machine Learning Additions ────────────────────────────
-    AlgorithmEntry(
-        "qsvm", "machine_learning", make_qsvm, (2, 8),
-        tags=["kernel_method", "classification"],
-    ),
-    AlgorithmEntry(
-        "qcnn", "machine_learning", make_qcnn, (4, 8),
-        tags=["neural_network", "classification"],
-    ),
-    AlgorithmEntry(
-        "qgan_generator", "machine_learning", make_qgan_generator, (2, 8),
-        tags=["generative", "adversarial"],
-    ),
-    AlgorithmEntry(
-        "quantum_autoencoder", "machine_learning", make_quantum_autoencoder, (4, 8),
-        tags=["compression", "autoencoder"],
-    ),
-    # ── Transform Additions ───────────────────────────────────
-    AlgorithmEntry(
-        "iterative_qpe", "transform", make_iterative_qpe, (2, 2),
-        tags=["phase_estimation", "iterative"],
-    ),
-    AlgorithmEntry(
-        "amplitude_estimation", "transform", make_amplitude_estimation, (4, 8),
-        tags=["amplitude_estimation", "grover_qpe"],
-    ),
-    # ── Entanglement Additions ────────────────────────────────
-    AlgorithmEntry(
-        "dicke_state", "entanglement", make_dicke_state, (3, 8),
-        tags=["symmetric_state", "entanglement"],
-    ),
-    AlgorithmEntry(
-        "graph_state", "entanglement", make_graph_state, (3, 8),
-        tags=["graph_state", "multipartite"],
-    ),
-    # ── Arithmetic Additions ──────────────────────────────────
-    AlgorithmEntry(
-        "quantum_multiplier", "arithmetic", make_quantum_multiplier, (6, 6),
-        tags=["multiplication", "classical_reversible"],
-    ),
-    AlgorithmEntry(
-        "quantum_comparator", "arithmetic", make_quantum_comparator, (5, 5),
-        tags=["comparison", "classical_reversible"],
-    ),
-    # ── Protocol Additions ────────────────────────────────────
-    AlgorithmEntry(
-        "swap_test", "protocol", make_swap_test, (3, 7),
-        tags=["fidelity", "comparison"],
-    ),
-    # ── Batch 4: Additional Coverage ──────────────────────────
-    AlgorithmEntry(
-        "quantum_walk_search", "oracle", make_quantum_walk_search, (3, 8),
-        tags=["quantum_walk", "search"],
-    ),
-    AlgorithmEntry(
-        "qaoa_weighted", "variational", make_qaoa_weighted, (3, 8),
-        tags=["combinatorial", "weighted"],
-    ),
-    AlgorithmEntry(
-        "quantum_boltzmann", "variational", make_quantum_boltzmann, (4, 8),
-        tags=["generative", "thermal"],
-    ),
-    AlgorithmEntry(
-        "color_code", "error_correction", make_color_code, (7, 7),
-        tags=["topological_code", "color_code"],
-    ),
-    AlgorithmEntry(
-        "bacon_shor", "error_correction", make_bacon_shor, (9, 9),
-        tags=["subsystem_code", "stabilizer"],
-    ),
-    AlgorithmEntry(
-        "reed_muller_code", "error_correction", make_reed_muller_code, (15, 15),
-        tags=["reed_muller", "transversal_t"],
-    ),
+    # ── Differential Equations ────────────────────────────────
     AlgorithmEntry(
         "poisson_solver", "differential_equations", make_poisson_solver, (4, 7),
         tags=["linear_systems", "pde"],
     ),
+    # ── TDA ───────────────────────────────────────────────────
     AlgorithmEntry(
         "betti_number", "tda", make_betti_number, (3, 8),
         tags=["topology", "homology"],
     ),
+    # ── Communication ─────────────────────────────────────────
     AlgorithmEntry(
         "quantum_fingerprinting", "communication", make_quantum_fingerprinting, (4, 8),
         tags=["communication", "exponential_saving"],
-    ),
-    AlgorithmEntry(
-        "vqs_real_time", "simulation", make_vqs_real_time, (2, 8),
-        tags=["variational", "real_time"],
     ),
 ]
 
