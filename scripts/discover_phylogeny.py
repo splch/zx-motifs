@@ -96,7 +96,8 @@ def build_corpus() -> dict[tuple[str, str], "nx.Graph"]:
 
     for entry in REGISTRY:
         lo, hi = entry.qubit_range
-        qubit_sizes = list(range(lo, min(hi, 6) + 1))
+        # Cap at 5 qubits to keep VF2 matching tractable with 78 algorithms
+        qubit_sizes = list(range(lo, min(hi, 5) + 1))
 
         for n in qubit_sizes:
             # Known failure: Grover QASM at n>=6
@@ -201,13 +202,16 @@ def build_fingerprint_matrix(
 
     counts = np.zeros((len(instances), len(motifs)), dtype=int)
 
+    total = len(instances)
     for i, inst in enumerate(instances):
+        if i % 20 == 0:
+            print(f"    Fingerprinting {i}/{total}...")
         key = (inst, "spider_fused")
         if key not in corpus:
             continue
         host = corpus[key]
         for j, mp in enumerate(motifs):
-            matches = find_motif_in_graph(mp.graph, host, max_matches=100)
+            matches = find_motif_in_graph(mp.graph, host, max_matches=20)
             counts[i, j] = len(matches)
 
     counts_df = pd.DataFrame(counts, index=instances, columns=motif_ids)
@@ -432,13 +436,14 @@ def analysis_cross_level_survival(
     survival = np.zeros((len(motifs), len(levels)), dtype=float)
 
     for j, level in enumerate(levels):
+        print(f"    Level {level}...")
         for rep in representatives:
             key = (rep, level)
             if key not in corpus:
                 continue
             host = corpus[key]
             for i, mp in enumerate(motifs):
-                matches = find_motif_in_graph(mp.graph, host, max_matches=5)
+                matches = find_motif_in_graph(mp.graph, host, max_matches=1)
                 if len(matches) > 0:
                     survival[i, j] += 1
 

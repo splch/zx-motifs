@@ -345,7 +345,7 @@ def build_corpus():
     corpus = {}
     for entry in REGISTRY:
         lo, hi = entry.qubit_range
-        for n in range(lo, min(hi, 6) + 1):
+        for n in range(lo, min(hi, 5) + 1):
             if entry.name == "grover" and n >= 6:
                 continue
             instance = f"{entry.name}_q{n}"
