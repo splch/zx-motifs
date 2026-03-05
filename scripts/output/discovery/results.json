@@ -1,50 +1,3728 @@
 {
+  "n_candidates": 48,
+  "n_passed": 48,
+  "strategies": {
+    "coverage_gap": 3,
+    "cross_family": 6,
+    "irreducible": 35,
+    "pca_void": 4
+  },
   "validations": {
-    "trotter_variational_hybrid": {
-      "name": "trotter_variational_hybrid",
-      "n_qubits": 4,
-      "n_gates": 60,
-      "depth": 31,
+    "covgap_distillation": {
+      "name": "covgap_distillation",
+      "n_qubits": 5,
+      "n_gates": 14,
+      "depth": 11,
       "is_unitary": true,
-      "unitarity_error": 1.0571944071151216e-15,
+      "unitarity_error": 9.821856423199728e-17,
       "has_valid_io": true,
-      "zx_vertices_raw": 86,
-      "zx_edges_raw": 100,
-      "zx_vertices_reduced": 27,
-      "zx_edges_reduced": 55,
+      "zx_vertices_raw": 35,
+      "zx_edges_raw": 41,
+      "zx_vertices_reduced": 21,
+      "zx_edges_reduced": 32,
       "tensors_match": true
     },
-    "distillation_entanglement_bridge": {
-      "name": "distillation_entanglement_bridge",
+    "covgap_cryptography": {
+      "name": "covgap_cryptography",
       "n_qubits": 4,
       "n_gates": 12,
-      "depth": 6,
+      "depth": 7,
       "is_unitary": true,
-      "unitarity_error": 1.9455355685039679e-16,
+      "unitarity_error": 1.111722783761247e-16,
       "has_valid_io": true,
-      "zx_vertices_raw": 33,
-      "zx_edges_raw": 34,
-      "zx_vertices_reduced": 20,
+      "zx_vertices_raw": 26,
+      "zx_edges_raw": 28,
+      "zx_vertices_reduced": 15,
+      "zx_edges_reduced": 16,
+      "tensors_match": true
+    },
+    "covgap_sampling": {
+      "name": "covgap_sampling",
+      "n_qubits": 4,
+      "n_gates": 16,
+      "depth": 14,
+      "is_unitary": true,
+      "unitarity_error": 1.4015878649856313e-16,
+      "has_valid_io": true,
+      "zx_vertices_raw": 35,
+      "zx_edges_raw": 42,
+      "zx_vertices_reduced": 18,
       "zx_edges_reduced": 19,
       "tensors_match": true
     },
-    "irreducible_core_circuit": {
-      "name": "irreducible_core_circuit",
+    "bridge_comm_prot": {
+      "name": "bridge_comm_prot",
       "n_qubits": 4,
-      "n_gates": 39,
-      "depth": 20,
+      "n_gates": 15,
+      "depth": 10,
       "is_unitary": true,
-      "unitarity_error": 7.6416940510624355e-16,
+      "unitarity_error": 1.691991405912035e-16,
       "has_valid_io": true,
-      "zx_vertices_raw": 63,
-      "zx_edges_raw": 75,
+      "zx_vertices_raw": 32,
+      "zx_edges_raw": 37,
+      "zx_vertices_reduced": 17,
+      "zx_edges_reduced": 17,
+      "tensors_match": true
+    },
+    "bridge_dist_enta": {
+      "name": "bridge_dist_enta",
+      "n_qubits": 4,
+      "n_gates": 10,
+      "depth": 9,
+      "is_unitary": true,
+      "unitarity_error": 1.1102230246251565e-16,
+      "has_valid_io": true,
+      "zx_vertices_raw": 26,
+      "zx_edges_raw": 30,
+      "zx_vertices_reduced": 13,
+      "zx_edges_reduced": 13,
+      "tensors_match": true
+    },
+    "bridge_enta_prot": {
+      "name": "bridge_enta_prot",
+      "n_qubits": 4,
+      "n_gates": 7,
+      "depth": 7,
+      "is_unitary": true,
+      "unitarity_error": 5.579217834018032e-17,
+      "has_valid_io": true,
+      "zx_vertices_raw": 21,
+      "zx_edges_raw": 23,
+      "zx_vertices_reduced": 13,
+      "zx_edges_reduced": 13,
+      "tensors_match": true
+    },
+    "bridge_line_mach": {
+      "name": "bridge_line_mach",
+      "n_qubits": 4,
+      "n_gates": 36,
+      "depth": 16,
+      "is_unitary": true,
+      "unitarity_error": 1.1745319660261408e-16,
+      "has_valid_io": true,
+      "zx_vertices_raw": 85,
+      "zx_edges_raw": 92,
+      "zx_vertices_reduced": 42,
+      "zx_edges_reduced": 62,
+      "tensors_match": true
+    },
+    "bridge_mach_vari": {
+      "name": "bridge_mach_vari",
+      "n_qubits": 4,
+      "n_gates": 38,
+      "depth": 18,
+      "is_unitary": true,
+      "unitarity_error": 2.341288473918381e-16,
+      "has_valid_io": true,
+      "zx_vertices_raw": 82,
+      "zx_edges_raw": 92,
+      "zx_vertices_reduced": 39,
+      "zx_edges_reduced": 71,
+      "tensors_match": true
+    },
+    "bridge_prot_vari": {
+      "name": "bridge_prot_vari",
+      "n_qubits": 4,
+      "n_gates": 14,
+      "depth": 12,
+      "is_unitary": true,
+      "unitarity_error": 1.3461332396707657e-16,
+      "has_valid_io": true,
+      "zx_vertices_raw": 31,
+      "zx_edges_raw": 36,
+      "zx_vertices_reduced": 17,
+      "zx_edges_reduced": 25,
+      "tensors_match": true
+    },
+    "irr_pair01": {
+      "name": "irr_pair01",
+      "n_qubits": 6,
+      "n_gates": 8,
+      "depth": 8,
+      "is_unitary": true,
+      "unitarity_error": 3.3993498887762956e-17,
+      "has_valid_io": true,
+      "zx_vertices_raw": 26,
+      "zx_edges_raw": 26,
       "zx_vertices_reduced": 19,
-      "zx_edges_reduced": 28,
+      "zx_edges_reduced": 19,
+      "tensors_match": true
+    },
+    "irr_pair02": {
+      "name": "irr_pair02",
+      "n_qubits": 4,
+      "n_gates": 6,
+      "depth": 6,
+      "is_unitary": true,
+      "unitarity_error": 1.1113066979184075e-16,
+      "has_valid_io": true,
+      "zx_vertices_raw": 16,
+      "zx_edges_raw": 14,
+      "zx_vertices_reduced": 12,
+      "zx_edges_reduced": 10,
+      "tensors_match": true
+    },
+    "irr_pair03": {
+      "name": "irr_pair03",
+      "n_qubits": 5,
+      "n_gates": 6,
+      "depth": 6,
+      "is_unitary": true,
+      "unitarity_error": 7.853930334487305e-17,
+      "has_valid_io": true,
+      "zx_vertices_raw": 19,
+      "zx_edges_raw": 17,
+      "zx_vertices_reduced": 15,
+      "zx_edges_reduced": 13,
+      "tensors_match": true
+    },
+    "irr_pair04": {
+      "name": "irr_pair04",
+      "n_qubits": 6,
+      "n_gates": 9,
+      "depth": 9,
+      "is_unitary": true,
+      "unitarity_error": 6.969870044433065e-17,
+      "has_valid_io": true,
+      "zx_vertices_raw": 26,
+      "zx_edges_raw": 25,
+      "zx_vertices_reduced": 21,
+      "zx_edges_reduced": 20,
+      "tensors_match": true
+    },
+    "irr_pair05": {
+      "name": "irr_pair05",
+      "n_qubits": 6,
+      "n_gates": 9,
+      "depth": 9,
+      "is_unitary": true,
+      "unitarity_error": 6.969870044433065e-17,
+      "has_valid_io": true,
+      "zx_vertices_raw": 26,
+      "zx_edges_raw": 25,
+      "zx_vertices_reduced": 21,
+      "zx_edges_reduced": 20,
+      "tensors_match": true
+    },
+    "irr_pair06": {
+      "name": "irr_pair06",
+      "n_qubits": 6,
+      "n_gates": 9,
+      "depth": 8,
+      "is_unitary": true,
+      "unitarity_error": 7.129093524255486e-17,
+      "has_valid_io": true,
+      "zx_vertices_raw": 25,
+      "zx_edges_raw": 23,
+      "zx_vertices_reduced": 21,
+      "zx_edges_reduced": 20,
+      "tensors_match": true
+    },
+    "irr_pair07": {
+      "name": "irr_pair07",
+      "n_qubits": 6,
+      "n_gates": 9,
+      "depth": 8,
+      "is_unitary": true,
+      "unitarity_error": 7.887414469505712e-17,
+      "has_valid_io": true,
+      "zx_vertices_raw": 25,
+      "zx_edges_raw": 23,
+      "zx_vertices_reduced": 21,
+      "zx_edges_reduced": 20,
+      "tensors_match": true
+    },
+    "irr_pair08": {
+      "name": "irr_pair08",
+      "n_qubits": 6,
+      "n_gates": 8,
+      "depth": 7,
+      "is_unitary": true,
+      "unitarity_error": 5.66739063649348e-17,
+      "has_valid_io": true,
+      "zx_vertices_raw": 24,
+      "zx_edges_raw": 22,
+      "zx_vertices_reduced": 19,
+      "zx_edges_reduced": 17,
+      "tensors_match": true
+    },
+    "irr_pair09": {
+      "name": "irr_pair09",
+      "n_qubits": 6,
+      "n_gates": 9,
+      "depth": 8,
+      "is_unitary": true,
+      "unitarity_error": 7.321118822664586e-17,
+      "has_valid_io": true,
+      "zx_vertices_raw": 25,
+      "zx_edges_raw": 23,
+      "zx_vertices_reduced": 21,
+      "zx_edges_reduced": 20,
+      "tensors_match": true
+    },
+    "irr_pair10": {
+      "name": "irr_pair10",
+      "n_qubits": 5,
+      "n_gates": 8,
+      "depth": 8,
+      "is_unitary": true,
+      "unitarity_error": 7.850462293418876e-17,
+      "has_valid_io": true,
+      "zx_vertices_raw": 22,
+      "zx_edges_raw": 21,
+      "zx_vertices_reduced": 15,
+      "zx_edges_reduced": 12,
+      "tensors_match": true
+    },
+    "irr_pair11": {
+      "name": "irr_pair11",
+      "n_qubits": 6,
+      "n_gates": 8,
+      "depth": 8,
+      "is_unitary": true,
+      "unitarity_error": 6.285602246343026e-17,
+      "has_valid_io": true,
+      "zx_vertices_raw": 25,
+      "zx_edges_raw": 24,
+      "zx_vertices_reduced": 17,
+      "zx_edges_reduced": 15,
+      "tensors_match": true
+    },
+    "irr_pair12": {
+      "name": "irr_pair12",
+      "n_qubits": 6,
+      "n_gates": 11,
+      "depth": 10,
+      "is_unitary": true,
+      "unitarity_error": 7.200433090511409e-17,
+      "has_valid_io": true,
+      "zx_vertices_raw": 29,
+      "zx_edges_raw": 29,
+      "zx_vertices_reduced": 19,
+      "zx_edges_reduced": 18,
+      "tensors_match": true
+    },
+    "irr_pair13": {
+      "name": "irr_pair13",
+      "n_qubits": 6,
+      "n_gates": 11,
+      "depth": 10,
+      "is_unitary": true,
+      "unitarity_error": 7.887414469505712e-17,
+      "has_valid_io": true,
+      "zx_vertices_raw": 29,
+      "zx_edges_raw": 29,
+      "zx_vertices_reduced": 21,
+      "zx_edges_reduced": 21,
+      "tensors_match": true
+    },
+    "irr_pair14": {
+      "name": "irr_pair14",
+      "n_qubits": 6,
+      "n_gates": 10,
+      "depth": 9,
+      "is_unitary": true,
+      "unitarity_error": 6.362875421238992e-17,
+      "has_valid_io": true,
+      "zx_vertices_raw": 28,
+      "zx_edges_raw": 28,
+      "zx_vertices_reduced": 20,
+      "zx_edges_reduced": 20,
+      "tensors_match": true
+    },
+    "irr_pair15": {
+      "name": "irr_pair15",
+      "n_qubits": 6,
+      "n_gates": 11,
+      "depth": 10,
+      "is_unitary": true,
+      "unitarity_error": 7.355974167780332e-17,
+      "has_valid_io": true,
+      "zx_vertices_raw": 29,
+      "zx_edges_raw": 29,
+      "zx_vertices_reduced": 21,
+      "zx_edges_reduced": 21,
+      "tensors_match": true
+    },
+    "irr_pair16": {
+      "name": "irr_pair16",
+      "n_qubits": 4,
+      "n_gates": 6,
+      "depth": 3,
+      "is_unitary": true,
+      "unitarity_error": 1.6667795129466247e-16,
+      "has_valid_io": true,
+      "zx_vertices_raw": 15,
+      "zx_edges_raw": 12,
+      "zx_vertices_reduced": 11,
+      "zx_edges_reduced": 8,
+      "tensors_match": true
+    },
+    "irr_pair17": {
+      "name": "irr_pair17",
+      "n_qubits": 6,
+      "n_gates": 9,
+      "depth": 6,
+      "is_unitary": true,
+      "unitarity_error": 5.588900533877135e-17,
+      "has_valid_io": true,
+      "zx_vertices_raw": 24,
+      "zx_edges_raw": 21,
+      "zx_vertices_reduced": 19,
+      "zx_edges_reduced": 16,
+      "tensors_match": true
+    },
+    "irr_pair18": {
+      "name": "irr_pair18",
+      "n_qubits": 6,
+      "n_gates": 9,
+      "depth": 6,
+      "is_unitary": true,
+      "unitarity_error": 5.588900533877135e-17,
+      "has_valid_io": true,
+      "zx_vertices_raw": 24,
+      "zx_edges_raw": 21,
+      "zx_vertices_reduced": 19,
+      "zx_edges_reduced": 16,
+      "tensors_match": true
+    },
+    "irr_pair19": {
+      "name": "irr_pair19",
+      "n_qubits": 5,
+      "n_gates": 9,
+      "depth": 5,
+      "is_unitary": true,
+      "unitarity_error": 1.384473369157556e-16,
+      "has_valid_io": true,
+      "zx_vertices_raw": 21,
+      "zx_edges_raw": 18,
+      "zx_vertices_reduced": 16,
+      "zx_edges_reduced": 13,
+      "tensors_match": true
+    },
+    "irr_pair20": {
+      "name": "irr_pair20",
+      "n_qubits": 5,
+      "n_gates": 9,
+      "depth": 5,
+      "is_unitary": true,
+      "unitarity_error": 1.3808224523606804e-16,
+      "has_valid_io": true,
+      "zx_vertices_raw": 21,
+      "zx_edges_raw": 18,
+      "zx_vertices_reduced": 16,
+      "zx_edges_reduced": 13,
+      "tensors_match": true
+    },
+    "irr_pair21": {
+      "name": "irr_pair21",
+      "n_qubits": 5,
+      "n_gates": 8,
+      "depth": 4,
+      "is_unitary": true,
+      "unitarity_error": 1.196052911661504e-16,
+      "has_valid_io": true,
+      "zx_vertices_raw": 20,
+      "zx_edges_raw": 17,
+      "zx_vertices_reduced": 15,
+      "zx_edges_reduced": 12,
+      "tensors_match": true
+    },
+    "irr_pair22": {
+      "name": "irr_pair22",
+      "n_qubits": 5,
+      "n_gates": 9,
+      "depth": 5,
+      "is_unitary": true,
+      "unitarity_error": 1.3747753188044782e-16,
+      "has_valid_io": true,
+      "zx_vertices_raw": 21,
+      "zx_edges_raw": 18,
+      "zx_vertices_reduced": 16,
+      "zx_edges_reduced": 13,
+      "tensors_match": true
+    },
+    "irr_pair23": {
+      "name": "irr_pair23",
+      "n_qubits": 6,
+      "n_gates": 9,
+      "depth": 9,
+      "is_unitary": true,
+      "unitarity_error": 9.729055035467295e-17,
+      "has_valid_io": true,
+      "zx_vertices_raw": 25,
+      "zx_edges_raw": 23,
+      "zx_vertices_reduced": 19,
+      "zx_edges_reduced": 17,
+      "tensors_match": true
+    },
+    "irr_pair24": {
+      "name": "irr_pair24",
+      "n_qubits": 6,
+      "n_gates": 9,
+      "depth": 9,
+      "is_unitary": true,
+      "unitarity_error": 9.729055035467295e-17,
+      "has_valid_io": true,
+      "zx_vertices_raw": 25,
+      "zx_edges_raw": 23,
+      "zx_vertices_reduced": 19,
+      "zx_edges_reduced": 17,
+      "tensors_match": true
+    },
+    "irr_pair25": {
+      "name": "irr_pair25",
+      "n_qubits": 6,
+      "n_gates": 9,
+      "depth": 8,
+      "is_unitary": true,
+      "unitarity_error": 1.0849078927735988e-16,
+      "has_valid_io": true,
+      "zx_vertices_raw": 24,
+      "zx_edges_raw": 21,
+      "zx_vertices_reduced": 19,
+      "zx_edges_reduced": 16,
+      "tensors_match": true
+    },
+    "irr_pair26": {
+      "name": "irr_pair26",
+      "n_qubits": 6,
+      "n_gates": 9,
+      "depth": 8,
+      "is_unitary": true,
+      "unitarity_error": 9.283829236197289e-17,
+      "has_valid_io": true,
+      "zx_vertices_raw": 24,
+      "zx_edges_raw": 21,
+      "zx_vertices_reduced": 19,
+      "zx_edges_reduced": 16,
+      "tensors_match": true
+    },
+    "irr_pair27": {
+      "name": "irr_pair27",
+      "n_qubits": 6,
+      "n_gates": 8,
+      "depth": 7,
+      "is_unitary": true,
+      "unitarity_error": 9.77084522354604e-17,
+      "has_valid_io": true,
+      "zx_vertices_raw": 23,
+      "zx_edges_raw": 20,
+      "zx_vertices_reduced": 17,
+      "zx_edges_reduced": 14,
+      "tensors_match": true
+    },
+    "irr_pair28": {
+      "name": "irr_pair28",
+      "n_qubits": 6,
+      "n_gates": 9,
+      "depth": 8,
+      "is_unitary": true,
+      "unitarity_error": 1.251017663326238e-16,
+      "has_valid_io": true,
+      "zx_vertices_raw": 24,
+      "zx_edges_raw": 21,
+      "zx_vertices_reduced": 19,
+      "zx_edges_reduced": 16,
+      "tensors_match": true
+    },
+    "irr_pair29": {
+      "name": "irr_pair29",
+      "n_qubits": 6,
+      "n_gates": 12,
+      "depth": 10,
+      "is_unitary": true,
+      "unitarity_error": 1.4039407367136487e-16,
+      "has_valid_io": true,
+      "zx_vertices_raw": 28,
+      "zx_edges_raw": 26,
+      "zx_vertices_reduced": 20,
+      "zx_edges_reduced": 18,
+      "tensors_match": true
+    },
+    "irr_pair30": {
+      "name": "irr_pair30",
+      "n_qubits": 6,
+      "n_gates": 11,
+      "depth": 9,
+      "is_unitary": true,
+      "unitarity_error": 1.1293038860133492e-16,
+      "has_valid_io": true,
+      "zx_vertices_raw": 27,
+      "zx_edges_raw": 25,
+      "zx_vertices_reduced": 19,
+      "zx_edges_reduced": 18,
+      "tensors_match": true
+    },
+    "irr_pair31": {
+      "name": "irr_pair31",
+      "n_qubits": 6,
+      "n_gates": 12,
+      "depth": 10,
+      "is_unitary": true,
+      "unitarity_error": 1.4023673319309133e-16,
+      "has_valid_io": true,
+      "zx_vertices_raw": 28,
+      "zx_edges_raw": 26,
+      "zx_vertices_reduced": 20,
+      "zx_edges_reduced": 18,
+      "tensors_match": true
+    },
+    "irr_pair32": {
+      "name": "irr_pair32",
+      "n_qubits": 6,
+      "n_gates": 11,
+      "depth": 9,
+      "is_unitary": true,
+      "unitarity_error": 1.12088715757166e-16,
+      "has_valid_io": true,
+      "zx_vertices_raw": 27,
+      "zx_edges_raw": 25,
+      "zx_vertices_reduced": 19,
+      "zx_edges_reduced": 17,
+      "tensors_match": true
+    },
+    "irr_pair33": {
+      "name": "irr_pair33",
+      "n_qubits": 6,
+      "n_gates": 12,
+      "depth": 10,
+      "is_unitary": true,
+      "unitarity_error": 1.4844098997876642e-16,
+      "has_valid_io": true,
+      "zx_vertices_raw": 28,
+      "zx_edges_raw": 26,
+      "zx_vertices_reduced": 20,
+      "zx_edges_reduced": 18,
+      "tensors_match": true
+    },
+    "irr_pair34": {
+      "name": "irr_pair34",
+      "n_qubits": 6,
+      "n_gates": 11,
+      "depth": 9,
+      "is_unitary": true,
+      "unitarity_error": 1.4025942524195228e-16,
+      "has_valid_io": true,
+      "zx_vertices_raw": 27,
+      "zx_edges_raw": 25,
+      "zx_vertices_reduced": 19,
+      "zx_edges_reduced": 17,
+      "tensors_match": true
+    },
+    "irr_layered": {
+      "name": "irr_layered",
+      "n_qubits": 5,
+      "n_gates": 18,
+      "depth": 9,
+      "is_unitary": true,
+      "unitarity_error": 2.4736097439740144e-16,
+      "has_valid_io": true,
+      "zx_vertices_raw": 34,
+      "zx_edges_raw": 35,
+      "zx_vertices_reduced": 21,
+      "zx_edges_reduced": 22,
+      "tensors_match": true
+    },
+    "void_0": {
+      "name": "void_0",
+      "n_qubits": 5,
+      "n_gates": 16,
+      "depth": 11,
+      "is_unitary": true,
+      "unitarity_error": 1.9631856110349045e-16,
+      "has_valid_io": true,
+      "zx_vertices_raw": 35,
+      "zx_edges_raw": 39,
+      "zx_vertices_reduced": 19,
+      "zx_edges_reduced": 26,
+      "tensors_match": true
+    },
+    "void_1": {
+      "name": "void_1",
+      "n_qubits": 5,
+      "n_gates": 16,
+      "depth": 11,
+      "is_unitary": true,
+      "unitarity_error": 1.9631856110349045e-16,
+      "has_valid_io": true,
+      "zx_vertices_raw": 35,
+      "zx_edges_raw": 39,
+      "zx_vertices_reduced": 19,
+      "zx_edges_reduced": 26,
+      "tensors_match": true
+    },
+    "void_2": {
+      "name": "void_2",
+      "n_qubits": 5,
+      "n_gates": 16,
+      "depth": 13,
+      "is_unitary": true,
+      "unitarity_error": 1.9631856110349048e-16,
+      "has_valid_io": true,
+      "zx_vertices_raw": 35,
+      "zx_edges_raw": 39,
+      "zx_vertices_reduced": 17,
+      "zx_edges_reduced": 20,
+      "tensors_match": true
+    },
+    "void_3": {
+      "name": "void_3",
+      "n_qubits": 5,
+      "n_gates": 16,
+      "depth": 11,
+      "is_unitary": true,
+      "unitarity_error": 1.9631856110349045e-16,
+      "has_valid_io": true,
+      "zx_vertices_raw": 35,
+      "zx_edges_raw": 39,
+      "zx_vertices_reduced": 19,
+      "zx_edges_reduced": 26,
       "tensors_match": true
     }
   },
-  "placement": {
-    "trotter_variational_hybrid_q4": {
+  "scored": {
+    "covgap_distillation_q5": {
+      "nearest_algorithm": "zne_folding_q4",
+      "nearest_family": "error_mitigation",
+      "nearest_similarity": 0.8421,
+      "closest_family": "variational",
+      "family_distances": {
+        "arithmetic": 0.025,
+        "communication": 0.0164,
+        "cryptography": 0.1958,
+        "differential_equations": 0.0227,
+        "distillation": 0.0512,
+        "entanglement": 0.2511,
+        "error_correction": 0.1073,
+        "error_mitigation": 0.1439,
+        "linear_algebra": 0.0392,
+        "machine_learning": 0.0286,
+        "metrology": 0.0314,
+        "oracle": 0.0631,
+        "protocol": 0.1265,
+        "sampling": 0.0607,
+        "simulation": 0.0124,
+        "tda": 0.0249,
+        "topological": 0.0411,
+        "transform": 0.0231,
+        "variational": 0.0119
+      },
+      "cosine_novelty": 0.1579,
+      "pca_min_dist": 0.0015,
+      "motif_diversity": 0.0402,
+      "tensor_bonus": 1.0,
+      "pca_coords": [
+        -0.03708338548528488,
+        -0.01182187713742982
+      ],
+      "top_motifs": [
+        [
+          "auto_4ccb9e8ec6d569fc22134c1593b42eb0",
+          0.1488095238095238
+        ],
+        [
+          "x_hub_3z_param",
+          0.10714285714285714
+        ],
+        [
+          "auto_91d4674adae9a55e1397977512c89818",
+          0.09821428571428571
+        ],
+        [
+          "nbr_8f631cd937b2165b7a499b3b3f22145b",
+          0.05803571428571429
+        ],
+        [
+          "nbr_7aee5bd6bba6f751b6478b70d1c35d51",
+          0.05357142857142857
+        ],
+        [
+          "nbr_b0d1e3d8497bfb6083e2f99d56239361",
+          0.05357142857142857
+        ],
+        [
+          "syndrome_extraction_param",
+          0.050595238095238096
+        ],
+        [
+          "syndrome_extraction",
+          0.047619047619047616
+        ],
+        [
+          "auto_fed4704dc77489debd4991c762769a80",
+          0.044642857142857144
+        ],
+        [
+          "auto_e6f788f36bca2b43309cccea1713d508",
+          0.041666666666666664
+        ]
+      ],
+      "strategy": "coverage_gap",
+      "pca_isolation": 0.0112,
+      "composite_novelty": 0.2661
+    },
+    "covgap_cryptography_q4": {
+      "nearest_algorithm": "entanglement_swapping_q4",
+      "nearest_family": "protocol",
+      "nearest_similarity": 0.6842,
+      "closest_family": "oracle",
+      "family_distances": {
+        "arithmetic": 0.0621,
+        "communication": 0.0498,
+        "cryptography": 0.231,
+        "differential_equations": 0.0528,
+        "distillation": 0.0249,
+        "entanglement": 0.2208,
+        "error_correction": 0.0816,
+        "error_mitigation": 0.1048,
+        "linear_algebra": 0.0747,
+        "machine_learning": 0.0658,
+        "metrology": 0.0678,
+        "oracle": 0.0233,
+        "protocol": 0.0956,
+        "sampling": 0.0701,
+        "simulation": 0.0298,
+        "tda": 0.0582,
+        "topological": 0.0754,
+        "transform": 0.0535,
+        "variational": 0.0431
+      },
+      "cosine_novelty": 0.3158,
+      "pca_min_dist": 0.0115,
+      "motif_diversity": 0.0344,
+      "tensor_bonus": 1.0,
+      "pca_coords": [
+        -0.01834496842963145,
+        0.023318503904842688
+      ],
+      "top_motifs": [
+        [
+          "syndrome_extraction_param",
+          0.0979020979020979
+        ],
+        [
+          "auto_91d4674adae9a55e1397977512c89818",
+          0.08391608391608392
+        ],
+        [
+          "auto_7d495f0205427371fcb334bb4d0d0513",
+          0.08391608391608392
+        ],
+        [
+          "syndrome_extraction",
+          0.08391608391608392
+        ],
+        [
+          "auto_7baca27b1cb1f61f2908778694e8e0a4",
+          0.08391608391608392
+        ],
+        [
+          "x_hub_3z_param",
+          0.08391608391608392
+        ],
+        [
+          "auto_404a1083ce742d80c7e014eaad7db875",
+          0.04895104895104895
+        ],
+        [
+          "cx_pair",
+          0.04895104895104895
+        ],
+        [
+          "auto_8262be817a51e5c738331e20ee99a47e",
+          0.04195804195804196
+        ],
+        [
+          "auto_e6f788f36bca2b43309cccea1713d508",
+          0.04195804195804196
+        ]
+      ],
+      "strategy": "coverage_gap",
+      "pca_isolation": 0.0882,
+      "composite_novelty": 0.3395
+    },
+    "covgap_sampling_q4": {
+      "nearest_algorithm": "bell_state_q5",
+      "nearest_family": "entanglement",
+      "nearest_similarity": 0.9089,
+      "closest_family": "simulation",
+      "family_distances": {
+        "arithmetic": 0.0327,
+        "communication": 0.0263,
+        "cryptography": 0.2022,
+        "differential_equations": 0.0328,
+        "distillation": 0.046,
+        "entanglement": 0.2566,
+        "error_correction": 0.1136,
+        "error_mitigation": 0.1413,
+        "linear_algebra": 0.047,
+        "machine_learning": 0.036,
+        "metrology": 0.0392,
+        "oracle": 0.0628,
+        "protocol": 0.1202,
+        "sampling": 0.0709,
+        "simulation": 0.0104,
+        "tda": 0.0343,
+        "topological": 0.0495,
+        "transform": 0.0332,
+        "variational": 0.0223
+      },
+      "cosine_novelty": 0.0911,
+      "pca_min_dist": 0.0057,
+      "motif_diversity": 0.0373,
+      "tensor_bonus": 1.0,
+      "pca_coords": [
+        -0.04565371292671315,
+        -0.0059481234649658085
+      ],
+      "top_motifs": [
+        [
+          "auto_4ccb9e8ec6d569fc22134c1593b42eb0",
+          0.22026431718061673
+        ],
+        [
+          "auto_91d4674adae9a55e1397977512c89818",
+          0.15859030837004406
+        ],
+        [
+          "syndrome_extraction_param",
+          0.1013215859030837
+        ],
+        [
+          "syndrome_extraction",
+          0.07488986784140969
+        ],
+        [
+          "x_hub_3z_param",
+          0.06607929515418502
+        ],
+        [
+          "nbr_b0d1e3d8497bfb6083e2f99d56239361",
+          0.05286343612334802
+        ],
+        [
+          "nbr_f3764a7356c68fff7bcaa4cc912c1bec",
+          0.04405286343612335
+        ],
+        [
+          "nbr_dc977692f74f5993bc27e3f15fefcd12",
+          0.04405286343612335
+        ],
+        [
+          "nbr_8f631cd937b2165b7a499b3b3f22145b",
+          0.039647577092511016
+        ],
+        [
+          "cx_pair",
+          0.028634361233480177
+        ]
+      ],
+      "strategy": "coverage_gap",
+      "pca_isolation": 0.0436,
+      "composite_novelty": 0.2502
+    },
+    "bridge_comm_prot_q4": {
+      "nearest_algorithm": "swap_test_q3",
+      "nearest_family": "protocol",
+      "nearest_similarity": 0.6219,
+      "closest_family": "metrology",
+      "family_distances": {
+        "arithmetic": 0.0051,
+        "communication": 0.0147,
+        "cryptography": 0.1674,
+        "differential_equations": 0.0133,
+        "distillation": 0.0797,
+        "entanglement": 0.2584,
+        "error_correction": 0.115,
+        "error_mitigation": 0.1692,
+        "linear_algebra": 0.0104,
+        "machine_learning": 0.0045,
+        "metrology": 0.0036,
+        "oracle": 0.087,
+        "protocol": 0.1552,
+        "sampling": 0.0491,
+        "simulation": 0.0413,
+        "tda": 0.007,
+        "topological": 0.0122,
+        "transform": 0.0127,
+        "variational": 0.0215
+      },
+      "cosine_novelty": 0.3781,
+      "pca_min_dist": 0.0018,
+      "motif_diversity": 0.0359,
+      "tensor_bonus": 1.0,
+      "pca_coords": [
+        -0.030541640574514212,
+        -0.04003882358947262
+      ],
+      "top_motifs": [
+        [
+          "auto_f04916c8aa7a44346370d76d7a6e2dba",
+          0.15060240963855423
+        ],
+        [
+          "auto_6d593320d6f28fb41aa95382c9b803bb",
+          0.15060240963855423
+        ],
+        [
+          "auto_2f1baa04a7f474c79dd984f861febc32",
+          0.15060240963855423
+        ],
+        [
+          "nbr_6345ab7b40c9dbbba0d4a4c63c5b604d",
+          0.14457831325301204
+        ],
+        [
+          "syndrome_extraction_param",
+          0.06927710843373494
+        ],
+        [
+          "auto_12206b7d9c57893bcd75d3ad61b45e34",
+          0.05120481927710843
+        ],
+        [
+          "auto_b857838486e14f206883f71c791406da",
+          0.045180722891566265
+        ],
+        [
+          "auto_91d4674adae9a55e1397977512c89818",
+          0.03614457831325301
+        ],
+        [
+          "x_hub_3z_param",
+          0.03614457831325301
+        ],
+        [
+          "auto_4ccb9e8ec6d569fc22134c1593b42eb0",
+          0.03614457831325301
+        ]
+      ],
+      "strategy": "cross_family",
+      "pca_isolation": 0.0141,
+      "composite_novelty": 0.3431
+    },
+    "bridge_dist_enta_q4": {
+      "nearest_algorithm": "zne_folding_q3",
+      "nearest_family": "error_mitigation",
+      "nearest_similarity": 0.8864,
+      "closest_family": "simulation",
+      "family_distances": {
+        "arithmetic": 0.0259,
+        "communication": 0.0237,
+        "cryptography": 0.1927,
+        "differential_equations": 0.0303,
+        "distillation": 0.0565,
+        "entanglement": 0.2642,
+        "error_correction": 0.1206,
+        "error_mitigation": 0.152,
+        "linear_algebra": 0.0396,
+        "machine_learning": 0.0286,
+        "metrology": 0.0321,
+        "oracle": 0.0732,
+        "protocol": 0.13,
+        "sampling": 0.0712,
+        "simulation": 0.0204,
+        "tda": 0.0298,
+        "topological": 0.0426,
+        "transform": 0.0305,
+        "variational": 0.0225
+      },
+      "cosine_novelty": 0.1136,
+      "pca_min_dist": 0.0075,
+      "motif_diversity": 0.0215,
+      "tensor_bonus": 1.0,
+      "pca_coords": [
+        -0.04974078790550535,
+        -0.015812094631071298
+      ],
+      "top_motifs": [
+        [
+          "auto_fed4704dc77489debd4991c762769a80",
+          0.17886178861788618
+        ],
+        [
+          "x_hub_3z_param",
+          0.17886178861788618
+        ],
+        [
+          "nbr_fea6fd3ec89eef00a6fe475f581a8f56",
+          0.0975609756097561
+        ],
+        [
+          "auto_e6f788f36bca2b43309cccea1713d508",
+          0.07588075880758807
+        ],
+        [
+          "auto_4ccb9e8ec6d569fc22134c1593b42eb0",
+          0.06504065040650407
+        ],
+        [
+          "nbr_73d6988b1d5ef9b26e7f868616626a3d",
+          0.06504065040650407
+        ],
+        [
+          "auto_91d4674adae9a55e1397977512c89818",
+          0.06504065040650407
+        ],
+        [
+          "nbr_8f631cd937b2165b7a499b3b3f22145b",
+          0.05962059620596206
+        ],
+        [
+          "syndrome_extraction_param",
+          0.04878048780487805
+        ],
+        [
+          "syndrome_extraction",
+          0.04878048780487805
+        ]
+      ],
+      "strategy": "cross_family",
+      "pca_isolation": 0.0573,
+      "composite_novelty": 0.2584
+    },
+    "bridge_enta_prot_q4": {
+      "nearest_algorithm": "bell_state_q5",
+      "nearest_family": "entanglement",
+      "nearest_similarity": 0.9798,
+      "closest_family": "distillation",
+      "family_distances": {
+        "arithmetic": 0.0773,
+        "communication": 0.0682,
+        "cryptography": 0.2474,
+        "differential_equations": 0.0736,
+        "distillation": 0.0123,
+        "entanglement": 0.2469,
+        "error_correction": 0.1136,
+        "error_mitigation": 0.1034,
+        "linear_algebra": 0.0916,
+        "machine_learning": 0.0808,
+        "metrology": 0.0838,
+        "oracle": 0.0427,
+        "protocol": 0.0751,
+        "sampling": 0.1016,
+        "simulation": 0.0403,
+        "tda": 0.0771,
+        "topological": 0.0936,
+        "transform": 0.0742,
+        "variational": 0.062
+      },
+      "cosine_novelty": 0.0202,
+      "pca_min_dist": 0.0037,
+      "motif_diversity": 0.0129,
+      "tensor_bonus": 1.0,
+      "pca_coords": [
+        -0.04972548341962585,
+        0.039106677950658884
+      ],
+      "top_motifs": [
+        [
+          "auto_91d4674adae9a55e1397977512c89818",
+          0.24489795918367346
+        ],
+        [
+          "auto_4ccb9e8ec6d569fc22134c1593b42eb0",
+          0.24489795918367346
+        ],
+        [
+          "syndrome_extraction",
+          0.14285714285714285
+        ],
+        [
+          "syndrome_extraction_param",
+          0.14285714285714285
+        ],
+        [
+          "cx_pair",
+          0.061224489795918366
+        ],
+        [
+          "auto_e6f788f36bca2b43309cccea1713d508",
+          0.04081632653061224
+        ],
+        [
+          "nbr_dc977692f74f5993bc27e3f15fefcd12",
+          0.04081632653061224
+        ],
+        [
+          "nbr_b0d1e3d8497bfb6083e2f99d56239361",
+          0.04081632653061224
+        ],
+        [
+          "nbr_8f631cd937b2165b7a499b3b3f22145b",
+          0.04081632653061224
+        ]
+      ],
+      "strategy": "cross_family",
+      "pca_isolation": 0.0282,
+      "composite_novelty": 0.2167
+    },
+    "bridge_line_mach_q4": {
+      "nearest_algorithm": "vqls_q3",
+      "nearest_family": "linear_algebra",
+      "nearest_similarity": 0.7937,
+      "closest_family": "linear_algebra",
+      "family_distances": {
+        "arithmetic": 0.0146,
+        "communication": 0.0272,
+        "cryptography": 0.1575,
+        "differential_equations": 0.0269,
+        "distillation": 0.0897,
+        "entanglement": 0.2713,
+        "error_correction": 0.1282,
+        "error_mitigation": 0.1814,
+        "linear_algebra": 0.009,
+        "machine_learning": 0.0109,
+        "metrology": 0.01,
+        "oracle": 0.0995,
+        "protocol": 0.1647,
+        "sampling": 0.0595,
+        "simulation": 0.051,
+        "tda": 0.0206,
+        "topological": 0.0128,
+        "transform": 0.0263,
+        "variational": 0.0337
+      },
+      "cosine_novelty": 0.2063,
+      "pca_min_dist": 0.0029,
+      "motif_diversity": 0.0904,
+      "tensor_bonus": 1.0,
+      "pca_coords": [
+        -0.03942471606635078,
+        -0.05032638942191248
+      ],
+      "top_motifs": [
+        [
+          "x_hub_3z_param",
+          0.13660245183887915
+        ],
+        [
+          "syndrome_extraction_param",
+          0.05604203152364273
+        ],
+        [
+          "auto_17110c8a7c36edfc18bf36b07ae4f2e4",
+          0.04203152364273205
+        ],
+        [
+          "auto_4ccb9e8ec6d569fc22134c1593b42eb0",
+          0.04203152364273205
+        ],
+        [
+          "auto_91d4674adae9a55e1397977512c89818",
+          0.04203152364273205
+        ],
+        [
+          "auto_d4c2b89a05faed5e38a8dbf3a69bcef4",
+          0.04203152364273205
+        ],
+        [
+          "auto_023e28ea210a4863c99eed8536997854",
+          0.03152364273204904
+        ],
+        [
+          "nbr_a79228be61378c17533ed84d391d2d53",
+          0.028021015761821366
+        ],
+        [
+          "nbr_00e87a41842f0e2a4bd0a8f3bed27d6f",
+          0.024518388791593695
+        ],
+        [
+          "nbr_eda70705ac4727adf2a7e28ea9299bcb",
+          0.02276707530647986
+        ]
+      ],
+      "strategy": "cross_family",
+      "pca_isolation": 0.0223,
+      "composite_novelty": 0.2959
+    },
+    "bridge_mach_vari_q4": {
+      "nearest_algorithm": "data_reuploading_q3",
+      "nearest_family": "machine_learning",
+      "nearest_similarity": 0.7531,
+      "closest_family": "machine_learning",
+      "family_distances": {
+        "arithmetic": 0.012,
+        "communication": 0.0244,
+        "cryptography": 0.1632,
+        "differential_equations": 0.0257,
+        "distillation": 0.0844,
+        "entanglement": 0.2717,
+        "error_correction": 0.1281,
+        "error_mitigation": 0.1772,
+        "linear_algebra": 0.0139,
+        "machine_learning": 0.0093,
+        "metrology": 0.0106,
+        "oracle": 0.0956,
+        "protocol": 0.1591,
+        "sampling": 0.0621,
+        "simulation": 0.0458,
+        "tda": 0.0197,
+        "topological": 0.0178,
+        "transform": 0.0253,
+        "variational": 0.0304
+      },
+      "cosine_novelty": 0.2469,
+      "pca_min_dist": 0.0053,
+      "motif_diversity": 0.1062,
+      "tensor_bonus": 1.0,
+      "pca_coords": [
+        -0.04313776995388086,
+        -0.04485665915254117
+      ],
+      "top_motifs": [
+        [
+          "x_hub_3z_param",
+          0.15822784810126583
+        ],
+        [
+          "syndrome_extraction_param",
+          0.06645569620253164
+        ],
+        [
+          "nbr_c08b685e25e1cf153d8e5feb57e4ddf1",
+          0.04113924050632911
+        ],
+        [
+          "auto_d4c2b89a05faed5e38a8dbf3a69bcef4",
+          0.0379746835443038
+        ],
+        [
+          "auto_91d4674adae9a55e1397977512c89818",
+          0.0379746835443038
+        ],
+        [
+          "auto_17110c8a7c36edfc18bf36b07ae4f2e4",
+          0.0379746835443038
+        ],
+        [
+          "auto_4ccb9e8ec6d569fc22134c1593b42eb0",
+          0.0379746835443038
+        ],
+        [
+          "auto_96923a646d722d5058de908ba8cd0d1a",
+          0.028481012658227847
+        ],
+        [
+          "auto_023e28ea210a4863c99eed8536997854",
+          0.028481012658227847
+        ],
+        [
+          "nbr_ded304803b84b812049090e63e94d0c6",
+          0.02689873417721519
+        ]
+      ],
+      "strategy": "cross_family",
+      "pca_isolation": 0.0407,
+      "composite_novelty": 0.3178
+    },
+    "bridge_prot_vari_q4": {
+      "nearest_algorithm": "vqe_uccsd_q4",
+      "nearest_family": "variational",
+      "nearest_similarity": 0.8953,
+      "closest_family": "simulation",
+      "family_distances": {
+        "arithmetic": 0.0459,
+        "communication": 0.0384,
+        "cryptography": 0.2152,
+        "differential_equations": 0.0447,
+        "distillation": 0.0344,
+        "entanglement": 0.2549,
+        "error_correction": 0.1137,
+        "error_mitigation": 0.1309,
+        "linear_algebra": 0.0602,
+        "machine_learning": 0.0492,
+        "metrology": 0.0524,
+        "oracle": 0.0556,
+        "protocol": 0.1073,
+        "sampling": 0.0799,
+        "simulation": 0.0128,
+        "tda": 0.0469,
+        "topological": 0.0625,
+        "transform": 0.0451,
+        "variational": 0.0334
+      },
+      "cosine_novelty": 0.1047,
+      "pca_min_dist": 0.0005,
+      "motif_diversity": 0.0273,
+      "tensor_bonus": 1.0,
+      "pca_coords": [
+        -0.04883011225954567,
+        0.0068758936877270325
+      ],
+      "top_motifs": [
+        [
+          "auto_91d4674adae9a55e1397977512c89818",
+          0.1836734693877551
+        ],
+        [
+          "auto_4ccb9e8ec6d569fc22134c1593b42eb0",
+          0.1836734693877551
+        ],
+        [
+          "nbr_f3764a7356c68fff7bcaa4cc912c1bec",
+          0.10714285714285714
+        ],
+        [
+          "syndrome_extraction_param",
+          0.10714285714285714
+        ],
+        [
+          "syndrome_extraction",
+          0.09183673469387756
+        ],
+        [
+          "x_hub_3z_param",
+          0.061224489795918366
+        ],
+        [
+          "nbr_8f631cd937b2165b7a499b3b3f22145b",
+          0.061224489795918366
+        ],
+        [
+          "auto_e6f788f36bca2b43309cccea1713d508",
+          0.03571428571428571
+        ],
+        [
+          "cx_pair",
+          0.03571428571428571
+        ],
+        [
+          "nbr_dc977692f74f5993bc27e3f15fefcd12",
+          0.030612244897959183
+        ]
+      ],
+      "strategy": "cross_family",
+      "pca_isolation": 0.0039,
+      "composite_novelty": 0.2431
+    },
+    "irr_pair01_q6": {
+      "nearest_algorithm": "random_circuit_sampling_q3",
+      "nearest_family": "sampling",
+      "nearest_similarity": 0.8484,
+      "closest_family": "distillation",
+      "family_distances": {
+        "arithmetic": 0.1,
+        "communication": 0.092,
+        "cryptography": 0.268,
+        "differential_equations": 0.0978,
+        "distillation": 0.0349,
+        "entanglement": 0.2608,
+        "error_correction": 0.1339,
+        "error_mitigation": 0.1008,
+        "linear_algebra": 0.1143,
+        "machine_learning": 0.1032,
+        "metrology": 0.1065,
+        "oracle": 0.0615,
+        "protocol": 0.0595,
+        "sampling": 0.1272,
+        "simulation": 0.0643,
+        "tda": 0.1007,
+        "topological": 0.1166,
+        "transform": 0.0983,
+        "variational": 0.0863
+      },
+      "cosine_novelty": 0.1516,
+      "pca_min_dist": 0.0146,
+      "motif_diversity": 0.0143,
+      "tensor_bonus": 1.0,
+      "pca_coords": [
+        -0.06710668187927624,
+        0.057803060059896126
+      ],
+      "top_motifs": [
+        [
+          "syndrome_extraction_param",
+          0.21818181818181817
+        ],
+        [
+          "syndrome_extraction",
+          0.14545454545454545
+        ],
+        [
+          "auto_91d4674adae9a55e1397977512c89818",
+          0.10909090909090909
+        ],
+        [
+          "x_hub_3z_param",
+          0.10909090909090909
+        ],
+        [
+          "cx_pair",
+          0.09090909090909091
+        ],
+        [
+          "auto_55510e60cee8e707d80ee5a24639737b",
+          0.09090909090909091
+        ],
+        [
+          "auto_12206b7d9c57893bcd75d3ad61b45e34",
+          0.07272727272727272
+        ],
+        [
+          "nbr_f3764a7356c68fff7bcaa4cc912c1bec",
+          0.07272727272727272
+        ],
+        [
+          "nbr_8f631cd937b2165b7a499b3b3f22145b",
+          0.05454545454545454
+        ],
+        [
+          "auto_e6f788f36bca2b43309cccea1713d508",
+          0.03636363636363636
+        ]
+      ],
+      "strategy": "irreducible",
+      "pca_isolation": 0.1124,
+      "composite_novelty": 0.284
+    },
+    "irr_pair02_q4": {
+      "nearest_algorithm": "bell_state_q3",
+      "nearest_family": "entanglement",
+      "nearest_similarity": 0.8165,
+      "closest_family": "protocol",
+      "family_distances": {
+        "arithmetic": 0.1725,
+        "communication": 0.1631,
+        "cryptography": 0.342,
+        "differential_equations": 0.1682,
+        "distillation": 0.0983,
+        "entanglement": 0.2644,
+        "error_correction": 0.1699,
+        "error_mitigation": 0.0787,
+        "linear_algebra": 0.1868,
+        "machine_learning": 0.1759,
+        "metrology": 0.179,
+        "oracle": 0.1084,
+        "protocol": 0.0283,
+        "sampling": 0.1902,
+        "simulation": 0.1354,
+        "tda": 0.1721,
+        "topological": 0.1888,
+        "transform": 0.1688,
+        "variational": 0.1568
+      },
+      "cosine_novelty": 0.1835,
+      "pca_min_dist": 0.0068,
+      "motif_diversity": 0.0072,
+      "tensor_bonus": 1.0,
+      "pca_coords": [
+        -0.07002710999340178,
+        0.13209706272920607
+      ],
+      "top_motifs": [
+        [
+          "syndrome_extraction_param",
+          0.3333333333333333
+        ],
+        [
+          "cx_pair",
+          0.16666666666666666
+        ],
+        [
+          "auto_55510e60cee8e707d80ee5a24639737b",
+          0.16666666666666666
+        ],
+        [
+          "syndrome_extraction",
+          0.16666666666666666
+        ],
+        [
+          "auto_12206b7d9c57893bcd75d3ad61b45e34",
+          0.16666666666666666
+        ]
+      ],
+      "strategy": "irreducible",
+      "pca_isolation": 0.0523,
+      "composite_novelty": 0.2787
+    },
+    "irr_pair03_q5": {
+      "nearest_algorithm": "bell_state_q3",
+      "nearest_family": "entanglement",
+      "nearest_similarity": 0.7698,
+      "closest_family": "error_mitigation",
+      "family_distances": {
+        "arithmetic": 0.1909,
+        "communication": 0.1782,
+        "cryptography": 0.3425,
+        "differential_equations": 0.1781,
+        "distillation": 0.1392,
+        "entanglement": 0.1169,
+        "error_correction": 0.0926,
+        "error_mitigation": 0.0694,
+        "linear_algebra": 0.2,
+        "machine_learning": 0.1942,
+        "metrology": 0.195,
+        "oracle": 0.1126,
+        "protocol": 0.1256,
+        "sampling": 0.1653,
+        "simulation": 0.1644,
+        "tda": 0.1844,
+        "topological": 0.199,
+        "transform": 0.1787,
+        "variational": 0.1724
+      },
+      "cosine_novelty": 0.2302,
+      "pca_min_dist": 0.1,
+      "motif_diversity": 0.0086,
+      "tensor_bonus": 1.0,
+      "pca_coords": [
+        0.0773900550663375,
+        0.11806363702877636
+      ],
+      "top_motifs": [
+        [
+          "syndrome_extraction_param",
+          0.2857142857142857
+        ],
+        [
+          "cx_pair",
+          0.14285714285714285
+        ],
+        [
+          "auto_55510e60cee8e707d80ee5a24639737b",
+          0.14285714285714285
+        ],
+        [
+          "syndrome_extraction",
+          0.14285714285714285
+        ],
+        [
+          "cluster_chain",
+          0.14285714285714285
+        ],
+        [
+          "auto_12206b7d9c57893bcd75d3ad61b45e34",
+          0.14285714285714285
+        ]
+      ],
+      "strategy": "irreducible",
+      "pca_isolation": 0.7679,
+      "composite_novelty": 0.4743
+    },
+    "irr_pair04_q6": {
+      "nearest_algorithm": "cluster_state_q3",
+      "nearest_family": "entanglement",
+      "nearest_similarity": 0.8165,
+      "closest_family": "entanglement",
+      "family_distances": {
+        "arithmetic": 0.3987,
+        "communication": 0.3893,
+        "cryptography": 0.4779,
+        "differential_equations": 0.3852,
+        "distillation": 0.3839,
+        "entanglement": 0.1514,
+        "error_correction": 0.2873,
+        "error_mitigation": 0.336,
+        "linear_algebra": 0.3997,
+        "machine_learning": 0.4005,
+        "metrology": 0.3992,
+        "oracle": 0.3534,
+        "protocol": 0.3914,
+        "sampling": 0.3491,
+        "simulation": 0.3914,
+        "tda": 0.3905,
+        "topological": 0.3966,
+        "transform": 0.3855,
+        "variational": 0.3866
+      },
+      "cosine_novelty": 0.1835,
+      "pca_min_dist": 0.1025,
+      "motif_diversity": 0.0086,
+      "tensor_bonus": 1.0,
+      "pca_coords": [
+        0.3427409521738684,
+        0.09280347076800292
+      ],
+      "top_motifs": [
+        [
+          "cluster_chain",
+          0.4
+        ],
+        [
+          "syndrome_extraction_param",
+          0.2
+        ],
+        [
+          "cx_pair",
+          0.1
+        ],
+        [
+          "auto_55510e60cee8e707d80ee5a24639737b",
+          0.1
+        ],
+        [
+          "syndrome_extraction",
+          0.1
+        ],
+        [
+          "auto_12206b7d9c57893bcd75d3ad61b45e34",
+          0.1
+        ]
+      ],
+      "strategy": "irreducible",
+      "pca_isolation": 0.7868,
+      "composite_novelty": 0.4626
+    },
+    "irr_pair05_q6": {
+      "nearest_algorithm": "cluster_state_q3",
+      "nearest_family": "entanglement",
+      "nearest_similarity": 0.8165,
+      "closest_family": "entanglement",
+      "family_distances": {
+        "arithmetic": 0.3987,
+        "communication": 0.3893,
+        "cryptography": 0.4779,
+        "differential_equations": 0.3852,
+        "distillation": 0.3839,
+        "entanglement": 0.1514,
+        "error_correction": 0.2873,
+        "error_mitigation": 0.336,
+        "linear_algebra": 0.3997,
+        "machine_learning": 0.4005,
+        "metrology": 0.3992,
+        "oracle": 0.3534,
+        "protocol": 0.3914,
+        "sampling": 0.3491,
+        "simulation": 0.3914,
+        "tda": 0.3905,
+        "topological": 0.3966,
+        "transform": 0.3855,
+        "variational": 0.3866
+      },
+      "cosine_novelty": 0.1835,
+      "pca_min_dist": 0.1025,
+      "motif_diversity": 0.0086,
+      "tensor_bonus": 1.0,
+      "pca_coords": [
+        0.3427409521738684,
+        0.09280347076800292
+      ],
+      "top_motifs": [
+        [
+          "cluster_chain",
+          0.4
+        ],
+        [
+          "syndrome_extraction_param",
+          0.2
+        ],
+        [
+          "cx_pair",
+          0.1
+        ],
+        [
+          "auto_55510e60cee8e707d80ee5a24639737b",
+          0.1
+        ],
+        [
+          "syndrome_extraction",
+          0.1
+        ],
+        [
+          "auto_12206b7d9c57893bcd75d3ad61b45e34",
+          0.1
+        ]
+      ],
+      "strategy": "irreducible",
+      "pca_isolation": 0.7868,
+      "composite_novelty": 0.4626
+    },
+    "irr_pair06_q6": {
+      "nearest_algorithm": "random_circuit_sampling_q3",
+      "nearest_family": "sampling",
+      "nearest_similarity": 0.8772,
+      "closest_family": "oracle",
+      "family_distances": {
+        "arithmetic": 0.0745,
+        "communication": 0.062,
+        "cryptography": 0.2331,
+        "differential_equations": 0.0617,
+        "distillation": 0.0518,
+        "entanglement": 0.1932,
+        "error_correction": 0.0519,
+        "error_mitigation": 0.1026,
+        "linear_algebra": 0.0837,
+        "machine_learning": 0.0778,
+        "metrology": 0.0786,
+        "oracle": 0.0286,
+        "protocol": 0.1096,
+        "sampling": 0.0589,
+        "simulation": 0.0535,
+        "tda": 0.068,
+        "topological": 0.083,
+        "transform": 0.0623,
+        "variational": 0.0564
+      },
+      "cosine_novelty": 0.1228,
+      "pca_min_dist": 0.0233,
+      "motif_diversity": 0.0143,
+      "tensor_bonus": 1.0,
+      "pca_coords": [
+        0.011416940193311024,
+        0.022124616034841393
+      ],
+      "top_motifs": [
+        [
+          "x_hub_3z_param",
+          0.23076923076923078
+        ],
+        [
+          "syndrome_extraction_param",
+          0.15384615384615385
+        ],
+        [
+          "auto_55510e60cee8e707d80ee5a24639737b",
+          0.11538461538461539
+        ],
+        [
+          "syndrome_extraction",
+          0.07692307692307693
+        ],
+        [
+          "nbr_9831919969ed8e149e26e25158305229",
+          0.07692307692307693
+        ],
+        [
+          "cluster_chain",
+          0.07692307692307693
+        ],
+        [
+          "cx_pair",
+          0.07692307692307693
+        ],
+        [
+          "auto_fd176f494abf4b8d64c63295f092b91b",
+          0.07692307692307693
+        ],
+        [
+          "auto_12206b7d9c57893bcd75d3ad61b45e34",
+          0.07692307692307693
+        ],
+        [
+          "auto_2846ca09f56b6cdde4249df5466d5a64",
+          0.038461538461538464
+        ]
+      ],
+      "strategy": "irreducible",
+      "pca_isolation": 0.179,
+      "composite_novelty": 0.2906
+    },
+    "irr_pair07_q6": {
+      "nearest_algorithm": "random_circuit_sampling_q3",
+      "nearest_family": "sampling",
+      "nearest_similarity": 0.8772,
+      "closest_family": "simulation",
+      "family_distances": {
+        "arithmetic": 0.0588,
+        "communication": 0.0529,
+        "cryptography": 0.2253,
+        "differential_equations": 0.0593,
+        "distillation": 0.034,
+        "entanglement": 0.2644,
+        "error_correction": 0.1252,
+        "error_mitigation": 0.1297,
+        "linear_algebra": 0.0729,
+        "machine_learning": 0.0618,
+        "metrology": 0.0652,
+        "oracle": 0.0613,
+        "protocol": 0.0996,
+        "sampling": 0.0953,
+        "simulation": 0.0282,
+        "tda": 0.061,
+        "topological": 0.0756,
+        "transform": 0.0598,
+        "variational": 0.0484
+      },
+      "cosine_novelty": 0.1228,
+      "pca_min_dist": 0.0057,
+      "motif_diversity": 0.0143,
+      "tensor_bonus": 1.0,
+      "pca_coords": [
+        -0.06158659700848864,
+        0.015464034669036423
+      ],
+      "top_motifs": [
+        [
+          "x_hub_3z_param",
+          0.23076923076923078
+        ],
+        [
+          "syndrome_extraction_param",
+          0.15384615384615385
+        ],
+        [
+          "auto_55510e60cee8e707d80ee5a24639737b",
+          0.11538461538461539
+        ],
+        [
+          "nbr_9831919969ed8e149e26e25158305229",
+          0.07692307692307693
+        ],
+        [
+          "cx_pair",
+          0.07692307692307693
+        ],
+        [
+          "auto_fd176f494abf4b8d64c63295f092b91b",
+          0.07692307692307693
+        ],
+        [
+          "auto_12206b7d9c57893bcd75d3ad61b45e34",
+          0.07692307692307693
+        ],
+        [
+          "syndrome_extraction",
+          0.07692307692307693
+        ],
+        [
+          "auto_b71107166c6dbf434e12e77ee4a6088a",
+          0.07692307692307693
+        ],
+        [
+          "auto_2846ca09f56b6cdde4249df5466d5a64",
+          0.038461538461538464
+        ]
+      ],
+      "strategy": "irreducible",
+      "pca_isolation": 0.0439,
+      "composite_novelty": 0.2568
+    },
+    "irr_pair08_q6": {
+      "nearest_algorithm": "bell_state_q3",
+      "nearest_family": "entanglement",
+      "nearest_similarity": 0.7698,
+      "closest_family": "protocol",
+      "family_distances": {
+        "arithmetic": 0.1443,
+        "communication": 0.1346,
+        "cryptography": 0.3145,
+        "differential_equations": 0.1396,
+        "distillation": 0.0695,
+        "entanglement": 0.2499,
+        "error_correction": 0.1448,
+        "error_mitigation": 0.0692,
+        "linear_algebra": 0.1586,
+        "machine_learning": 0.1478,
+        "metrology": 0.1508,
+        "oracle": 0.0802,
+        "protocol": 0.0132,
+        "sampling": 0.1614,
+        "simulation": 0.1071,
+        "tda": 0.1436,
+        "topological": 0.1604,
+        "transform": 0.1402,
+        "variational": 0.1282
+      },
+      "cosine_novelty": 0.2302,
+      "pca_min_dist": 0.0177,
+      "motif_diversity": 0.0086,
+      "tensor_bonus": 1.0,
+      "pca_coords": [
+        -0.05818794259414752,
+        0.10569398592085288
+      ],
+      "top_motifs": [
+        [
+          "syndrome_extraction_param",
+          0.2857142857142857
+        ],
+        [
+          "cx_pair",
+          0.14285714285714285
+        ],
+        [
+          "auto_55510e60cee8e707d80ee5a24639737b",
+          0.14285714285714285
+        ],
+        [
+          "auto_b71107166c6dbf434e12e77ee4a6088a",
+          0.14285714285714285
+        ],
+        [
+          "syndrome_extraction",
+          0.14285714285714285
+        ],
+        [
+          "auto_12206b7d9c57893bcd75d3ad61b45e34",
+          0.14285714285714285
+        ]
+      ],
+      "strategy": "irreducible",
+      "pca_isolation": 0.1355,
+      "composite_novelty": 0.3162
+    },
+    "irr_pair09_q6": {
+      "nearest_algorithm": "random_circuit_sampling_q3",
+      "nearest_family": "sampling",
+      "nearest_similarity": 0.8957,
+      "closest_family": "distillation",
+      "family_distances": {
+        "arithmetic": 0.0847,
+        "communication": 0.0791,
+        "cryptography": 0.2485,
+        "differential_equations": 0.0855,
+        "distillation": 0.0402,
+        "entanglement": 0.2746,
+        "error_correction": 0.141,
+        "error_mitigation": 0.1232,
+        "linear_algebra": 0.0987,
+        "machine_learning": 0.0876,
+        "metrology": 0.0911,
+        "oracle": 0.0707,
+        "protocol": 0.0832,
+        "sampling": 0.1203,
+        "simulation": 0.0535,
+        "tda": 0.0872,
+        "topological": 0.1015,
+        "transform": 0.086,
+        "variational": 0.0744
+      },
+      "cosine_novelty": 0.1043,
+      "pca_min_dist": 0.0218,
+      "motif_diversity": 0.0115,
+      "tensor_bonus": 1.0,
+      "pca_coords": [
+        -0.07749709451389093,
+        0.036298369740693
+      ],
+      "top_motifs": [
+        [
+          "x_hub_3z_param",
+          0.3
+        ],
+        [
+          "syndrome_extraction_param",
+          0.2
+        ],
+        [
+          "auto_55510e60cee8e707d80ee5a24639737b",
+          0.1
+        ],
+        [
+          "cx_pair",
+          0.1
+        ],
+        [
+          "syndrome_extraction",
+          0.1
+        ],
+        [
+          "auto_12206b7d9c57893bcd75d3ad61b45e34",
+          0.1
+        ],
+        [
+          "auto_0ca20755a855b01e4fd4ae848c2fbf66",
+          0.05
+        ],
+        [
+          "auto_2ac61fc7342f26a9b7022fd3b507721a",
+          0.05
+        ]
+      ],
+      "strategy": "irreducible",
+      "pca_isolation": 0.1674,
+      "composite_novelty": 0.2807
+    },
+    "irr_pair10_q5": {
+      "nearest_algorithm": "bell_state_q3",
+      "nearest_family": "entanglement",
+      "nearest_similarity": 0.8165,
+      "closest_family": "protocol",
+      "family_distances": {
+        "arithmetic": 0.1725,
+        "communication": 0.1631,
+        "cryptography": 0.342,
+        "differential_equations": 0.1682,
+        "distillation": 0.0983,
+        "entanglement": 0.2644,
+        "error_correction": 0.1699,
+        "error_mitigation": 0.0787,
+        "linear_algebra": 0.1868,
+        "machine_learning": 0.1759,
+        "metrology": 0.179,
+        "oracle": 0.1084,
+        "protocol": 0.0283,
+        "sampling": 0.1902,
+        "simulation": 0.1354,
+        "tda": 0.1721,
+        "topological": 0.1888,
+        "transform": 0.1688,
+        "variational": 0.1568
+      },
+      "cosine_novelty": 0.1835,
+      "pca_min_dist": 0.0068,
+      "motif_diversity": 0.0072,
+      "tensor_bonus": 1.0,
+      "pca_coords": [
+        -0.07002710999340178,
+        0.13209706272920607
+      ],
+      "top_motifs": [
+        [
+          "syndrome_extraction_param",
+          0.3333333333333333
+        ],
+        [
+          "cx_pair",
+          0.16666666666666666
+        ],
+        [
+          "auto_55510e60cee8e707d80ee5a24639737b",
+          0.16666666666666666
+        ],
+        [
+          "syndrome_extraction",
+          0.16666666666666666
+        ],
+        [
+          "auto_12206b7d9c57893bcd75d3ad61b45e34",
+          0.16666666666666666
+        ]
+      ],
+      "strategy": "irreducible",
+      "pca_isolation": 0.0523,
+      "composite_novelty": 0.2787
+    },
+    "irr_pair11_q6": {
+      "nearest_algorithm": "random_circuit_sampling_q3",
+      "nearest_family": "sampling",
+      "nearest_similarity": 0.8762,
+      "closest_family": "oracle",
+      "family_distances": {
+        "arithmetic": 0.0938,
+        "communication": 0.0812,
+        "cryptography": 0.2595,
+        "differential_equations": 0.083,
+        "distillation": 0.0396,
+        "entanglement": 0.1953,
+        "error_correction": 0.0669,
+        "error_mitigation": 0.0747,
+        "linear_algebra": 0.1055,
+        "machine_learning": 0.0975,
+        "metrology": 0.0991,
+        "oracle": 0.0103,
+        "protocol": 0.0803,
+        "sampling": 0.0885,
+        "simulation": 0.0628,
+        "tda": 0.089,
+        "topological": 0.1056,
+        "transform": 0.0837,
+        "variational": 0.0747
+      },
+      "cosine_novelty": 0.1238,
+      "pca_min_dist": 0.0354,
+      "motif_diversity": 0.0201,
+      "tensor_bonus": 1.0,
+      "pca_coords": [
+        0.0006114630983667595,
+        0.050387262137884144
+      ],
+      "top_motifs": [
+        [
+          "x_hub_3z_param",
+          0.17647058823529413
+        ],
+        [
+          "syndrome_extraction_param",
+          0.11764705882352941
+        ],
+        [
+          "cx_pair",
+          0.08823529411764706
+        ],
+        [
+          "auto_55510e60cee8e707d80ee5a24639737b",
+          0.08823529411764706
+        ],
+        [
+          "auto_8262be817a51e5c738331e20ee99a47e",
+          0.058823529411764705
+        ],
+        [
+          "auto_12206b7d9c57893bcd75d3ad61b45e34",
+          0.058823529411764705
+        ],
+        [
+          "auto_404a1083ce742d80c7e014eaad7db875",
+          0.058823529411764705
+        ],
+        [
+          "auto_e6f788f36bca2b43309cccea1713d508",
+          0.058823529411764705
+        ],
+        [
+          "nbr_2cb34f05fae3bf7feb797c06440aa277",
+          0.058823529411764705
+        ],
+        [
+          "cluster_chain",
+          0.058823529411764705
+        ]
+      ],
+      "strategy": "irreducible",
+      "pca_isolation": 0.2716,
+      "composite_novelty": 0.3153
+    },
+    "irr_pair12_q6": {
+      "nearest_algorithm": "random_circuit_sampling_q3",
+      "nearest_family": "sampling",
+      "nearest_similarity": 0.8699,
+      "closest_family": "oracle",
+      "family_distances": {
+        "arithmetic": 0.0937,
+        "communication": 0.0811,
+        "cryptography": 0.2594,
+        "differential_equations": 0.0829,
+        "distillation": 0.0396,
+        "entanglement": 0.1954,
+        "error_correction": 0.0669,
+        "error_mitigation": 0.0748,
+        "linear_algebra": 0.1054,
+        "machine_learning": 0.0974,
+        "metrology": 0.099,
+        "oracle": 0.0102,
+        "protocol": 0.0803,
+        "sampling": 0.0884,
+        "simulation": 0.0627,
+        "tda": 0.0889,
+        "topological": 0.1055,
+        "transform": 0.0836,
+        "variational": 0.0746
+      },
+      "cosine_novelty": 0.1301,
+      "pca_min_dist": 0.0353,
+      "motif_diversity": 0.0201,
+      "tensor_bonus": 1.0,
+      "pca_coords": [
+        0.0005553295036173993,
+        0.05030096519709279
+      ],
+      "top_motifs": [
+        [
+          "x_hub_3z_param",
+          0.17647058823529413
+        ],
+        [
+          "syndrome_extraction_param",
+          0.11764705882352941
+        ],
+        [
+          "auto_55510e60cee8e707d80ee5a24639737b",
+          0.08823529411764706
+        ],
+        [
+          "cx_pair",
+          0.08823529411764706
+        ],
+        [
+          "cluster_chain",
+          0.058823529411764705
+        ],
+        [
+          "auto_12206b7d9c57893bcd75d3ad61b45e34",
+          0.058823529411764705
+        ],
+        [
+          "auto_404a1083ce742d80c7e014eaad7db875",
+          0.058823529411764705
+        ],
+        [
+          "auto_e6f788f36bca2b43309cccea1713d508",
+          0.058823529411764705
+        ],
+        [
+          "auto_8262be817a51e5c738331e20ee99a47e",
+          0.058823529411764705
+        ],
+        [
+          "nbr_a66352d5557159cbb1f504c018289460",
+          0.058823529411764705
+        ]
+      ],
+      "strategy": "irreducible",
+      "pca_isolation": 0.271,
+      "composite_novelty": 0.3173
+    },
+    "irr_pair13_q6": {
+      "nearest_algorithm": "qft_q2",
+      "nearest_family": "transform",
+      "nearest_similarity": 0.8487,
+      "closest_family": "simulation",
+      "family_distances": {
+        "arithmetic": 0.0534,
+        "communication": 0.0474,
+        "cryptography": 0.2204,
+        "differential_equations": 0.0539,
+        "distillation": 0.0353,
+        "entanglement": 0.2627,
+        "error_correction": 0.1226,
+        "error_mitigation": 0.1318,
+        "linear_algebra": 0.0675,
+        "machine_learning": 0.0564,
+        "metrology": 0.0598,
+        "oracle": 0.0608,
+        "protocol": 0.1037,
+        "sampling": 0.0902,
+        "simulation": 0.0232,
+        "tda": 0.0555,
+        "topological": 0.0702,
+        "transform": 0.0543,
+        "variational": 0.043
+      },
+      "cosine_novelty": 0.1513,
+      "pca_min_dist": 0.0005,
+      "motif_diversity": 0.0143,
+      "tensor_bonus": 1.0,
+      "pca_coords": [
+        -0.058427942643315245,
+        0.01096761656060359
+      ],
+      "top_motifs": [
+        [
+          "x_hub_3z_param",
+          0.21428571428571427
+        ],
+        [
+          "syndrome_extraction_param",
+          0.14285714285714285
+        ],
+        [
+          "auto_55510e60cee8e707d80ee5a24639737b",
+          0.10714285714285714
+        ],
+        [
+          "auto_2846ca09f56b6cdde4249df5466d5a64",
+          0.10714285714285714
+        ],
+        [
+          "nbr_9831919969ed8e149e26e25158305229",
+          0.07142857142857142
+        ],
+        [
+          "cx_pair",
+          0.07142857142857142
+        ],
+        [
+          "auto_fd176f494abf4b8d64c63295f092b91b",
+          0.07142857142857142
+        ],
+        [
+          "auto_12206b7d9c57893bcd75d3ad61b45e34",
+          0.07142857142857142
+        ],
+        [
+          "syndrome_extraction",
+          0.07142857142857142
+        ],
+        [
+          "auto_b71107166c6dbf434e12e77ee4a6088a",
+          0.07142857142857142
+        ]
+      ],
+      "strategy": "irreducible",
+      "pca_isolation": 0.0041,
+      "composite_novelty": 0.2568
+    },
+    "irr_pair14_q6": {
+      "nearest_algorithm": "qft_q2",
+      "nearest_family": "transform",
+      "nearest_similarity": 0.8661,
+      "closest_family": "simulation",
+      "family_distances": {
+        "arithmetic": 0.056,
+        "communication": 0.0501,
+        "cryptography": 0.2227,
+        "differential_equations": 0.0565,
+        "distillation": 0.0345,
+        "entanglement": 0.2635,
+        "error_correction": 0.1238,
+        "error_mitigation": 0.1308,
+        "linear_algebra": 0.0701,
+        "machine_learning": 0.059,
+        "metrology": 0.0624,
+        "oracle": 0.061,
+        "protocol": 0.1017,
+        "sampling": 0.0927,
+        "simulation": 0.0256,
+        "tda": 0.0581,
+        "topological": 0.0728,
+        "transform": 0.0569,
+        "variational": 0.0456
+      },
+      "cosine_novelty": 0.1339,
+      "pca_min_dist": 0.0029,
+      "motif_diversity": 0.0143,
+      "tensor_bonus": 1.0,
+      "pca_coords": [
+        -0.05994877622654688,
+        0.013132558612811984
+      ],
+      "top_motifs": [
+        [
+          "x_hub_3z_param",
+          0.2222222222222222
+        ],
+        [
+          "syndrome_extraction_param",
+          0.14814814814814814
+        ],
+        [
+          "auto_55510e60cee8e707d80ee5a24639737b",
+          0.1111111111111111
+        ],
+        [
+          "nbr_9831919969ed8e149e26e25158305229",
+          0.07407407407407407
+        ],
+        [
+          "cx_pair",
+          0.07407407407407407
+        ],
+        [
+          "auto_fd176f494abf4b8d64c63295f092b91b",
+          0.07407407407407407
+        ],
+        [
+          "auto_12206b7d9c57893bcd75d3ad61b45e34",
+          0.07407407407407407
+        ],
+        [
+          "syndrome_extraction",
+          0.07407407407407407
+        ],
+        [
+          "auto_2846ca09f56b6cdde4249df5466d5a64",
+          0.07407407407407407
+        ],
+        [
+          "auto_b71107166c6dbf434e12e77ee4a6088a",
+          0.07407407407407407
+        ]
+      ],
+      "strategy": "irreducible",
+      "pca_isolation": 0.0222,
+      "composite_novelty": 0.2553
+    },
+    "irr_pair15_q6": {
+      "nearest_algorithm": "random_circuit_sampling_q3",
+      "nearest_family": "sampling",
+      "nearest_similarity": 0.8485,
+      "closest_family": "distillation",
+      "family_distances": {
+        "arithmetic": 0.0754,
+        "communication": 0.0697,
+        "cryptography": 0.24,
+        "differential_equations": 0.0761,
+        "distillation": 0.0362,
+        "entanglement": 0.271,
+        "error_correction": 0.1352,
+        "error_mitigation": 0.1252,
+        "linear_algebra": 0.0893,
+        "machine_learning": 0.0783,
+        "metrology": 0.0817,
+        "oracle": 0.0665,
+        "protocol": 0.0888,
+        "sampling": 0.1113,
+        "simulation": 0.0444,
+        "tda": 0.0778,
+        "topological": 0.0922,
+        "transform": 0.0766,
+        "variational": 0.0651
+      },
+      "cosine_novelty": 0.1515,
+      "pca_min_dist": 0.013,
+      "motif_diversity": 0.0115,
+      "tensor_bonus": 1.0,
+      "pca_coords": [
+        -0.07201388056883797,
+        0.02864682020338568
+      ],
+      "top_motifs": [
+        [
+          "x_hub_3z_param",
+          0.2727272727272727
+        ],
+        [
+          "syndrome_extraction_param",
+          0.18181818181818182
+        ],
+        [
+          "auto_2ac61fc7342f26a9b7022fd3b507721a",
+          0.13636363636363635
+        ],
+        [
+          "auto_55510e60cee8e707d80ee5a24639737b",
+          0.09090909090909091
+        ],
+        [
+          "cx_pair",
+          0.09090909090909091
+        ],
+        [
+          "syndrome_extraction",
+          0.09090909090909091
+        ],
+        [
+          "auto_12206b7d9c57893bcd75d3ad61b45e34",
+          0.09090909090909091
+        ],
+        [
+          "auto_0ca20755a855b01e4fd4ae848c2fbf66",
+          0.045454545454545456
+        ]
+      ],
+      "strategy": "irreducible",
+      "pca_isolation": 0.0997,
+      "composite_novelty": 0.2802
+    },
+    "irr_pair16_q4": {
+      "nearest_algorithm": "cluster_state_q3",
+      "nearest_family": "entanglement",
+      "nearest_similarity": 1.0,
+      "closest_family": "entanglement",
+      "family_distances": {
+        "arithmetic": 0.9988,
+        "communication": 0.9918,
+        "cryptography": 1.0199,
+        "differential_equations": 0.9865,
+        "distillation": 0.9994,
+        "entanglement": 0.7727,
+        "error_correction": 0.8988,
+        "error_mitigation": 0.9579,
+        "linear_algebra": 0.9959,
+        "machine_learning": 0.9997,
+        "metrology": 0.9975,
+        "oracle": 0.9692,
+        "protocol": 1.0132,
+        "sampling": 0.9461,
+        "simulation": 1.0001,
+        "tda": 0.9907,
+        "topological": 0.9923,
+        "transform": 0.9867,
+        "variational": 0.9907
+      },
+      "cosine_novelty": 0.0,
+      "pca_min_dist": 0.0,
+      "motif_diversity": 0.0014,
+      "tensor_bonus": 1.0,
+      "pca_coords": [
+        0.9618930454247734,
+        0.033863082826198175
+      ],
+      "top_motifs": [
+        [
+          "cluster_chain",
+          1.0
+        ]
+      ],
+      "strategy": "irreducible",
+      "pca_isolation": 0.0,
+      "composite_novelty": 0.2003
+    },
+    "irr_pair17_q6": {
+      "nearest_algorithm": "cluster_state_q3",
+      "nearest_family": "entanglement",
+      "nearest_similarity": 1.0,
+      "closest_family": "entanglement",
+      "family_distances": {
+        "arithmetic": 0.9988,
+        "communication": 0.9918,
+        "cryptography": 1.0199,
+        "differential_equations": 0.9865,
+        "distillation": 0.9994,
+        "entanglement": 0.7727,
+        "error_correction": 0.8988,
+        "error_mitigation": 0.9579,
+        "linear_algebra": 0.9959,
+        "machine_learning": 0.9997,
+        "metrology": 0.9975,
+        "oracle": 0.9692,
+        "protocol": 1.0132,
+        "sampling": 0.9461,
+        "simulation": 1.0001,
+        "tda": 0.9907,
+        "topological": 0.9923,
+        "transform": 0.9867,
+        "variational": 0.9907
+      },
+      "cosine_novelty": 0.0,
+      "pca_min_dist": 0.0,
+      "motif_diversity": 0.0014,
+      "tensor_bonus": 1.0,
+      "pca_coords": [
+        0.9618930454247734,
+        0.033863082826198175
+      ],
+      "top_motifs": [
+        [
+          "cluster_chain",
+          1.0
+        ]
+      ],
+      "strategy": "irreducible",
+      "pca_isolation": 0.0,
+      "composite_novelty": 0.2003
+    },
+    "irr_pair18_q6": {
+      "nearest_algorithm": "cluster_state_q3",
+      "nearest_family": "entanglement",
+      "nearest_similarity": 1.0,
+      "closest_family": "entanglement",
+      "family_distances": {
+        "arithmetic": 0.9988,
+        "communication": 0.9918,
+        "cryptography": 1.0199,
+        "differential_equations": 0.9865,
+        "distillation": 0.9994,
+        "entanglement": 0.7727,
+        "error_correction": 0.8988,
+        "error_mitigation": 0.9579,
+        "linear_algebra": 0.9959,
+        "machine_learning": 0.9997,
+        "metrology": 0.9975,
+        "oracle": 0.9692,
+        "protocol": 1.0132,
+        "sampling": 0.9461,
+        "simulation": 1.0001,
+        "tda": 0.9907,
+        "topological": 0.9923,
+        "transform": 0.9867,
+        "variational": 0.9907
+      },
+      "cosine_novelty": 0.0,
+      "pca_min_dist": 0.0,
+      "motif_diversity": 0.0014,
+      "tensor_bonus": 1.0,
+      "pca_coords": [
+        0.9618930454247734,
+        0.033863082826198175
+      ],
+      "top_motifs": [
+        [
+          "cluster_chain",
+          1.0
+        ]
+      ],
+      "strategy": "irreducible",
+      "pca_isolation": 0.0,
+      "composite_novelty": 0.2003
+    },
+    "irr_pair19_q5": {
+      "nearest_algorithm": "cluster_state_q3",
+      "nearest_family": "entanglement",
+      "nearest_similarity": 1.0,
+      "closest_family": "entanglement",
+      "family_distances": {
+        "arithmetic": 0.9988,
+        "communication": 0.9918,
+        "cryptography": 1.0199,
+        "differential_equations": 0.9865,
+        "distillation": 0.9994,
+        "entanglement": 0.7727,
+        "error_correction": 0.8988,
+        "error_mitigation": 0.9579,
+        "linear_algebra": 0.9959,
+        "machine_learning": 0.9997,
+        "metrology": 0.9975,
+        "oracle": 0.9692,
+        "protocol": 1.0132,
+        "sampling": 0.9461,
+        "simulation": 1.0001,
+        "tda": 0.9907,
+        "topological": 0.9923,
+        "transform": 0.9867,
+        "variational": 0.9907
+      },
+      "cosine_novelty": 0.0,
+      "pca_min_dist": 0.0,
+      "motif_diversity": 0.0014,
+      "tensor_bonus": 1.0,
+      "pca_coords": [
+        0.9618930454247734,
+        0.033863082826198175
+      ],
+      "top_motifs": [
+        [
+          "cluster_chain",
+          1.0
+        ]
+      ],
+      "strategy": "irreducible",
+      "pca_isolation": 0.0,
+      "composite_novelty": 0.2003
+    },
+    "irr_pair20_q5": {
+      "nearest_algorithm": "iqp_sampling_q5",
+      "nearest_family": "sampling",
+      "nearest_similarity": 0.8571,
+      "closest_family": "sampling",
+      "family_distances": {
+        "arithmetic": 0.0499,
+        "communication": 0.0492,
+        "cryptography": 0.1603,
+        "differential_equations": 0.0425,
+        "distillation": 0.1049,
+        "entanglement": 0.23,
+        "error_correction": 0.0939,
+        "error_mitigation": 0.1775,
+        "linear_algebra": 0.0433,
+        "machine_learning": 0.0494,
+        "metrology": 0.0466,
+        "oracle": 0.0986,
+        "protocol": 0.1777,
+        "sampling": 0.0173,
+        "simulation": 0.0734,
+        "tda": 0.0434,
+        "topological": 0.0395,
+        "transform": 0.0422,
+        "variational": 0.0527
+      },
+      "cosine_novelty": 0.1429,
+      "pca_min_dist": 0.0108,
+      "motif_diversity": 0.0014,
+      "tensor_bonus": 1.0,
+      "pca_coords": [
+        0.012847061801377666,
+        -0.05272447492926651
+      ],
+      "top_motifs": [
+        [
+          "auto_b71107166c6dbf434e12e77ee4a6088a",
+          1.0
+        ]
+      ],
+      "strategy": "irreducible",
+      "pca_isolation": 0.0828,
+      "composite_novelty": 0.271
+    },
+    "irr_pair21_q5": {
+      "nearest_algorithm": "iqp_sampling_q5",
+      "nearest_family": "sampling",
+      "nearest_similarity": 0.8571,
+      "closest_family": "sampling",
+      "family_distances": {
+        "arithmetic": 0.0499,
+        "communication": 0.0492,
+        "cryptography": 0.1603,
+        "differential_equations": 0.0425,
+        "distillation": 0.1049,
+        "entanglement": 0.23,
+        "error_correction": 0.0939,
+        "error_mitigation": 0.1775,
+        "linear_algebra": 0.0433,
+        "machine_learning": 0.0494,
+        "metrology": 0.0466,
+        "oracle": 0.0986,
+        "protocol": 0.1777,
+        "sampling": 0.0173,
+        "simulation": 0.0734,
+        "tda": 0.0434,
+        "topological": 0.0395,
+        "transform": 0.0422,
+        "variational": 0.0527
+      },
+      "cosine_novelty": 0.1429,
+      "pca_min_dist": 0.0108,
+      "motif_diversity": 0.0014,
+      "tensor_bonus": 1.0,
+      "pca_coords": [
+        0.012847061801377666,
+        -0.05272447492926651
+      ],
+      "top_motifs": [
+        [
+          "auto_b71107166c6dbf434e12e77ee4a6088a",
+          1.0
+        ]
+      ],
+      "strategy": "irreducible",
+      "pca_isolation": 0.0828,
+      "composite_novelty": 0.271
+    },
+    "irr_pair22_q5": {
+      "nearest_algorithm": "adapt_vqe_q4",
+      "nearest_family": "variational",
+      "nearest_similarity": 0.0,
+      "closest_family": "topological",
+      "family_distances": {
+        "arithmetic": 0.0208,
+        "communication": 0.0231,
+        "cryptography": 0.1635,
+        "differential_equations": 0.017,
+        "distillation": 0.0868,
+        "entanglement": 0.2477,
+        "error_correction": 0.1058,
+        "error_mitigation": 0.1709,
+        "linear_algebra": 0.0164,
+        "machine_learning": 0.0204,
+        "metrology": 0.0176,
+        "oracle": 0.0887,
+        "protocol": 0.1621,
+        "sampling": 0.0345,
+        "simulation": 0.0505,
+        "tda": 0.0153,
+        "topological": 0.0135,
+        "transform": 0.0165,
+        "variational": 0.0286
+      },
+      "cosine_novelty": 1.0,
+      "pca_min_dist": 0.0,
+      "motif_diversity": 0.0,
+      "tensor_bonus": 1.0,
+      "pca_coords": [
+        -0.01510686349693011,
+        -0.04456829228099547
+      ],
+      "top_motifs": [],
+      "strategy": "irreducible",
+      "pca_isolation": 0.0,
+      "composite_novelty": 0.55
+    },
+    "irr_pair23_q6": {
+      "nearest_algorithm": "cluster_state_q3",
+      "nearest_family": "entanglement",
+      "nearest_similarity": 1.0,
+      "closest_family": "entanglement",
+      "family_distances": {
+        "arithmetic": 0.9988,
+        "communication": 0.9918,
+        "cryptography": 1.0199,
+        "differential_equations": 0.9865,
+        "distillation": 0.9994,
+        "entanglement": 0.7727,
+        "error_correction": 0.8988,
+        "error_mitigation": 0.9579,
+        "linear_algebra": 0.9959,
+        "machine_learning": 0.9997,
+        "metrology": 0.9975,
+        "oracle": 0.9692,
+        "protocol": 1.0132,
+        "sampling": 0.9461,
+        "simulation": 1.0001,
+        "tda": 0.9907,
+        "topological": 0.9923,
+        "transform": 0.9867,
+        "variational": 0.9907
+      },
+      "cosine_novelty": 0.0,
+      "pca_min_dist": 0.0,
+      "motif_diversity": 0.0014,
+      "tensor_bonus": 1.0,
+      "pca_coords": [
+        0.9618930454247734,
+        0.033863082826198175
+      ],
+      "top_motifs": [
+        [
+          "cluster_chain",
+          1.0
+        ]
+      ],
+      "strategy": "irreducible",
+      "pca_isolation": 0.0,
+      "composite_novelty": 0.2003
+    },
+    "irr_pair24_q6": {
+      "nearest_algorithm": "cluster_state_q3",
+      "nearest_family": "entanglement",
+      "nearest_similarity": 1.0,
+      "closest_family": "entanglement",
+      "family_distances": {
+        "arithmetic": 0.9988,
+        "communication": 0.9918,
+        "cryptography": 1.0199,
+        "differential_equations": 0.9865,
+        "distillation": 0.9994,
+        "entanglement": 0.7727,
+        "error_correction": 0.8988,
+        "error_mitigation": 0.9579,
+        "linear_algebra": 0.9959,
+        "machine_learning": 0.9997,
+        "metrology": 0.9975,
+        "oracle": 0.9692,
+        "protocol": 1.0132,
+        "sampling": 0.9461,
+        "simulation": 1.0001,
+        "tda": 0.9907,
+        "topological": 0.9923,
+        "transform": 0.9867,
+        "variational": 0.9907
+      },
+      "cosine_novelty": 0.0,
+      "pca_min_dist": 0.0,
+      "motif_diversity": 0.0014,
+      "tensor_bonus": 1.0,
+      "pca_coords": [
+        0.9618930454247734,
+        0.033863082826198175
+      ],
+      "top_motifs": [
+        [
+          "cluster_chain",
+          1.0
+        ]
+      ],
+      "strategy": "irreducible",
+      "pca_isolation": 0.0,
+      "composite_novelty": 0.2003
+    },
+    "irr_pair25_q6": {
+      "nearest_algorithm": "iqp_sampling_q5",
+      "nearest_family": "sampling",
+      "nearest_similarity": 0.8081,
+      "closest_family": "entanglement",
+      "family_distances": {
+        "arithmetic": 0.5224,
+        "communication": 0.5158,
+        "cryptography": 0.5531,
+        "differential_equations": 0.5104,
+        "distillation": 0.5271,
+        "entanglement": 0.313,
+        "error_correction": 0.4258,
+        "error_mitigation": 0.4975,
+        "linear_algebra": 0.5194,
+        "machine_learning": 0.5233,
+        "metrology": 0.5211,
+        "oracle": 0.4975,
+        "protocol": 0.5496,
+        "sampling": 0.4697,
+        "simulation": 0.5251,
+        "tda": 0.5144,
+        "topological": 0.5158,
+        "transform": 0.5105,
+        "variational": 0.5149
+      },
+      "cosine_novelty": 0.1919,
+      "pca_min_dist": 0.0288,
+      "motif_diversity": 0.0029,
+      "tensor_bonus": 1.0,
+      "pca_coords": [
+        0.48737005361307556,
+        -0.009430696051534224
+      ],
+      "top_motifs": [
+        [
+          "auto_b71107166c6dbf434e12e77ee4a6088a",
+          0.5
+        ],
+        [
+          "cluster_chain",
+          0.5
+        ]
+      ],
+      "strategy": "irreducible",
+      "pca_isolation": 0.2211,
+      "composite_novelty": 0.323
+    },
+    "irr_pair26_q6": {
+      "nearest_algorithm": "iqp_sampling_q5",
+      "nearest_family": "sampling",
+      "nearest_similarity": 0.8571,
+      "closest_family": "sampling",
+      "family_distances": {
+        "arithmetic": 0.0499,
+        "communication": 0.0492,
+        "cryptography": 0.1603,
+        "differential_equations": 0.0425,
+        "distillation": 0.1049,
+        "entanglement": 0.23,
+        "error_correction": 0.0939,
+        "error_mitigation": 0.1775,
+        "linear_algebra": 0.0433,
+        "machine_learning": 0.0494,
+        "metrology": 0.0466,
+        "oracle": 0.0986,
+        "protocol": 0.1777,
+        "sampling": 0.0173,
+        "simulation": 0.0734,
+        "tda": 0.0434,
+        "topological": 0.0395,
+        "transform": 0.0422,
+        "variational": 0.0527
+      },
+      "cosine_novelty": 0.1429,
+      "pca_min_dist": 0.0108,
+      "motif_diversity": 0.0014,
+      "tensor_bonus": 1.0,
+      "pca_coords": [
+        0.012847061801377666,
+        -0.05272447492926651
+      ],
+      "top_motifs": [
+        [
+          "auto_b71107166c6dbf434e12e77ee4a6088a",
+          1.0
+        ]
+      ],
+      "strategy": "irreducible",
+      "pca_isolation": 0.0828,
+      "composite_novelty": 0.271
+    },
+    "irr_pair27_q6": {
+      "nearest_algorithm": "cluster_state_q3",
+      "nearest_family": "entanglement",
+      "nearest_similarity": 0.8944,
+      "closest_family": "entanglement",
+      "family_distances": {
+        "arithmetic": 0.6812,
+        "communication": 0.6744,
+        "cryptography": 0.7073,
+        "differential_equations": 0.6691,
+        "distillation": 0.6839,
+        "entanglement": 0.4625,
+        "error_correction": 0.5828,
+        "error_mitigation": 0.6484,
+        "linear_algebra": 0.6782,
+        "machine_learning": 0.6821,
+        "metrology": 0.6799,
+        "oracle": 0.6539,
+        "protocol": 0.7022,
+        "sampling": 0.6285,
+        "simulation": 0.6832,
+        "tda": 0.6731,
+        "topological": 0.6746,
+        "transform": 0.6692,
+        "variational": 0.6734
+      },
+      "cosine_novelty": 0.1056,
+      "pca_min_dist": 0.1303,
+      "motif_diversity": 0.0029,
+      "tensor_bonus": 1.0,
+      "pca_coords": [
+        0.6455443842169749,
+        0.005000563574376538
+      ],
+      "top_motifs": [
+        [
+          "cluster_chain",
+          0.6666666666666666
+        ],
+        [
+          "auto_b71107166c6dbf434e12e77ee4a6088a",
+          0.3333333333333333
+        ]
+      ],
+      "strategy": "irreducible",
+      "pca_isolation": 1.0,
+      "composite_novelty": 0.4875
+    },
+    "irr_pair28_q6": {
+      "nearest_algorithm": "adapt_vqe_q4",
+      "nearest_family": "variational",
+      "nearest_similarity": 0.0,
+      "closest_family": "topological",
+      "family_distances": {
+        "arithmetic": 0.0208,
+        "communication": 0.0231,
+        "cryptography": 0.1635,
+        "differential_equations": 0.017,
+        "distillation": 0.0868,
+        "entanglement": 0.2477,
+        "error_correction": 0.1058,
+        "error_mitigation": 0.1709,
+        "linear_algebra": 0.0164,
+        "machine_learning": 0.0204,
+        "metrology": 0.0176,
+        "oracle": 0.0887,
+        "protocol": 0.1621,
+        "sampling": 0.0345,
+        "simulation": 0.0505,
+        "tda": 0.0153,
+        "topological": 0.0135,
+        "transform": 0.0165,
+        "variational": 0.0286
+      },
+      "cosine_novelty": 1.0,
+      "pca_min_dist": 0.0,
+      "motif_diversity": 0.0,
+      "tensor_bonus": 1.0,
+      "pca_coords": [
+        -0.01510686349693011,
+        -0.04456829228099547
+      ],
+      "top_motifs": [],
+      "strategy": "irreducible",
+      "pca_isolation": 0.0,
+      "composite_novelty": 0.55
+    },
+    "irr_pair29_q6": {
+      "nearest_algorithm": "iqp_sampling_q5",
+      "nearest_family": "sampling",
+      "nearest_similarity": 0.6061,
+      "closest_family": "sampling",
+      "family_distances": {
+        "arithmetic": 0.035,
+        "communication": 0.0352,
+        "cryptography": 0.1614,
+        "differential_equations": 0.0285,
+        "distillation": 0.0949,
+        "entanglement": 0.2387,
+        "error_correction": 0.099,
+        "error_mitigation": 0.1734,
+        "linear_algebra": 0.029,
+        "machine_learning": 0.0345,
+        "metrology": 0.0317,
+        "oracle": 0.0924,
+        "protocol": 0.1692,
+        "sampling": 0.0233,
+        "simulation": 0.0609,
+        "tda": 0.0287,
+        "topological": 0.0254,
+        "transform": 0.0282,
+        "variational": 0.0394
+      },
+      "cosine_novelty": 0.3939,
+      "pca_min_dist": 0.0142,
+      "motif_diversity": 0.0029,
+      "tensor_bonus": 1.0,
+      "pca_coords": [
+        -0.0014598025786690763,
+        -0.04844717210227906
+      ],
+      "top_motifs": [
+        [
+          "auto_b71107166c6dbf434e12e77ee4a6088a",
+          0.5
+        ],
+        [
+          "hadamard_sandwich",
+          0.5
+        ]
+      ],
+      "strategy": "irreducible",
+      "pca_isolation": 0.1089,
+      "composite_novelty": 0.3657
+    },
+    "irr_pair30_q6": {
+      "nearest_algorithm": "cluster_state_q3",
+      "nearest_family": "entanglement",
+      "nearest_similarity": 0.7071,
+      "closest_family": "entanglement",
+      "family_distances": {
+        "arithmetic": 0.5084,
+        "communication": 0.5017,
+        "cryptography": 0.5414,
+        "differential_equations": 0.4963,
+        "distillation": 0.5125,
+        "entanglement": 0.2981,
+        "error_correction": 0.4111,
+        "error_mitigation": 0.4826,
+        "linear_algebra": 0.5055,
+        "machine_learning": 0.5093,
+        "metrology": 0.5072,
+        "oracle": 0.4828,
+        "protocol": 0.5347,
+        "sampling": 0.4557,
+        "simulation": 0.5107,
+        "tda": 0.5004,
+        "topological": 0.5019,
+        "transform": 0.4964,
+        "variational": 0.5007
+      },
+      "cosine_novelty": 0.2929,
+      "pca_min_dist": 0.0434,
+      "motif_diversity": 0.0029,
+      "tensor_bonus": 1.0,
+      "pca_coords": [
+        0.4730631892330288,
+        -0.005153393224546777
+      ],
+      "top_motifs": [
+        [
+          "hadamard_sandwich",
+          0.5
+        ],
+        [
+          "cluster_chain",
+          0.5
+        ]
+      ],
+      "strategy": "irreducible",
+      "pca_isolation": 0.333,
+      "composite_novelty": 0.3863
+    },
+    "irr_pair31_q6": {
+      "nearest_algorithm": "betti_number_q4",
+      "nearest_family": "tda",
+      "nearest_similarity": 0.018,
+      "closest_family": "topological",
+      "family_distances": {
+        "arithmetic": 0.0208,
+        "communication": 0.0231,
+        "cryptography": 0.1634,
+        "differential_equations": 0.0171,
+        "distillation": 0.0869,
+        "entanglement": 0.2478,
+        "error_correction": 0.1058,
+        "error_mitigation": 0.1709,
+        "linear_algebra": 0.0163,
+        "machine_learning": 0.0203,
+        "metrology": 0.0176,
+        "oracle": 0.0887,
+        "protocol": 0.1622,
+        "sampling": 0.0345,
+        "simulation": 0.0505,
+        "tda": 0.0153,
+        "topological": 0.0135,
+        "transform": 0.0165,
+        "variational": 0.0286
+      },
+      "cosine_novelty": 0.982,
+      "pca_min_dist": 0.0,
+      "motif_diversity": 0.0014,
+      "tensor_bonus": 1.0,
+      "pca_coords": [
+        -0.015128456212819798,
+        -0.04461014548916589
+      ],
+      "top_motifs": [
+        [
+          "auto_610792fa287d7141ed2c6a5c053b57c0",
+          1.0
+        ]
+      ],
+      "strategy": "irreducible",
+      "pca_isolation": 0.0004,
+      "composite_novelty": 0.5441
+    },
+    "irr_pair32_q6": {
+      "nearest_algorithm": "iqp_sampling_q5",
+      "nearest_family": "sampling",
+      "nearest_similarity": 0.8571,
+      "closest_family": "sampling",
+      "family_distances": {
+        "arithmetic": 0.0499,
+        "communication": 0.0492,
+        "cryptography": 0.1603,
+        "differential_equations": 0.0425,
+        "distillation": 0.1049,
+        "entanglement": 0.23,
+        "error_correction": 0.0939,
+        "error_mitigation": 0.1775,
+        "linear_algebra": 0.0433,
+        "machine_learning": 0.0494,
+        "metrology": 0.0466,
+        "oracle": 0.0986,
+        "protocol": 0.1777,
+        "sampling": 0.0173,
+        "simulation": 0.0734,
+        "tda": 0.0434,
+        "topological": 0.0395,
+        "transform": 0.0422,
+        "variational": 0.0527
+      },
+      "cosine_novelty": 0.1429,
+      "pca_min_dist": 0.0108,
+      "motif_diversity": 0.0014,
+      "tensor_bonus": 1.0,
+      "pca_coords": [
+        0.012847061801377666,
+        -0.05272447492926651
+      ],
+      "top_motifs": [
+        [
+          "auto_b71107166c6dbf434e12e77ee4a6088a",
+          1.0
+        ]
+      ],
+      "strategy": "irreducible",
+      "pca_isolation": 0.0828,
+      "composite_novelty": 0.271
+    },
+    "irr_pair33_q6": {
+      "nearest_algorithm": "betti_number_q4",
+      "nearest_family": "tda",
+      "nearest_similarity": 0.018,
+      "closest_family": "topological",
+      "family_distances": {
+        "arithmetic": 0.0208,
+        "communication": 0.0231,
+        "cryptography": 0.1634,
+        "differential_equations": 0.0171,
+        "distillation": 0.0869,
+        "entanglement": 0.2478,
+        "error_correction": 0.1058,
+        "error_mitigation": 0.1709,
+        "linear_algebra": 0.0163,
+        "machine_learning": 0.0203,
+        "metrology": 0.0176,
+        "oracle": 0.0887,
+        "protocol": 0.1622,
+        "sampling": 0.0345,
+        "simulation": 0.0505,
+        "tda": 0.0153,
+        "topological": 0.0135,
+        "transform": 0.0165,
+        "variational": 0.0286
+      },
+      "cosine_novelty": 0.982,
+      "pca_min_dist": 0.0,
+      "motif_diversity": 0.0014,
+      "tensor_bonus": 1.0,
+      "pca_coords": [
+        -0.015128456212819798,
+        -0.04461014548916589
+      ],
+      "top_motifs": [
+        [
+          "auto_610792fa287d7141ed2c6a5c053b57c0",
+          1.0
+        ]
+      ],
+      "strategy": "irreducible",
+      "pca_isolation": 0.0004,
+      "composite_novelty": 0.5441
+    },
+    "irr_pair34_q6": {
+      "nearest_algorithm": "betti_number_q4",
+      "nearest_family": "tda",
+      "nearest_similarity": 0.018,
+      "closest_family": "topological",
+      "family_distances": {
+        "arithmetic": 0.0208,
+        "communication": 0.0231,
+        "cryptography": 0.1634,
+        "differential_equations": 0.0171,
+        "distillation": 0.0869,
+        "entanglement": 0.2478,
+        "error_correction": 0.1058,
+        "error_mitigation": 0.1709,
+        "linear_algebra": 0.0163,
+        "machine_learning": 0.0203,
+        "metrology": 0.0176,
+        "oracle": 0.0887,
+        "protocol": 0.1622,
+        "sampling": 0.0345,
+        "simulation": 0.0505,
+        "tda": 0.0153,
+        "topological": 0.0135,
+        "transform": 0.0165,
+        "variational": 0.0286
+      },
+      "cosine_novelty": 0.982,
+      "pca_min_dist": 0.0,
+      "motif_diversity": 0.0014,
+      "tensor_bonus": 1.0,
+      "pca_coords": [
+        -0.015128456212819798,
+        -0.04461014548916589
+      ],
+      "top_motifs": [
+        [
+          "auto_610792fa287d7141ed2c6a5c053b57c0",
+          1.0
+        ]
+      ],
+      "strategy": "irreducible",
+      "pca_isolation": 0.0004,
+      "composite_novelty": 0.5441
+    },
+    "irr_layered_q5": {
+      "nearest_algorithm": "graph_state_q4",
+      "nearest_family": "entanglement",
+      "nearest_similarity": 0.6713,
+      "closest_family": "entanglement",
+      "family_distances": {
+        "arithmetic": 0.2218,
+        "communication": 0.2114,
+        "cryptography": 0.3317,
+        "differential_equations": 0.208,
+        "distillation": 0.2029,
+        "entanglement": 0.0406,
+        "error_correction": 0.1071,
+        "error_mitigation": 0.1679,
+        "linear_algebra": 0.2248,
+        "machine_learning": 0.224,
+        "metrology": 0.2231,
+        "oracle": 0.1723,
+        "protocol": 0.2185,
+        "sampling": 0.1759,
+        "simulation": 0.2109,
+        "tda": 0.2136,
+        "topological": 0.2222,
+        "transform": 0.2084,
+        "variational": 0.208
+      },
+      "cosine_novelty": 0.3287,
+      "pca_min_dist": 0.1015,
+      "motif_diversity": 0.0172,
+      "tensor_bonus": 1.0,
+      "pca_coords": [
+        0.16412161003392783,
+        0.06221645103160888
+      ],
+      "top_motifs": [
+        [
+          "cluster_chain",
+          0.2
+        ],
+        [
+          "syndrome_extraction_param",
+          0.16
+        ],
+        [
+          "auto_56c28531e8d24933b1cd4783868f1a39",
+          0.12
+        ],
+        [
+          "auto_55510e60cee8e707d80ee5a24639737b",
+          0.08
+        ],
+        [
+          "cx_pair",
+          0.08
+        ],
+        [
+          "auto_12206b7d9c57893bcd75d3ad61b45e34",
+          0.08
+        ],
+        [
+          "syndrome_extraction",
+          0.08
+        ],
+        [
+          "auto_7d495f0205427371fcb334bb4d0d0513",
+          0.04
+        ],
+        [
+          "auto_404a1083ce742d80c7e014eaad7db875",
+          0.04
+        ],
+        [
+          "auto_c0e8e88cff208f04140640955bcb0657",
+          0.04
+        ]
+      ],
+      "strategy": "irreducible",
+      "pca_isolation": 0.779,
+      "composite_novelty": 0.5132
+    },
+    "void_0_q5": {
+      "nearest_algorithm": "graph_state_q4",
+      "nearest_family": "entanglement",
+      "nearest_similarity": 0.7563,
+      "closest_family": "entanglement",
+      "family_distances": {
+        "arithmetic": 0.2449,
+        "communication": 0.2361,
+        "cryptography": 0.3306,
+        "differential_equations": 0.2317,
+        "distillation": 0.2391,
+        "entanglement": 0.0636,
+        "error_correction": 0.1383,
+        "error_mitigation": 0.2153,
+        "linear_algebra": 0.2452,
+        "machine_learning": 0.2466,
+        "metrology": 0.2451,
+        "oracle": 0.2092,
+        "protocol": 0.2636,
+        "sampling": 0.1945,
+        "simulation": 0.2408,
+        "tda": 0.2367,
+        "topological": 0.2421,
+        "transform": 0.2319,
+        "variational": 0.2339
+      },
+      "cosine_novelty": 0.2437,
+      "pca_min_dist": 0.0737,
+      "motif_diversity": 0.0215,
+      "tensor_bonus": 1.0,
+      "pca_coords": [
+        0.20146141708518872,
+        0.029466728163549647
+      ],
+      "top_motifs": [
+        [
+          "cluster_chain",
+          0.22388059701492538
+        ],
+        [
+          "auto_56c28531e8d24933b1cd4783868f1a39",
+          0.13432835820895522
+        ],
+        [
+          "auto_8262be817a51e5c738331e20ee99a47e",
+          0.11940298507462686
+        ],
+        [
+          "auto_29b7cda4b1e32f0b0ad39a4ffdd17fb3",
+          0.08955223880597014
+        ],
+        [
+          "auto_404a1083ce742d80c7e014eaad7db875",
+          0.07462686567164178
+        ],
+        [
+          "nbr_a66352d5557159cbb1f504c018289460",
+          0.06716417910447761
+        ],
+        [
+          "auto_e6f788f36bca2b43309cccea1713d508",
+          0.05970149253731343
+        ],
+        [
+          "auto_fed4704dc77489debd4991c762769a80",
+          0.04477611940298507
+        ],
+        [
+          "cx_pair",
+          0.04477611940298507
+        ],
+        [
+          "x_hub_3z_param",
+          0.04477611940298507
+        ]
+      ],
+      "strategy": "pca_void",
+      "pca_isolation": 0.5658,
+      "composite_novelty": 0.431
+    },
+    "void_1_q5": {
+      "nearest_algorithm": "graph_state_q4",
+      "nearest_family": "entanglement",
+      "nearest_similarity": 0.7563,
+      "closest_family": "entanglement",
+      "family_distances": {
+        "arithmetic": 0.2449,
+        "communication": 0.2361,
+        "cryptography": 0.3306,
+        "differential_equations": 0.2317,
+        "distillation": 0.2391,
+        "entanglement": 0.0636,
+        "error_correction": 0.1383,
+        "error_mitigation": 0.2153,
+        "linear_algebra": 0.2452,
+        "machine_learning": 0.2466,
+        "metrology": 0.2451,
+        "oracle": 0.2092,
+        "protocol": 0.2636,
+        "sampling": 0.1945,
+        "simulation": 0.2408,
+        "tda": 0.2367,
+        "topological": 0.2421,
+        "transform": 0.2319,
+        "variational": 0.2339
+      },
+      "cosine_novelty": 0.2437,
+      "pca_min_dist": 0.0737,
+      "motif_diversity": 0.0215,
+      "tensor_bonus": 1.0,
+      "pca_coords": [
+        0.20146141708518872,
+        0.029466728163549647
+      ],
+      "top_motifs": [
+        [
+          "cluster_chain",
+          0.22388059701492538
+        ],
+        [
+          "auto_56c28531e8d24933b1cd4783868f1a39",
+          0.13432835820895522
+        ],
+        [
+          "auto_8262be817a51e5c738331e20ee99a47e",
+          0.11940298507462686
+        ],
+        [
+          "auto_29b7cda4b1e32f0b0ad39a4ffdd17fb3",
+          0.08955223880597014
+        ],
+        [
+          "auto_404a1083ce742d80c7e014eaad7db875",
+          0.07462686567164178
+        ],
+        [
+          "nbr_a66352d5557159cbb1f504c018289460",
+          0.06716417910447761
+        ],
+        [
+          "auto_e6f788f36bca2b43309cccea1713d508",
+          0.05970149253731343
+        ],
+        [
+          "auto_fed4704dc77489debd4991c762769a80",
+          0.04477611940298507
+        ],
+        [
+          "cx_pair",
+          0.04477611940298507
+        ],
+        [
+          "x_hub_3z_param",
+          0.04477611940298507
+        ]
+      ],
+      "strategy": "pca_void",
+      "pca_isolation": 0.5658,
+      "composite_novelty": 0.431
+    },
+    "void_2_q5": {
+      "nearest_algorithm": "element_distinctness_q5",
+      "nearest_family": "oracle",
+      "nearest_similarity": 0.7543,
+      "closest_family": "error_correction",
+      "family_distances": {
+        "arithmetic": 0.1694,
+        "communication": 0.1593,
+        "cryptography": 0.2836,
+        "differential_equations": 0.1557,
+        "distillation": 0.1572,
+        "entanglement": 0.0924,
+        "error_correction": 0.0569,
+        "error_mitigation": 0.1435,
+        "linear_algebra": 0.1721,
+        "machine_learning": 0.1716,
+        "metrology": 0.1706,
+        "oracle": 0.1272,
+        "protocol": 0.1859,
+        "sampling": 0.1233,
+        "simulation": 0.1607,
+        "tda": 0.1613,
+        "topological": 0.1695,
+        "transform": 0.1561,
+        "variational": 0.1563
+      },
+      "cosine_novelty": 0.2457,
+      "pca_min_dist": 0.0495,
+      "motif_diversity": 0.023,
+      "tensor_bonus": 1.0,
+      "pca_coords": [
+        0.11960170346412588,
+        0.03404717400428736
+      ],
+      "top_motifs": [
+        [
+          "cluster_chain",
+          0.15503875968992248
+        ],
+        [
+          "auto_56c28531e8d24933b1cd4783868f1a39",
+          0.09302325581395349
+        ],
+        [
+          "x_hub_3z_param",
+          0.09302325581395349
+        ],
+        [
+          "auto_fed4704dc77489debd4991c762769a80",
+          0.09302325581395349
+        ],
+        [
+          "auto_e6f788f36bca2b43309cccea1713d508",
+          0.09302325581395349
+        ],
+        [
+          "nbr_a66352d5557159cbb1f504c018289460",
+          0.07751937984496124
+        ],
+        [
+          "nbr_7aee5bd6bba6f751b6478b70d1c35d51",
+          0.06201550387596899
+        ],
+        [
+          "auto_404a1083ce742d80c7e014eaad7db875",
+          0.06201550387596899
+        ],
+        [
+          "cx_pair",
+          0.05426356589147287
+        ],
+        [
+          "nbr_8f631cd937b2165b7a499b3b3f22145b",
+          0.046511627906976744
+        ]
+      ],
+      "strategy": "pca_void",
+      "pca_isolation": 0.38,
+      "composite_novelty": 0.3856
+    },
+    "void_3_q5": {
+      "nearest_algorithm": "graph_state_q4",
+      "nearest_family": "entanglement",
+      "nearest_similarity": 0.7563,
+      "closest_family": "entanglement",
+      "family_distances": {
+        "arithmetic": 0.2449,
+        "communication": 0.2361,
+        "cryptography": 0.3306,
+        "differential_equations": 0.2317,
+        "distillation": 0.2391,
+        "entanglement": 0.0636,
+        "error_correction": 0.1383,
+        "error_mitigation": 0.2153,
+        "linear_algebra": 0.2452,
+        "machine_learning": 0.2466,
+        "metrology": 0.2451,
+        "oracle": 0.2092,
+        "protocol": 0.2636,
+        "sampling": 0.1945,
+        "simulation": 0.2408,
+        "tda": 0.2367,
+        "topological": 0.2421,
+        "transform": 0.2319,
+        "variational": 0.2339
+      },
+      "cosine_novelty": 0.2437,
+      "pca_min_dist": 0.0737,
+      "motif_diversity": 0.0215,
+      "tensor_bonus": 1.0,
+      "pca_coords": [
+        0.20146141708518872,
+        0.029466728163549647
+      ],
+      "top_motifs": [
+        [
+          "cluster_chain",
+          0.22388059701492538
+        ],
+        [
+          "auto_56c28531e8d24933b1cd4783868f1a39",
+          0.13432835820895522
+        ],
+        [
+          "auto_8262be817a51e5c738331e20ee99a47e",
+          0.11940298507462686
+        ],
+        [
+          "auto_29b7cda4b1e32f0b0ad39a4ffdd17fb3",
+          0.08955223880597014
+        ],
+        [
+          "auto_404a1083ce742d80c7e014eaad7db875",
+          0.07462686567164178
+        ],
+        [
+          "nbr_a66352d5557159cbb1f504c018289460",
+          0.06716417910447761
+        ],
+        [
+          "auto_e6f788f36bca2b43309cccea1713d508",
+          0.05970149253731343
+        ],
+        [
+          "auto_fed4704dc77489debd4991c762769a80",
+          0.04477611940298507
+        ],
+        [
+          "cx_pair",
+          0.04477611940298507
+        ],
+        [
+          "x_hub_3z_param",
+          0.04477611940298507
+        ]
+      ],
+      "strategy": "pca_void",
+      "pca_isolation": 0.5658,
+      "composite_novelty": 0.431
+    }
+  },
+  "legacy_scored": {
+    "legacy_tvh_q4": {
       "nearest_algorithm": "graph_state_q5",
       "nearest_family": "entanglement",
       "nearest_similarity": 0.9317,
@@ -70,7 +3748,10 @@
         "transform": 0.13,
         "variational": 0.1334
       },
-      "novelty_score": 0.0683,
+      "cosine_novelty": 0.0683,
+      "pca_min_dist": 0.0394,
+      "motif_diversity": 0.0631,
+      "tensor_bonus": 1.0,
       "pca_coords": [
         0.1055376416419896,
         -0.008823359899699647
@@ -116,9 +3797,12 @@
           "auto_404a1083ce742d80c7e014eaad7db875",
           0.02389705882352941
         ]
-      ]
+      ],
+      "strategy": "legacy",
+      "pca_isolation": 1.0,
+      "composite_novelty": 0.4865
     },
-    "distillation_entanglement_bridge_q4": {
+    "legacy_deb_q4": {
       "nearest_algorithm": "w_state_q3",
       "nearest_family": "entanglement",
       "nearest_similarity": 0.3228,
@@ -144,7 +3828,10 @@
         "transform": 0.0253,
         "variational": 0.0132
       },
-      "novelty_score": 0.6772,
+      "cosine_novelty": 0.6772,
+      "pca_min_dist": 0.0054,
+      "motif_diversity": 0.0129,
+      "tensor_bonus": 1.0,
       "pca_coords": [
         -0.03040802490726569,
         -0.005898538512767726
@@ -186,9 +3873,12 @@
           "cx_pair",
           0.045454545454545456
         ]
-      ]
+      ],
+      "strategy": "legacy",
+      "pca_isolation": 0.1363,
+      "composite_novelty": 0.4737
     },
-    "irreducible_core_circuit_q4": {
+    "legacy_icc_q4": {
       "nearest_algorithm": "quantum_walk_search_q4",
       "nearest_family": "oracle",
       "nearest_similarity": 0.6116,
@@ -214,7 +3904,10 @@
         "transform": 0.1158,
         "variational": 0.1129
       },
-      "novelty_score": 0.3884,
+      "cosine_novelty": 0.3884,
+      "pca_min_dist": 0.0266,
+      "motif_diversity": 0.0316,
+      "tensor_bonus": 1.0,
       "pca_coords": [
         0.06638509272647579,
         0.04397763950529693
@@ -260,7 +3953,10 @@
           "auto_55510e60cee8e707d80ee5a24639737b",
           0.04975124378109453
         ]
-      ]
+      ],
+      "strategy": "legacy",
+      "pca_isolation": 0.6752,
+      "composite_novelty": 0.5111
     }
   }
 }

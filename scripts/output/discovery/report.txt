@@ -1,67 +1,725 @@
 ======================================================================
-QUANTUM ALGORITHM DISCOVERY VIA ZX MOTIF PHYLOGENY
+QUANTUM ALGORITHM DISCOVERY VIA ZX MOTIF PHYLOGENY (v2)
 ======================================================================
 
-Method: Identified structural gaps in ZX motif fingerprint PCA space.
-Constructed 3 candidate algorithms by composing motifs data-driven.
-Validated unitarity and ZX tensor preservation.
+Data-driven: 4 strategies, 48 candidates (48 passed validation)
 
---- Trotter-Variational Hybrid (TVH) ---
-  Exploits 93% QAOA-Trotter similarity. Trotter ZZ backbone + cluster_chain + hadamard_sandwich (both survive full ZX reduction) + QAOA-style variational mixer.
-  Qubits: 4  Gates: 60  Depth: 31
-  Unitarity: PASS (error: 1.06e-15)
-  ZX tensor preserved: YES
-  ZX size: 86V/100E raw -> 27V/55E reduced
-  Nearest algorithm: graph_state_q5 (sim=0.932)
-  Closest family: error_correction
-  Novelty score: 0.068 (1=completely novel)
-  PCA coords: (0.106, -0.009)
-  Top motifs:
-    auto_56c28531e8d24933b1cd4783868f1a39    0.184
-    auto_a4116c0e9161996c346ae2d5e02595a3    0.176
-    cluster_chain                            0.118
-    x_hub_3z_param                           0.044
-    syndrome_extraction_param                0.044
+--- Strategy: Coverage Gap Targeting (3 candidates) ---
+  [covgap_distillation]
+    Rationale: Coverage gap: distillation at 41.7%. Native motifs: ['cx_pair', 'syndrome_extraction', 'syndrome_ext
+    Qubits: 5  Gates: 14  Depth: 11
+    Unitarity: PASS (err=9.82e-17)
+    ZX tensor preserved: YES
+    ZX size: 35V/41E raw -> 21V/32E reduced
+    Nearest: zne_folding_q4 (sim=0.842)
+    Composite novelty: 0.266
+    Top motifs:
+      auto_4ccb9e8ec6d569fc22134c1593b42eb0    0.149
+      x_hub_3z_param                           0.107
+      auto_91d4674adae9a55e1397977512c89818    0.098
+      nbr_8f631cd937b2165b7a499b3b3f22145b     0.058
+      nbr_7aee5bd6bba6f751b6478b70d1c35d51     0.054
 
---- Distillation-Entanglement Bridge (DEB) ---
-  Exploits 99% BBPSSW-GHZ similarity. Parameterised interpolation between GHZ fan-out and bilateral-CNOT distillation. Targets the 61% distillation coverage gap.
-  Qubits: 4  Gates: 12  Depth: 6
-  Unitarity: PASS (error: 1.95e-16)
-  ZX tensor preserved: YES
-  ZX size: 33V/34E raw -> 20V/19E reduced
-  Nearest algorithm: w_state_q3 (sim=0.323)
-  Closest family: simulation
-  Novelty score: 0.677 (1=completely novel)
-  PCA coords: (-0.030, -0.006)
-  Top motifs:
-    nbr_7c5c4035b383abf03295d7a6cd48011b     0.182
-    nbr_f57af3eca06e42716bd2a4aa34d0a2aa     0.182
-    nbr_bf89b33727a327bdcb3142f36bd2d6f7     0.182
-    auto_9e22a2a296a17ee1f8bb857afaececd4    0.136
-    auto_96ea930299ed1b7ec7a99f444341bc9c    0.091
+  [covgap_cryptography]
+    Rationale: Coverage gap: cryptography at 56.5%. Native motifs: ['hadamard_pauli_pair', 'auto_9e22a2a296a17ee1f8
+    Qubits: 4  Gates: 12  Depth: 7
+    Unitarity: PASS (err=1.11e-16)
+    ZX tensor preserved: YES
+    ZX size: 26V/28E raw -> 15V/16E reduced
+    Nearest: entanglement_swapping_q4 (sim=0.684)
+    Composite novelty: 0.340
+    Top motifs:
+      syndrome_extraction_param                0.098
+      auto_91d4674adae9a55e1397977512c89818    0.084
+      auto_7d495f0205427371fcb334bb4d0d0513    0.084
+      syndrome_extraction                      0.084
+      auto_7baca27b1cb1f61f2908778694e8e0a4    0.084
 
---- Irreducible Core Circuit (ICC) ---
-  Built only from the 4 motifs surviving full ZX reduction: phase_gadget_2t, phase_gadget_3t, hadamard_sandwich, cluster_chain. No existing algorithm is designed around ZX-irreducible primitives.
-  Qubits: 4  Gates: 39  Depth: 20
-  Unitarity: PASS (error: 7.64e-16)
-  ZX tensor preserved: YES
-  ZX size: 63V/75E raw -> 19V/28E reduced
-  Nearest algorithm: quantum_walk_search_q4 (sim=0.612)
-  Closest family: error_correction
-  Novelty score: 0.388 (1=completely novel)
-  PCA coords: (0.066, 0.044)
-  Top motifs:
-    cluster_chain                            0.100
-    auto_8262be817a51e5c738331e20ee99a47e    0.100
-    auto_404a1083ce742d80c7e014eaad7db875    0.085
-    cx_pair                                  0.070
-    x_hub_3z_param                           0.060
+  [covgap_sampling]
+    Rationale: Coverage gap: sampling at 63.9%. Native motifs: ['phase_gadget_2t', 'cx_pair', 'syndrome_extraction'
+    Qubits: 4  Gates: 16  Depth: 14
+    Unitarity: PASS (err=1.40e-16)
+    ZX tensor preserved: YES
+    ZX size: 35V/42E raw -> 18V/19E reduced
+    Nearest: bell_state_q5 (sim=0.909)
+    Composite novelty: 0.250
+    Top motifs:
+      auto_4ccb9e8ec6d569fc22134c1593b42eb0    0.220
+      auto_91d4674adae9a55e1397977512c89818    0.159
+      syndrome_extraction_param                0.101
+      syndrome_extraction                      0.075
+      x_hub_3z_param                           0.066
 
---- Key Findings ---
-  Most novel candidate: novelty=0.677 (nearest: w_state_q3)
-  Least novel candidate: novelty=0.068 (nearest: graph_state_q5)
-  TVH distance to variational: 0.133, to simulation: 0.143
-  DEB distance to distillation: 0.046, to entanglement: 0.242
+
+--- Strategy: Cross-Family Bridge (6 candidates) ---
+  [bridge_comm_prot]
+    Rationale: Cross-family bridge: communication <-> protocol (sim=0.937). Representatives: quantum_fingerprinting
+    Qubits: 4  Gates: 15  Depth: 10
+    Unitarity: PASS (err=1.69e-16)
+    ZX tensor preserved: YES
+    ZX size: 32V/37E raw -> 17V/17E reduced
+    Nearest: swap_test_q3 (sim=0.622)
+    Composite novelty: 0.343
+    Top motifs:
+      auto_f04916c8aa7a44346370d76d7a6e2dba    0.151
+      auto_6d593320d6f28fb41aa95382c9b803bb    0.151
+      auto_2f1baa04a7f474c79dd984f861febc32    0.151
+      nbr_6345ab7b40c9dbbba0d4a4c63c5b604d     0.145
+      syndrome_extraction_param                0.069
+
+  [bridge_dist_enta]
+    Rationale: Cross-family bridge: distillation <-> entanglement (sim=0.982). Representatives: bbpssw_distillation
+    Qubits: 4  Gates: 10  Depth: 9
+    Unitarity: PASS (err=1.11e-16)
+    ZX tensor preserved: YES
+    ZX size: 26V/30E raw -> 13V/13E reduced
+    Nearest: zne_folding_q3 (sim=0.886)
+    Composite novelty: 0.258
+    Top motifs:
+      auto_fed4704dc77489debd4991c762769a80    0.179
+      x_hub_3z_param                           0.179
+      nbr_fea6fd3ec89eef00a6fe475f581a8f56     0.098
+      auto_e6f788f36bca2b43309cccea1713d508    0.076
+      auto_4ccb9e8ec6d569fc22134c1593b42eb0    0.065
+
+  [bridge_enta_prot]
+    Rationale: Cross-family bridge: entanglement <-> protocol (sim=0.957). Representatives: ghz_state_q3, teleporta
+    Qubits: 4  Gates: 7  Depth: 7
+    Unitarity: PASS (err=5.58e-17)
+    ZX tensor preserved: YES
+    ZX size: 21V/23E raw -> 13V/13E reduced
+    Nearest: bell_state_q5 (sim=0.980)
+    Composite novelty: 0.217
+    Top motifs:
+      auto_91d4674adae9a55e1397977512c89818    0.245
+      auto_4ccb9e8ec6d569fc22134c1593b42eb0    0.245
+      syndrome_extraction                      0.143
+      syndrome_extraction_param                0.143
+      cx_pair                                  0.061
+
+  [bridge_line_mach]
+    Rationale: Cross-family bridge: machine_learning <-> linear_algebra (sim=0.991). Representatives: qgan_generato
+    Qubits: 4  Gates: 36  Depth: 16
+    Unitarity: PASS (err=1.17e-16)
+    ZX tensor preserved: YES
+    ZX size: 85V/92E raw -> 42V/62E reduced
+    Nearest: vqls_q3 (sim=0.794)
+    Composite novelty: 0.296
+    Top motifs:
+      x_hub_3z_param                           0.137
+      syndrome_extraction_param                0.056
+      auto_17110c8a7c36edfc18bf36b07ae4f2e4    0.042
+      auto_4ccb9e8ec6d569fc22134c1593b42eb0    0.042
+      auto_91d4674adae9a55e1397977512c89818    0.042
+
+  [bridge_mach_vari]
+    Rationale: Cross-family bridge: machine_learning <-> variational (sim=1.000). Representatives: data_reuploading
+    Qubits: 4  Gates: 38  Depth: 18
+    Unitarity: PASS (err=2.34e-16)
+    ZX tensor preserved: YES
+    ZX size: 82V/92E raw -> 39V/71E reduced
+    Nearest: data_reuploading_q3 (sim=0.753)
+    Composite novelty: 0.318
+    Top motifs:
+      x_hub_3z_param                           0.158
+      syndrome_extraction_param                0.066
+      nbr_c08b685e25e1cf153d8e5feb57e4ddf1     0.041
+      auto_d4c2b89a05faed5e38a8dbf3a69bcef4    0.038
+      auto_91d4674adae9a55e1397977512c89818    0.038
+
+  [bridge_prot_vari]
+    Rationale: Cross-family bridge: protocol <-> variational (sim=0.993). Representatives: swap_test_q5, vqd_q4
+    Qubits: 4  Gates: 14  Depth: 12
+    Unitarity: PASS (err=1.35e-16)
+    ZX tensor preserved: YES
+    ZX size: 31V/36E raw -> 17V/25E reduced
+    Nearest: vqe_uccsd_q4 (sim=0.895)
+    Composite novelty: 0.243
+    Top motifs:
+      auto_91d4674adae9a55e1397977512c89818    0.184
+      auto_4ccb9e8ec6d569fc22134c1593b42eb0    0.184
+      nbr_f3764a7356c68fff7bcaa4cc912c1bec     0.107
+      syndrome_extraction_param                0.107
+      syndrome_extraction                      0.092
+
+
+--- Strategy: Irreducible Composition (35 candidates) ---
+  [irr_pair01]
+    Rationale: Irreducible pair: phase_gadget_2t + phase_gadget_3t (both survive full ZX reduction)
+    Qubits: 6  Gates: 8  Depth: 8
+    Unitarity: PASS (err=3.40e-17)
+    ZX tensor preserved: YES
+    ZX size: 26V/26E raw -> 19V/19E reduced
+    Nearest: random_circuit_sampling_q3 (sim=0.848)
+    Composite novelty: 0.284
+    Top motifs:
+      syndrome_extraction_param                0.218
+      syndrome_extraction                      0.145
+      auto_91d4674adae9a55e1397977512c89818    0.109
+      x_hub_3z_param                           0.109
+      cx_pair                                  0.091
+
+  [irr_pair02]
+    Rationale: Irreducible pair: phase_gadget_2t + hadamard_sandwich (both survive full ZX reduction)
+    Qubits: 4  Gates: 6  Depth: 6
+    Unitarity: PASS (err=1.11e-16)
+    ZX tensor preserved: YES
+    ZX size: 16V/14E raw -> 12V/10E reduced
+    Nearest: bell_state_q3 (sim=0.817)
+    Composite novelty: 0.279
+    Top motifs:
+      syndrome_extraction_param                0.333
+      cx_pair                                  0.167
+      auto_55510e60cee8e707d80ee5a24639737b    0.167
+      syndrome_extraction                      0.167
+      auto_12206b7d9c57893bcd75d3ad61b45e34    0.167
+
+  [irr_pair03]
+    Rationale: Irreducible pair: phase_gadget_2t + cluster_chain (both survive full ZX reduction)
+    Qubits: 5  Gates: 6  Depth: 6
+    Unitarity: PASS (err=7.85e-17)
+    ZX tensor preserved: YES
+    ZX size: 19V/17E raw -> 15V/13E reduced
+    Nearest: bell_state_q3 (sim=0.770)
+    Composite novelty: 0.474
+    Top motifs:
+      syndrome_extraction_param                0.286
+      cx_pair                                  0.143
+      auto_55510e60cee8e707d80ee5a24639737b    0.143
+      syndrome_extraction                      0.143
+      cluster_chain                            0.143
+
+  [irr_pair04]
+    Rationale: Irreducible pair: phase_gadget_2t + auto_56c28531e8d24933b1cd4783868f1a39 (both survive full ZX redu
+    Qubits: 6  Gates: 9  Depth: 9
+    Unitarity: PASS (err=6.97e-17)
+    ZX tensor preserved: YES
+    ZX size: 26V/25E raw -> 21V/20E reduced
+    Nearest: cluster_state_q3 (sim=0.817)
+    Composite novelty: 0.463
+    Top motifs:
+      cluster_chain                            0.400
+      syndrome_extraction_param                0.200
+      cx_pair                                  0.100
+      auto_55510e60cee8e707d80ee5a24639737b    0.100
+      syndrome_extraction                      0.100
+
+  [irr_pair05]
+    Rationale: Irreducible pair: phase_gadget_2t + auto_a4116c0e9161996c346ae2d5e02595a3 (both survive full ZX redu
+    Qubits: 6  Gates: 9  Depth: 9
+    Unitarity: PASS (err=6.97e-17)
+    ZX tensor preserved: YES
+    ZX size: 26V/25E raw -> 21V/20E reduced
+    Nearest: cluster_state_q3 (sim=0.817)
+    Composite novelty: 0.463
+    Top motifs:
+      cluster_chain                            0.400
+      syndrome_extraction_param                0.200
+      cx_pair                                  0.100
+      auto_55510e60cee8e707d80ee5a24639737b    0.100
+      syndrome_extraction                      0.100
+
+  [irr_pair06]
+    Rationale: Irreducible pair: phase_gadget_2t + auto_7d224d9ecf8c5241ca0fdb53978426b9 (both survive full ZX redu
+    Qubits: 6  Gates: 9  Depth: 8
+    Unitarity: PASS (err=7.13e-17)
+    ZX tensor preserved: YES
+    ZX size: 25V/23E raw -> 21V/20E reduced
+    Nearest: random_circuit_sampling_q3 (sim=0.877)
+    Composite novelty: 0.291
+    Top motifs:
+      x_hub_3z_param                           0.231
+      syndrome_extraction_param                0.154
+      auto_55510e60cee8e707d80ee5a24639737b    0.115
+      syndrome_extraction                      0.077
+      nbr_9831919969ed8e149e26e25158305229     0.077
+
+  [irr_pair07]
+    Rationale: Irreducible pair: phase_gadget_2t + auto_4f85981043c4bce2d1d579a234e586b1 (both survive full ZX redu
+    Qubits: 6  Gates: 9  Depth: 8
+    Unitarity: PASS (err=7.89e-17)
+    ZX tensor preserved: YES
+    ZX size: 25V/23E raw -> 21V/20E reduced
+    Nearest: random_circuit_sampling_q3 (sim=0.877)
+    Composite novelty: 0.257
+    Top motifs:
+      x_hub_3z_param                           0.231
+      syndrome_extraction_param                0.154
+      auto_55510e60cee8e707d80ee5a24639737b    0.115
+      nbr_9831919969ed8e149e26e25158305229     0.077
+      cx_pair                                  0.077
+
+  [irr_pair08]
+    Rationale: Irreducible pair: phase_gadget_2t + auto_b71107166c6dbf434e12e77ee4a6088a (both survive full ZX redu
+    Qubits: 6  Gates: 8  Depth: 7
+    Unitarity: PASS (err=5.67e-17)
+    ZX tensor preserved: YES
+    ZX size: 24V/22E raw -> 19V/17E reduced
+    Nearest: bell_state_q3 (sim=0.770)
+    Composite novelty: 0.316
+    Top motifs:
+      syndrome_extraction_param                0.286
+      cx_pair                                  0.143
+      auto_55510e60cee8e707d80ee5a24639737b    0.143
+      auto_b71107166c6dbf434e12e77ee4a6088a    0.143
+      syndrome_extraction                      0.143
+
+  [irr_pair09]
+    Rationale: Irreducible pair: phase_gadget_2t + auto_610792fa287d7141ed2c6a5c053b57c0 (both survive full ZX redu
+    Qubits: 6  Gates: 9  Depth: 8
+    Unitarity: PASS (err=7.32e-17)
+    ZX tensor preserved: YES
+    ZX size: 25V/23E raw -> 21V/20E reduced
+    Nearest: random_circuit_sampling_q3 (sim=0.896)
+    Composite novelty: 0.281
+    Top motifs:
+      x_hub_3z_param                           0.300
+      syndrome_extraction_param                0.200
+      auto_55510e60cee8e707d80ee5a24639737b    0.100
+      cx_pair                                  0.100
+      syndrome_extraction                      0.100
+
+  [irr_pair10]
+    Rationale: Irreducible pair: phase_gadget_3t + hadamard_sandwich (both survive full ZX reduction)
+    Qubits: 5  Gates: 8  Depth: 8
+    Unitarity: PASS (err=7.85e-17)
+    ZX tensor preserved: YES
+    ZX size: 22V/21E raw -> 15V/12E reduced
+    Nearest: bell_state_q3 (sim=0.817)
+    Composite novelty: 0.279
+    Top motifs:
+      syndrome_extraction_param                0.333
+      cx_pair                                  0.167
+      auto_55510e60cee8e707d80ee5a24639737b    0.167
+      syndrome_extraction                      0.167
+      auto_12206b7d9c57893bcd75d3ad61b45e34    0.167
+
+  [irr_pair11]
+    Rationale: Irreducible pair: phase_gadget_3t + cluster_chain (both survive full ZX reduction)
+    Qubits: 6  Gates: 8  Depth: 8
+    Unitarity: PASS (err=6.29e-17)
+    ZX tensor preserved: YES
+    ZX size: 25V/24E raw -> 17V/15E reduced
+    Nearest: random_circuit_sampling_q3 (sim=0.876)
+    Composite novelty: 0.315
+    Top motifs:
+      x_hub_3z_param                           0.176
+      syndrome_extraction_param                0.118
+      cx_pair                                  0.088
+      auto_55510e60cee8e707d80ee5a24639737b    0.088
+      auto_8262be817a51e5c738331e20ee99a47e    0.059
+
+  [irr_pair12]
+    Rationale: Irreducible pair: phase_gadget_3t + auto_7d224d9ecf8c5241ca0fdb53978426b9 (both survive full ZX redu
+    Qubits: 6  Gates: 11  Depth: 10
+    Unitarity: PASS (err=7.20e-17)
+    ZX tensor preserved: YES
+    ZX size: 29V/29E raw -> 19V/18E reduced
+    Nearest: random_circuit_sampling_q3 (sim=0.870)
+    Composite novelty: 0.317
+    Top motifs:
+      x_hub_3z_param                           0.176
+      syndrome_extraction_param                0.118
+      auto_55510e60cee8e707d80ee5a24639737b    0.088
+      cx_pair                                  0.088
+      cluster_chain                            0.059
+
+  [irr_pair13]
+    Rationale: Irreducible pair: phase_gadget_3t + auto_4f85981043c4bce2d1d579a234e586b1 (both survive full ZX redu
+    Qubits: 6  Gates: 11  Depth: 10
+    Unitarity: PASS (err=7.89e-17)
+    ZX tensor preserved: YES
+    ZX size: 29V/29E raw -> 21V/21E reduced
+    Nearest: qft_q2 (sim=0.849)
+    Composite novelty: 0.257
+    Top motifs:
+      x_hub_3z_param                           0.214
+      syndrome_extraction_param                0.143
+      auto_55510e60cee8e707d80ee5a24639737b    0.107
+      auto_2846ca09f56b6cdde4249df5466d5a64    0.107
+      nbr_9831919969ed8e149e26e25158305229     0.071
+
+  [irr_pair14]
+    Rationale: Irreducible pair: phase_gadget_3t + auto_b71107166c6dbf434e12e77ee4a6088a (both survive full ZX redu
+    Qubits: 6  Gates: 10  Depth: 9
+    Unitarity: PASS (err=6.36e-17)
+    ZX tensor preserved: YES
+    ZX size: 28V/28E raw -> 20V/20E reduced
+    Nearest: qft_q2 (sim=0.866)
+    Composite novelty: 0.255
+    Top motifs:
+      x_hub_3z_param                           0.222
+      syndrome_extraction_param                0.148
+      auto_55510e60cee8e707d80ee5a24639737b    0.111
+      nbr_9831919969ed8e149e26e25158305229     0.074
+      cx_pair                                  0.074
+
+  [irr_pair15]
+    Rationale: Irreducible pair: phase_gadget_3t + auto_610792fa287d7141ed2c6a5c053b57c0 (both survive full ZX redu
+    Qubits: 6  Gates: 11  Depth: 10
+    Unitarity: PASS (err=7.36e-17)
+    ZX tensor preserved: YES
+    ZX size: 29V/29E raw -> 21V/21E reduced
+    Nearest: random_circuit_sampling_q3 (sim=0.849)
+    Composite novelty: 0.280
+    Top motifs:
+      x_hub_3z_param                           0.273
+      syndrome_extraction_param                0.182
+      auto_2ac61fc7342f26a9b7022fd3b507721a    0.136
+      auto_55510e60cee8e707d80ee5a24639737b    0.091
+      cx_pair                                  0.091
+
+  [irr_pair16]
+    Rationale: Irreducible pair: hadamard_sandwich + cluster_chain (both survive full ZX reduction)
+    Qubits: 4  Gates: 6  Depth: 3
+    Unitarity: PASS (err=1.67e-16)
+    ZX tensor preserved: YES
+    ZX size: 15V/12E raw -> 11V/8E reduced
+    Nearest: cluster_state_q3 (sim=1.000)
+    Composite novelty: 0.200
+    Top motifs:
+      cluster_chain                            1.000
+
+  [irr_pair17]
+    Rationale: Irreducible pair: hadamard_sandwich + auto_56c28531e8d24933b1cd4783868f1a39 (both survive full ZX re
+    Qubits: 6  Gates: 9  Depth: 6
+    Unitarity: PASS (err=5.59e-17)
+    ZX tensor preserved: YES
+    ZX size: 24V/21E raw -> 19V/16E reduced
+    Nearest: cluster_state_q3 (sim=1.000)
+    Composite novelty: 0.200
+    Top motifs:
+      cluster_chain                            1.000
+
+  [irr_pair18]
+    Rationale: Irreducible pair: hadamard_sandwich + auto_a4116c0e9161996c346ae2d5e02595a3 (both survive full ZX re
+    Qubits: 6  Gates: 9  Depth: 6
+    Unitarity: PASS (err=5.59e-17)
+    ZX tensor preserved: YES
+    ZX size: 24V/21E raw -> 19V/16E reduced
+    Nearest: cluster_state_q3 (sim=1.000)
+    Composite novelty: 0.200
+    Top motifs:
+      cluster_chain                            1.000
+
+  [irr_pair19]
+    Rationale: Irreducible pair: hadamard_sandwich + auto_7d224d9ecf8c5241ca0fdb53978426b9 (both survive full ZX re
+    Qubits: 5  Gates: 9  Depth: 5
+    Unitarity: PASS (err=1.38e-16)
+    ZX tensor preserved: YES
+    ZX size: 21V/18E raw -> 16V/13E reduced
+    Nearest: cluster_state_q3 (sim=1.000)
+    Composite novelty: 0.200
+    Top motifs:
+      cluster_chain                            1.000
+
+  [irr_pair20]
+    Rationale: Irreducible pair: hadamard_sandwich + auto_4f85981043c4bce2d1d579a234e586b1 (both survive full ZX re
+    Qubits: 5  Gates: 9  Depth: 5
+    Unitarity: PASS (err=1.38e-16)
+    ZX tensor preserved: YES
+    ZX size: 21V/18E raw -> 16V/13E reduced
+    Nearest: iqp_sampling_q5 (sim=0.857)
+    Composite novelty: 0.271
+    Top motifs:
+      auto_b71107166c6dbf434e12e77ee4a6088a    1.000
+
+  [irr_pair21]
+    Rationale: Irreducible pair: hadamard_sandwich + auto_b71107166c6dbf434e12e77ee4a6088a (both survive full ZX re
+    Qubits: 5  Gates: 8  Depth: 4
+    Unitarity: PASS (err=1.20e-16)
+    ZX tensor preserved: YES
+    ZX size: 20V/17E raw -> 15V/12E reduced
+    Nearest: iqp_sampling_q5 (sim=0.857)
+    Composite novelty: 0.271
+    Top motifs:
+      auto_b71107166c6dbf434e12e77ee4a6088a    1.000
+
+  [irr_pair22]
+    Rationale: Irreducible pair: hadamard_sandwich + auto_610792fa287d7141ed2c6a5c053b57c0 (both survive full ZX re
+    Qubits: 5  Gates: 9  Depth: 5
+    Unitarity: PASS (err=1.37e-16)
+    ZX tensor preserved: YES
+    ZX size: 21V/18E raw -> 16V/13E reduced
+    Nearest: adapt_vqe_q4 (sim=0.000)
+    Composite novelty: 0.550
+
+  [irr_pair23]
+    Rationale: Irreducible pair: cluster_chain + auto_56c28531e8d24933b1cd4783868f1a39 (both survive full ZX reduct
+    Qubits: 6  Gates: 9  Depth: 9
+    Unitarity: PASS (err=9.73e-17)
+    ZX tensor preserved: YES
+    ZX size: 25V/23E raw -> 19V/17E reduced
+    Nearest: cluster_state_q3 (sim=1.000)
+    Composite novelty: 0.200
+    Top motifs:
+      cluster_chain                            1.000
+
+  [irr_pair24]
+    Rationale: Irreducible pair: cluster_chain + auto_a4116c0e9161996c346ae2d5e02595a3 (both survive full ZX reduct
+    Qubits: 6  Gates: 9  Depth: 9
+    Unitarity: PASS (err=9.73e-17)
+    ZX tensor preserved: YES
+    ZX size: 25V/23E raw -> 19V/17E reduced
+    Nearest: cluster_state_q3 (sim=1.000)
+    Composite novelty: 0.200
+    Top motifs:
+      cluster_chain                            1.000
+
+  [irr_pair25]
+    Rationale: Irreducible pair: cluster_chain + auto_7d224d9ecf8c5241ca0fdb53978426b9 (both survive full ZX reduct
+    Qubits: 6  Gates: 9  Depth: 8
+    Unitarity: PASS (err=1.08e-16)
+    ZX tensor preserved: YES
+    ZX size: 24V/21E raw -> 19V/16E reduced
+    Nearest: iqp_sampling_q5 (sim=0.808)
+    Composite novelty: 0.323
+    Top motifs:
+      auto_b71107166c6dbf434e12e77ee4a6088a    0.500
+      cluster_chain                            0.500
+
+  [irr_pair26]
+    Rationale: Irreducible pair: cluster_chain + auto_4f85981043c4bce2d1d579a234e586b1 (both survive full ZX reduct
+    Qubits: 6  Gates: 9  Depth: 8
+    Unitarity: PASS (err=9.28e-17)
+    ZX tensor preserved: YES
+    ZX size: 24V/21E raw -> 19V/16E reduced
+    Nearest: iqp_sampling_q5 (sim=0.857)
+    Composite novelty: 0.271
+    Top motifs:
+      auto_b71107166c6dbf434e12e77ee4a6088a    1.000
+
+  [irr_pair27]
+    Rationale: Irreducible pair: cluster_chain + auto_b71107166c6dbf434e12e77ee4a6088a (both survive full ZX reduct
+    Qubits: 6  Gates: 8  Depth: 7
+    Unitarity: PASS (err=9.77e-17)
+    ZX tensor preserved: YES
+    ZX size: 23V/20E raw -> 17V/14E reduced
+    Nearest: cluster_state_q3 (sim=0.894)
+    Composite novelty: 0.487
+    Top motifs:
+      cluster_chain                            0.667
+      auto_b71107166c6dbf434e12e77ee4a6088a    0.333
+
+  [irr_pair28]
+    Rationale: Irreducible pair: cluster_chain + auto_610792fa287d7141ed2c6a5c053b57c0 (both survive full ZX reduct
+    Qubits: 6  Gates: 9  Depth: 8
+    Unitarity: PASS (err=1.25e-16)
+    ZX tensor preserved: YES
+    ZX size: 24V/21E raw -> 19V/16E reduced
+    Nearest: adapt_vqe_q4 (sim=0.000)
+    Composite novelty: 0.550
+
+  [irr_pair29]
+    Rationale: Irreducible pair: auto_7d224d9ecf8c5241ca0fdb53978426b9 + auto_4f85981043c4bce2d1d579a234e586b1 (bot
+    Qubits: 6  Gates: 12  Depth: 10
+    Unitarity: PASS (err=1.40e-16)
+    ZX tensor preserved: YES
+    ZX size: 28V/26E raw -> 20V/18E reduced
+    Nearest: iqp_sampling_q5 (sim=0.606)
+    Composite novelty: 0.366
+    Top motifs:
+      auto_b71107166c6dbf434e12e77ee4a6088a    0.500
+      hadamard_sandwich                        0.500
+
+  [irr_pair30]
+    Rationale: Irreducible pair: auto_7d224d9ecf8c5241ca0fdb53978426b9 + auto_b71107166c6dbf434e12e77ee4a6088a (bot
+    Qubits: 6  Gates: 11  Depth: 9
+    Unitarity: PASS (err=1.13e-16)
+    ZX tensor preserved: YES
+    ZX size: 27V/25E raw -> 19V/18E reduced
+    Nearest: cluster_state_q3 (sim=0.707)
+    Composite novelty: 0.386
+    Top motifs:
+      hadamard_sandwich                        0.500
+      cluster_chain                            0.500
+
+  [irr_pair31]
+    Rationale: Irreducible pair: auto_7d224d9ecf8c5241ca0fdb53978426b9 + auto_610792fa287d7141ed2c6a5c053b57c0 (bot
+    Qubits: 6  Gates: 12  Depth: 10
+    Unitarity: PASS (err=1.40e-16)
+    ZX tensor preserved: YES
+    ZX size: 28V/26E raw -> 20V/18E reduced
+    Nearest: betti_number_q4 (sim=0.018)
+    Composite novelty: 0.544
+    Top motifs:
+      auto_610792fa287d7141ed2c6a5c053b57c0    1.000
+
+  [irr_pair32]
+    Rationale: Irreducible pair: auto_4f85981043c4bce2d1d579a234e586b1 + auto_b71107166c6dbf434e12e77ee4a6088a (bot
+    Qubits: 6  Gates: 11  Depth: 9
+    Unitarity: PASS (err=1.12e-16)
+    ZX tensor preserved: YES
+    ZX size: 27V/25E raw -> 19V/17E reduced
+    Nearest: iqp_sampling_q5 (sim=0.857)
+    Composite novelty: 0.271
+    Top motifs:
+      auto_b71107166c6dbf434e12e77ee4a6088a    1.000
+
+  [irr_pair33]
+    Rationale: Irreducible pair: auto_4f85981043c4bce2d1d579a234e586b1 + auto_610792fa287d7141ed2c6a5c053b57c0 (bot
+    Qubits: 6  Gates: 12  Depth: 10
+    Unitarity: PASS (err=1.48e-16)
+    ZX tensor preserved: YES
+    ZX size: 28V/26E raw -> 20V/18E reduced
+    Nearest: betti_number_q4 (sim=0.018)
+    Composite novelty: 0.544
+    Top motifs:
+      auto_610792fa287d7141ed2c6a5c053b57c0    1.000
+
+  [irr_pair34]
+    Rationale: Irreducible pair: auto_b71107166c6dbf434e12e77ee4a6088a + auto_610792fa287d7141ed2c6a5c053b57c0 (bot
+    Qubits: 6  Gates: 11  Depth: 9
+    Unitarity: PASS (err=1.40e-16)
+    ZX tensor preserved: YES
+    ZX size: 27V/25E raw -> 19V/17E reduced
+    Nearest: betti_number_q4 (sim=0.018)
+    Composite novelty: 0.544
+    Top motifs:
+      auto_610792fa287d7141ed2c6a5c053b57c0    1.000
+
+  [irr_layered]
+    Rationale: Layered irreducible: ['phase_gadget_2t', 'hadamard_sandwich', 'cluster_chain'] in parallel, 2 layers
+    Qubits: 5  Gates: 18  Depth: 9
+    Unitarity: PASS (err=2.47e-16)
+    ZX tensor preserved: YES
+    ZX size: 34V/35E raw -> 21V/22E reduced
+    Nearest: graph_state_q4 (sim=0.671)
+    Composite novelty: 0.513
+    Top motifs:
+      cluster_chain                            0.200
+      syndrome_extraction_param                0.160
+      auto_56c28531e8d24933b1cd4783868f1a39    0.120
+      auto_55510e60cee8e707d80ee5a24639737b    0.080
+      cx_pair                                  0.080
+
+
+--- Strategy: PCA Void Filling (4 candidates) ---
+  [void_0]
+    Rationale: PCA void at (1.06, 0.92), isolation=0.892. Target motifs: ['cluster_chain', 'cx_pair', 'auto_404a108
+    Qubits: 5  Gates: 16  Depth: 11
+    Unitarity: PASS (err=1.96e-16)
+    ZX tensor preserved: YES
+    ZX size: 35V/39E raw -> 19V/26E reduced
+    Nearest: graph_state_q4 (sim=0.756)
+    Composite novelty: 0.431
+    Top motifs:
+      cluster_chain                            0.224
+      auto_56c28531e8d24933b1cd4783868f1a39    0.134
+      auto_8262be817a51e5c738331e20ee99a47e    0.119
+      auto_29b7cda4b1e32f0b0ad39a4ffdd17fb3    0.090
+      auto_404a1083ce742d80c7e014eaad7db875    0.075
+
+  [void_1]
+    Rationale: PCA void at (0.99, 0.92), isolation=0.859. Target motifs: ['cluster_chain', 'cx_pair', 'auto_404a108
+    Qubits: 5  Gates: 16  Depth: 11
+    Unitarity: PASS (err=1.96e-16)
+    ZX tensor preserved: YES
+    ZX size: 35V/39E raw -> 19V/26E reduced
+    Nearest: graph_state_q4 (sim=0.756)
+    Composite novelty: 0.431
+    Top motifs:
+      cluster_chain                            0.224
+      auto_56c28531e8d24933b1cd4783868f1a39    0.134
+      auto_8262be817a51e5c738331e20ee99a47e    0.119
+      auto_29b7cda4b1e32f0b0ad39a4ffdd17fb3    0.090
+      auto_404a1083ce742d80c7e014eaad7db875    0.075
+
+  [void_2]
+    Rationale: PCA void at (0.93, 0.92), isolation=0.818. Target motifs: ['cluster_chain', 'cx_pair', 'auto_404a108
+    Qubits: 5  Gates: 16  Depth: 13
+    Unitarity: PASS (err=1.96e-16)
+    ZX tensor preserved: YES
+    ZX size: 35V/39E raw -> 17V/20E reduced
+    Nearest: element_distinctness_q5 (sim=0.754)
+    Composite novelty: 0.386
+    Top motifs:
+      cluster_chain                            0.155
+      auto_56c28531e8d24933b1cd4783868f1a39    0.093
+      x_hub_3z_param                           0.093
+      auto_fed4704dc77489debd4991c762769a80    0.093
+      auto_e6f788f36bca2b43309cccea1713d508    0.093
+
+  [void_3]
+    Rationale: PCA void at (1.06, 0.84), isolation=0.815. Target motifs: ['cluster_chain', 'cx_pair', 'auto_404a108
+    Qubits: 5  Gates: 16  Depth: 11
+    Unitarity: PASS (err=1.96e-16)
+    ZX tensor preserved: YES
+    ZX size: 35V/39E raw -> 19V/26E reduced
+    Nearest: graph_state_q4 (sim=0.756)
+    Composite novelty: 0.431
+    Top motifs:
+      cluster_chain                            0.224
+      auto_56c28531e8d24933b1cd4783868f1a39    0.134
+      auto_8262be817a51e5c738331e20ee99a47e    0.119
+      auto_29b7cda4b1e32f0b0ad39a4ffdd17fb3    0.090
+      auto_404a1083ce742d80c7e014eaad7db875    0.075
+
+
+--- Top 10 by Composite Novelty ---
+   1. irr_pair22                          novelty=0.550  strategy=irreducible
+   2. irr_pair28                          novelty=0.550  strategy=irreducible
+   3. irr_pair31                          novelty=0.544  strategy=irreducible
+   4. irr_pair33                          novelty=0.544  strategy=irreducible
+   5. irr_pair34                          novelty=0.544  strategy=irreducible
+   6. irr_layered                         novelty=0.513  strategy=irreducible
+   7. irr_pair27                          novelty=0.487  strategy=irreducible
+   8. irr_pair03                          novelty=0.474  strategy=irreducible
+   9. irr_pair04                          novelty=0.463  strategy=irreducible
+  10. irr_pair05                          novelty=0.463  strategy=irreducible
+
+--- Legacy Comparison (old TVH/DEB/ICC) ---
+   1. irr_pair22                          novelty=0.550
+   2. irr_pair28                          novelty=0.550
+   3. irr_pair31                          novelty=0.544
+   4. irr_pair33                          novelty=0.544
+   5. irr_pair34                          novelty=0.544
+   6. irr_layered                         novelty=0.513
+   7. legacy_icc                          novelty=0.511 [LEGACY]
+   8. irr_pair27                          novelty=0.487
+   9. legacy_tvh                          novelty=0.486 [LEGACY]
+  10. irr_pair03                          novelty=0.474
+  11. legacy_deb                          novelty=0.474 [LEGACY]
+  12. irr_pair04                          novelty=0.463
+  13. irr_pair05                          novelty=0.463
+  14. void_0                              novelty=0.431
+  15. void_1                              novelty=0.431
+  16. void_3                              novelty=0.431
+  17. irr_pair30                          novelty=0.386
+  18. void_2                              novelty=0.386
+  19. irr_pair29                          novelty=0.366
+  20. bridge_comm_prot                    novelty=0.343
+  21. covgap_cryptography                 novelty=0.340
+  22. irr_pair25                          novelty=0.323
+  23. bridge_mach_vari                    novelty=0.318
+  24. irr_pair12                          novelty=0.317
+  25. irr_pair08                          novelty=0.316
+  26. irr_pair11                          novelty=0.315
+  27. bridge_line_mach                    novelty=0.296
+  28. irr_pair06                          novelty=0.291
+  29. irr_pair01                          novelty=0.284
+  30. irr_pair09                          novelty=0.281
+  31. irr_pair15                          novelty=0.280
+  32. irr_pair02                          novelty=0.279
+  33. irr_pair10                          novelty=0.279
+  34. irr_pair20                          novelty=0.271
+  35. irr_pair21                          novelty=0.271
+  36. irr_pair26                          novelty=0.271
+  37. irr_pair32                          novelty=0.271
+  38. covgap_distillation                 novelty=0.266
+  39. bridge_dist_enta                    novelty=0.258
+  40. irr_pair07                          novelty=0.257
+  41. irr_pair13                          novelty=0.257
+  42. irr_pair14                          novelty=0.255
+  43. covgap_sampling                     novelty=0.250
+  44. bridge_prot_vari                    novelty=0.243
+  45. bridge_enta_prot                    novelty=0.217
+  46. irr_pair16                          novelty=0.200
+  47. irr_pair17                          novelty=0.200
+  48. irr_pair18                          novelty=0.200
+  49. irr_pair19                          novelty=0.200
+  50. irr_pair23                          novelty=0.200
+  51. irr_pair24                          novelty=0.200
 
 ======================================================================
 Outputs saved to: /Users/churchill/GitHub/zx-diagram-components/scripts/output/discovery
