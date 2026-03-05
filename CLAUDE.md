@@ -54,6 +54,14 @@ These are the non-obvious behaviors of PyZX 0.9.x that have caused bugs in this 
 - **`Graph.compose(other)` mutates self** and requires each boundary vertex to have exactly one neighbor. The composer falls back to manual vertex remapping (`_compose_manual`) when this fails.
 - **Qiskit QASM export:** use `qiskit.qasm2.dumps(qc)`, not the removed `qc.qasm()`.
 
+## Registry
+
+`registry.py` contains 78 algorithm generators across 19 families: entanglement, protocol, oracle, transform, variational, error_correction, simulation, arithmetic, distillation, machine_learning, linear_algebra, cryptography, sampling, error_mitigation, topological, metrology, differential_equations, tda, communication.
+
+All generators follow the signature `make_X(n_qubits=N, **kwargs) -> QuantumCircuit` and use only QASM2-compatible gates (h, x, y, z, s, sdg, t, tdg, cx, cz, cp, rx, ry, rz, swap). Multi-controlled gates (mcx with >2 controls) are forbidden — use `_decompose_toffoli(qc, c0, c1, t)` instead. The `_bell_pair(qc, q0, q1)` helper creates Bell pairs. Reuse `make_qft` for QFT subcircuits.
+
+REGISTRY entries are grouped by family with section comments. Each entry specifies `(min_qubits, max_qubits)` where min >= 2.
+
 ## Key Conventions
 
 - Motif matching uses coarsened phase classes (not exact phases) for structural similarity. Semantic equivalence is confirmed separately via `zx.compare_tensors()`.

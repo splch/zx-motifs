@@ -58,7 +58,7 @@ warnings.filterwarnings("ignore")
 OUTPUT_DIR = Path(__file__).resolve().parent / "output"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
-# Colour palette for the 10 families
+# Colour palette for algorithm families
 FAMILY_COLOURS = {
     "oracle": "#e41a1c",
     "entanglement": "#377eb8",
@@ -70,6 +70,15 @@ FAMILY_COLOURS = {
     "transform": "#999999",
     "arithmetic": "#66c2a5",
     "machine_learning": "#e6ab02",
+    "linear_algebra": "#1b9e77",
+    "cryptography": "#d95f02",
+    "sampling": "#7570b3",
+    "error_mitigation": "#e7298a",
+    "topological": "#66a61e",
+    "metrology": "#e6ab02",
+    "differential_equations": "#a6761d",
+    "tda": "#666666",
+    "communication": "#1f78b4",
 }
 
 

@@ -77,6 +77,15 @@ FAMILY_COLOURS = {
     "transform": "#999999",
     "arithmetic": "#66c2a5",
     "machine_learning": "#e6ab02",
+    "linear_algebra": "#1b9e77",
+    "cryptography": "#d95f02",
+    "sampling": "#7570b3",
+    "error_mitigation": "#e7298a",
+    "topological": "#66a61e",
+    "metrology": "#e6ab02",
+    "differential_equations": "#a6761d",
+    "tda": "#666666",
+    "communication": "#1f78b4",
 }
 
 CANDIDATE_COLOURS = {

@@ -30,16 +30,25 @@ Qiskit Circuits ──► ZX Diagrams ──► Labeled Graphs ──► Motif D
 
 | Family | Algorithms |
 |--------|-----------|
-| Entanglement | Bell state, GHZ state, W state, Cluster state |
-| Protocol | Teleportation, Superdense coding, Entanglement swapping |
-| Transform | QFT, Phase Estimation |
-| Oracle | Grover, Bernstein-Vazirani, Deutsch-Jozsa, Simon, Quantum counting |
-| Variational | QAOA MaxCut, VQE UCCSD fragment, Hardware-efficient ansatz |
-| Error Correction | Bit-flip code, Phase-flip code, Steane code, Shor code |
-| Simulation | Trotter Ising, Trotter Heisenberg, Quantum walk |
-| Arithmetic | Ripple-carry adder, QFT adder |
+| Entanglement | Bell state, GHZ state, W state, Cluster state, Dicke state, Graph state (star) |
+| Protocol | Teleportation, Superdense coding, Entanglement swapping, Swap test |
+| Oracle | Grover, Bernstein-Vazirani, Deutsch-Jozsa, Simon, Quantum counting, Deutsch, Hidden shift, Element distinctness, Quantum walk search |
+| Transform | QFT, Phase Estimation, Iterative QPE, Amplitude Estimation |
+| Variational | QAOA MaxCut, VQE UCCSD fragment, Hardware-efficient ansatz, ADAPT-VQE, VQD, Recursive QAOA, VarQITE, QAOA weighted, Quantum Boltzmann machine |
+| Error Correction | Bit-flip code, Phase-flip code, Steane code, Shor code, Five-qubit code, Surface code patch, Color code, Bacon-Shor code, Reed-Muller code |
+| Simulation | Trotter Ising, Trotter Heisenberg, Quantum walk, qDRIFT, Higher-order Trotter, Hubbard Trotter, CTQW, VQS real-time |
+| Arithmetic | Ripple-carry adder, QFT adder, Quantum multiplier, Quantum comparator |
 | Distillation | BBPSSW, DEJMPS, Recurrence, Pumping |
-| Machine Learning | Quantum kernel, Data re-uploading |
+| Machine Learning | Quantum kernel, Data re-uploading, QSVM, QCNN, QGAN generator, Quantum autoencoder |
+| Linear Algebra | HHL, VQLS |
+| Cryptography | BB84 encode, E91 protocol |
+| Sampling | IQP sampling, Random circuit sampling |
+| Error Mitigation | ZNE folding, Pauli twirling |
+| Topological | Jones polynomial, Toric code syndrome |
+| Metrology | GHZ metrology, Quantum Fisher information |
+| Differential Equations | Poisson solver |
+| TDA | Betti number estimation |
+| Communication | Quantum fingerprinting |
 
 ## Setup
 
