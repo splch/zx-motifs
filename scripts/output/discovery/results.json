@@ -1,0 +1,239 @@
+{
+  "validations": {
+    "trotter_variational_hybrid": {
+      "name": "trotter_variational_hybrid",
+      "n_qubits": 4,
+      "n_gates": 60,
+      "depth": 31,
+      "is_unitary": true,
+      "unitarity_error": 1.0571944071151216e-15,
+      "has_valid_io": true,
+      "zx_vertices_raw": 86,
+      "zx_edges_raw": 100,
+      "zx_vertices_reduced": 27,
+      "zx_edges_reduced": 55,
+      "tensors_match": true
+    },
+    "distillation_entanglement_bridge": {
+      "name": "distillation_entanglement_bridge",
+      "n_qubits": 4,
+      "n_gates": 12,
+      "depth": 6,
+      "is_unitary": true,
+      "unitarity_error": 1.9455355685039679e-16,
+      "has_valid_io": true,
+      "zx_vertices_raw": 33,
+      "zx_edges_raw": 34,
+      "zx_vertices_reduced": 20,
+      "zx_edges_reduced": 19,
+      "tensors_match": true
+    },
+    "irreducible_core_circuit": {
+      "name": "irreducible_core_circuit",
+      "n_qubits": 4,
+      "n_gates": 39,
+      "depth": 20,
+      "is_unitary": true,
+      "unitarity_error": 7.6416940510624355e-16,
+      "has_valid_io": true,
+      "zx_vertices_raw": 63,
+      "zx_edges_raw": 75,
+      "zx_vertices_reduced": 19,
+      "zx_edges_reduced": 28,
+      "tensors_match": true
+    }
+  },
+  "placement": {
+    "trotter_variational_hybrid_q4": {
+      "nearest_algorithm": "cluster_state_q3",
+      "nearest_family": "entanglement",
+      "nearest_similarity": 0.7434,
+      "closest_family": "entanglement",
+      "family_distances": {
+        "arithmetic": 0.2193,
+        "distillation": 0.202,
+        "entanglement": 0.0926,
+        "error_correction": 0.1977,
+        "machine_learning": 0.2174,
+        "oracle": 0.2049,
+        "protocol": 0.3594,
+        "simulation": 0.2011,
+        "transform": 0.2027,
+        "variational": 0.178
+      },
+      "novelty_score": 0.2566,
+      "pca_coords": [
+        0.15452955042969668,
+        0.003063869984958202
+      ],
+      "top_motifs": [
+        [
+          "cluster_chain",
+          0.20189274447949526
+        ],
+        [
+          "x_hub_3z_param",
+          0.07570977917981073
+        ],
+        [
+          "syndrome_extraction_param",
+          0.07570977917981073
+        ],
+        [
+          "syndrome_extraction",
+          0.056782334384858045
+        ],
+        [
+          "auto_7d495f0205427371fcb334bb4d0d0513",
+          0.056782334384858045
+        ],
+        [
+          "nbr_f3764a7356c68fff7bcaa4cc912c1bec",
+          0.04416403785488959
+        ],
+        [
+          "cx_pair",
+          0.04100946372239748
+        ],
+        [
+          "auto_404a1083ce742d80c7e014eaad7db875",
+          0.04100946372239748
+        ],
+        [
+          "auto_0ca20755a855b01e4fd4ae848c2fbf66",
+          0.04100946372239748
+        ],
+        [
+          "auto_91d4674adae9a55e1397977512c89818",
+          0.03785488958990536
+        ]
+      ]
+    },
+    "distillation_entanglement_bridge_q4": {
+      "nearest_algorithm": "w_state_q3",
+      "nearest_family": "entanglement",
+      "nearest_similarity": 0.3461,
+      "closest_family": "simulation",
+      "family_distances": {
+        "arithmetic": 0.0766,
+        "distillation": 0.0436,
+        "entanglement": 0.222,
+        "error_correction": 0.0472,
+        "machine_learning": 0.0673,
+        "oracle": 0.0678,
+        "protocol": 0.2979,
+        "simulation": 0.0174,
+        "transform": 0.0506,
+        "variational": 0.0325
+      },
+      "novelty_score": 0.6539,
+      "pca_coords": [
+        -0.027190193951536358,
+        -0.030316654029033597
+      ],
+      "top_motifs": [
+        [
+          "nbr_bf89b33727a327bdcb3142f36bd2d6f7",
+          0.18181818181818182
+        ],
+        [
+          "nbr_7c5c4035b383abf03295d7a6cd48011b",
+          0.18181818181818182
+        ],
+        [
+          "nbr_f57af3eca06e42716bd2a4aa34d0a2aa",
+          0.18181818181818182
+        ],
+        [
+          "auto_9e22a2a296a17ee1f8bb857afaececd4",
+          0.13636363636363635
+        ],
+        [
+          "auto_96ea930299ed1b7ec7a99f444341bc9c",
+          0.09090909090909091
+        ],
+        [
+          "syndrome_extraction_param",
+          0.09090909090909091
+        ],
+        [
+          "auto_e6e45adbf85456de823e7822cbd19e50",
+          0.045454545454545456
+        ],
+        [
+          "cx_pair",
+          0.045454545454545456
+        ],
+        [
+          "nbr_554631d374cfacc4077e2dae8c0840a2",
+          0.045454545454545456
+        ]
+      ]
+    },
+    "irreducible_core_circuit_q4": {
+      "nearest_algorithm": "trotter_heisenberg_q2",
+      "nearest_family": "simulation",
+      "nearest_similarity": 0.641,
+      "closest_family": "entanglement",
+      "family_distances": {
+        "arithmetic": 0.223,
+        "distillation": 0.1528,
+        "entanglement": 0.0698,
+        "error_correction": 0.1939,
+        "machine_learning": 0.2168,
+        "oracle": 0.1431,
+        "protocol": 0.2581,
+        "simulation": 0.1697,
+        "transform": 0.1989,
+        "variational": 0.1709
+      },
+      "novelty_score": 0.359,
+      "pca_coords": [
+        0.08774336068491542,
+        0.07949972719502574
+      ],
+      "top_motifs": [
+        [
+          "cluster_chain",
+          0.14925373134328357
+        ],
+        [
+          "auto_404a1083ce742d80c7e014eaad7db875",
+          0.12686567164179105
+        ],
+        [
+          "cx_pair",
+          0.1044776119402985
+        ],
+        [
+          "syndrome_extraction_param",
+          0.08955223880597014
+        ],
+        [
+          "x_hub_3z_param",
+          0.08955223880597014
+        ],
+        [
+          "auto_55510e60cee8e707d80ee5a24639737b",
+          0.07462686567164178
+        ],
+        [
+          "auto_c0e8e88cff208f04140640955bcb0657",
+          0.06716417910447761
+        ],
+        [
+          "auto_e6f788f36bca2b43309cccea1713d508",
+          0.05970149253731343
+        ],
+        [
+          "auto_16061487470b9819df308cc2cbf396e4",
+          0.04477611940298507
+        ],
+        [
+          "syndrome_extraction",
+          0.04477611940298507
+        ]
+      ]
+    }
+  }
+}

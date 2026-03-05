@@ -1,0 +1,68 @@
+======================================================================
+QUANTUM ALGORITHM DISCOVERY VIA ZX MOTIF PHYLOGENY
+======================================================================
+
+Method: Identified structural gaps in ZX motif fingerprint PCA space.
+Constructed 3 candidate algorithms by composing motifs data-driven.
+Validated unitarity and ZX tensor preservation.
+
+--- Trotter-Variational Hybrid (TVH) ---
+  Exploits 93% QAOA-Trotter similarity. Trotter ZZ backbone + cluster_chain + hadamard_sandwich (both survive full ZX reduction) + QAOA-style variational mixer.
+  Qubits: 4  Gates: 60  Depth: 31
+  Unitarity: PASS (error: 1.06e-15)
+  ZX tensor preserved: YES
+  ZX size: 86V/100E raw -> 27V/55E reduced
+  Nearest algorithm: cluster_state_q3 (sim=0.743)
+  Closest family: entanglement
+  Novelty score: 0.257 (1=completely novel)
+  PCA coords: (0.155, 0.003)
+  Top motifs:
+    cluster_chain                            0.202
+    x_hub_3z_param                           0.076
+    syndrome_extraction_param                0.076
+    syndrome_extraction                      0.057
+    auto_7d495f0205427371fcb334bb4d0d0513    0.057
+
+--- Distillation-Entanglement Bridge (DEB) ---
+  Exploits 99% BBPSSW-GHZ similarity. Parameterised interpolation between GHZ fan-out and bilateral-CNOT distillation. Targets the 61% distillation coverage gap.
+  Qubits: 4  Gates: 12  Depth: 6
+  Unitarity: PASS (error: 1.95e-16)
+  ZX tensor preserved: YES
+  ZX size: 33V/34E raw -> 20V/19E reduced
+  Nearest algorithm: w_state_q3 (sim=0.346)
+  Closest family: simulation
+  Novelty score: 0.654 (1=completely novel)
+  PCA coords: (-0.027, -0.030)
+  Top motifs:
+    nbr_bf89b33727a327bdcb3142f36bd2d6f7     0.182
+    nbr_7c5c4035b383abf03295d7a6cd48011b     0.182
+    nbr_f57af3eca06e42716bd2a4aa34d0a2aa     0.182
+    auto_9e22a2a296a17ee1f8bb857afaececd4    0.136
+    auto_96ea930299ed1b7ec7a99f444341bc9c    0.091
+
+--- Irreducible Core Circuit (ICC) ---
+  Built only from the 4 motifs surviving full ZX reduction: phase_gadget_2t, phase_gadget_3t, hadamard_sandwich, cluster_chain. No existing algorithm is designed around ZX-irreducible primitives.
+  Qubits: 4  Gates: 39  Depth: 20
+  Unitarity: PASS (error: 7.64e-16)
+  ZX tensor preserved: YES
+  ZX size: 63V/75E raw -> 19V/28E reduced
+  Nearest algorithm: trotter_heisenberg_q2 (sim=0.641)
+  Closest family: entanglement
+  Novelty score: 0.359 (1=completely novel)
+  PCA coords: (0.088, 0.079)
+  Top motifs:
+    cluster_chain                            0.149
+    auto_404a1083ce742d80c7e014eaad7db875    0.127
+    cx_pair                                  0.104
+    syndrome_extraction_param                0.090
+    x_hub_3z_param                           0.090
+
+--- Key Findings ---
+  Most novel candidate: novelty=0.654 (nearest: w_state_q3)
+  Least novel candidate: novelty=0.257 (nearest: cluster_state_q3)
+  TVH distance to variational: 0.178, to simulation: 0.201
+  DEB distance to distillation: 0.044, to entanglement: 0.222
+
+======================================================================
+Outputs saved to: /Users/churchill/GitHub/zx-diagram-components/scripts/output/discovery
+======================================================================
