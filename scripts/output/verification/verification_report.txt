@@ -1,0 +1,162 @@
+================================================================================
+VQE RESULT VERIFICATION REPORT
+================================================================================
+
+Target: irr_pair11_q6 6q heisenberg
+Original finding: 0.0670 error, +0.4317 improvement over baselines
+Elapsed: 6403.0s
+
+================================================================================
+PHASE 1: IS THE RESULT REAL?
+================================================================================
+
+1.1 Circuit Identity:
+  4q: 12 gates, 10 2Q, depth=10
+  6q: 12 gates, 10 2Q, depth=8
+  8q: 12 gates, 10 2Q, depth=10
+
+1.2 Optimizer Sensitivity:
+  COBYLA: candidate WINS
+  L-BFGS-B: candidate WINS
+  Nelder-Mead: candidate WINS
+  Powell: candidate WINS
+  SPSA: candidate WINS
+  Wins all optimizers: True
+
+1.3 Statistical Significance:
+  Candidate mean error: 0.0848 ± 0.0346
+  Baseline mean error:  0.4988 ± 0.0001
+  p-value: 0.000000
+  Cohen's d: 16.928
+  95% CI for improvement: [0.3118, 0.4314]
+  Significant at 0.05: True
+  Note: Each trial uses 10 restarts / 400 iter (reduced from 40/800 deep benchmark).
+  Absolute errors are higher but comparison is valid (same settings for both).
+
+1.4 Reproducibility:
+  Mean error across seeds: 0.0676 ± 0.0007
+  Consistent: True
+
+1.5 Full HEA Baseline:
+  Candidate error: 0.0670
+  Full HEA error:  0.1719
+  Beats full HEA: True
+
+================================================================================
+PHASE 2: WHY DOES IT WORK?
+================================================================================
+
+2.1 Circuit Structure:
+  Pattern: sparse, 8 unique edges
+  Gates: 12 (2 1Q, 10 2Q), depth=8
+
+2.2 Entangler Hamiltonian:
+  Heisenberg cosine similarity: 0.0346
+  XX+YY+ZZ ratio: 0.0099
+  N-body distribution: {'1': 0.5753908557423151, '2': 3.270963856085427, '3': 9.697054028346935, '4': 18.337705964491224, '5': 20.074142546038658, '6': 9.683801083969929}
+
+2.3 Entanglement Structure:
+  Concurrence correlation with GS: 0.9969
+  GS half-cut entropy: 1.0263
+  VQE half-cut entropy: 1.0000
+
+2.5 Gradient Variance (barren plateau indicator):
+  candidate: mean=0.235801, min=0.037725
+  cx_chain: mean=0.119177, min=0.029239
+  hea: mean=0.414431, min=0.166252
+
+2.6 Expressibility:
+  KL divergence from Haar: 0.0225
+
+================================================================================
+PHASE 3: LIMITS
+================================================================================
+
+3.1 Qubit Scaling:
+  4q_heisenberg: cand=0.2789 cx=0.2843 hea=0.2703 [loses]
+  4q_tfim: cand=0.0492 cx=0.0518 hea=0.0429 [loses]
+  5q_heisenberg: cand=0.1837 cx=0.2668 hea=0.0919 [loses]
+  5q_tfim: cand=0.0527 cx=0.0477 hea=0.0360 [loses]
+  6q_heisenberg: cand=0.0704 cx=0.4987 hea=0.1702 [WINS]
+  6q_tfim: cand=0.0466 cx=0.0540 hea=0.0289 [loses]
+  7q_heisenberg: cand=0.1655 cx=0.3266 hea=0.1068 [loses]
+  7q_tfim: cand=0.0364 cx=0.0392 hea=0.0294 [loses]
+  8q_heisenberg: cand=0.2661 cx=0.2661 hea=0.1724 [loses]
+  8q_tfim: cand=0.0394 cx=0.0329 hea=0.0259 [loses]
+
+3.2 Hamiltonian Generality (6q):
+  heisenberg: cand=0.0704 cx=0.4987 hea=0.1702
+  tfim: cand=0.0466 cx=0.0540 hea=0.0289
+  xy: cand=0.1075 cx=0.2845 hea=0.1050
+  xxz: cand=0.0911 cx=0.4042 hea=0.1447
+  random_2local: cand=0.0688 cx=0.1524 hea=0.0405
+
+3.3 Layer Depth:
+  1_layers: error=0.0704 (24 params)
+  2_layers: error=0.0404 (36 params)
+  3_layers: error=0.0558 (48 params)
+  4_layers: error=0.1015 (60 params)
+
+================================================================================
+PHASE 4: STRONGER BASELINES
+================================================================================
+Full HEA, QAOA-flex, HVA-Heisenberg use fully variational parameters.
+Random circuits are constrained to the candidate's qubit connectivity.
+
+Candidate rank: 2 / 27
+Random circuits: mean=0.2546 ± 0.0569
+
+  Name                              Error   Params
+  ------------------------------------------------
+  hva_heisenberg                   0.0554       39
+  candidate                        0.0670       24 <--
+  shuffled_candidate               0.0790       24
+  qaoa_flex                        0.0964       35
+  full_hea_2L                      0.1697       36
+  hea_cz_brick                     0.4987       24
+  cx_chain                         0.4987       24
+
+================================================================================
+PHASE 5: STRUCTURAL ORIGIN
+================================================================================
+
+5.1 Motif Ablation:
+  Full circuit error: 0.0704
+  Remove x_hub_3z_param: +0.0792 CRITICAL
+  Remove syndrome_extraction_param: +0.0032
+  Remove cx_pair: +0.0033
+  Remove auto_55510e60cee8e707d80ee5a24639737b: +0.2038 CRITICAL
+  Remove auto_12206b7d9c57893bcd75d3ad61b45e34: +0.1309 CRITICAL
+
+5.2 Gate Ablation:
+  Full circuit error: 0.0704
+  Remove cx q[1, 0]: +-0.0045
+  Remove cx q[2, 0]: +-0.0065
+  Remove cx q[3, 0]: +0.0889 CRITICAL
+  Remove cx q[1, 2]: +-0.0162
+  Remove cx q[1, 3]: +-0.0023
+  Remove cx q[2, 3]: +0.0033
+  Remove cx q[3, 4]: +0.0094
+  Remove cx q[4, 5]: +0.1714 CRITICAL
+  Remove cx q[0, 1]: +0.1296 CRITICAL
+  Remove cx q[1, 2]: +-0.0080
+
+5.4 Entanglement Pathway:
+  Entropy: 0 -> -0.0000 over 12 gates
+
+================================================================================
+VERDICT
+================================================================================
+
+EVIDENCE FOR genuine advantage:
+  + Statistically significant (p=0.0000)
+  + Advantage holds across all 5 optimizers
+  + Reproducible across seeds
+  + Beats proper full HEA baseline
+  + Ranks #2 among 27 circuits
+
+CONCLUSION: Result appears GENUINE. Proceed with further investigation.
+
+================================================================================
+Outputs: /Users/churchill/GitHub/zx-diagram-components/scripts/output/verification
+================================================================================
