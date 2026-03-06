@@ -15,17 +15,17 @@ class PipelineConfig:
     # -- Corpus building --
 
     # Upper bound on qubit count when generating algorithm instances for the
-    # corpus.  Larger values yield richer graphs but increase conversion and
+    # corpus. Larger values yield richer graphs but increase conversion and
     # matching time roughly quadratically.
     max_qubits: int = 9
 
     # -- Bottom-up motif discovery --
 
-    # Minimum number of nodes a candidate motif must have.  Motifs with fewer
+    # Minimum number of nodes a candidate motif must have. Motifs with fewer
     # nodes (e.g. a single spider) are too generic to be informative.
     min_motif_size: int = 3
 
-    # Maximum number of nodes in a candidate motif.  Larger subgraphs are
+    # Maximum number of nodes in a candidate motif. Larger subgraphs are
     # exponentially more expensive to enumerate and rarely recur across
     # different algorithms.
     max_motif_size: int = 7
@@ -49,7 +49,7 @@ class PipelineConfig:
     # -- Fingerprinting --
 
     # Maximum motif matches counted per (algorithm, simplification_level)
-    # pair when building fingerprint vectors.  Capping this avoids
+    # pair when building fingerprint vectors. Capping this avoids
     # disproportionate weight from highly repetitive structures.
     fingerprint_max_matches: int = 50
 
@@ -106,7 +106,7 @@ class PipelineConfig:
 
     # -- Optimizer --
 
-    # Target upper bound on library size after redundancy pruning.  Keeps
+    # Target upper bound on library size after redundancy pruning. Keeps
     # the fingerprint matrix manageable for downstream classifiers.
     optimizer_max_library_size: int = 30
 
