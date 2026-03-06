@@ -222,32 +222,10 @@ def find_motif_across_corpus(
     Search for a motif across all algorithm graphs at a given level.
     Populates pattern.occurrences with MotifMatch objects.
     """
-    pattern.occurrences = []
-
-    for (algo_name, level), host_graph in corpus.items():
-        if level != target_level:
-            continue
-
-        matches = find_motif_in_graph(
-            pattern.graph,
-            host_graph,
-            max_matches=max_matches_per_graph,
-        )
-
-        for m in matches:
-            pattern.occurrences.append(
-                MotifMatch(
-                    motif_id=pattern.motif_id,
-                    host_algorithm=algo_name,
-                    host_level=level,
-                    mapping=m,
-                    matched_node_types=[
-                        host_graph.nodes[v]["vertex_type"] for v in m.values()
-                    ],
-                )
-            )
-
-    return pattern
+    return find_motif_across_corpus_multilevel(
+        pattern, corpus, levels=[target_level],
+        max_matches_per_graph=max_matches_per_graph,
+    )
 
 
 def find_motif_across_corpus_multilevel(

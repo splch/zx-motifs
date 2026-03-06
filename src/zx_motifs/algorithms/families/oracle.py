@@ -4,24 +4,7 @@ import numpy as np
 from qiskit import QuantumCircuit
 
 from zx_motifs.algorithms._registry_core import register_algorithm
-
-
-def _decompose_to_basic_gates(qc: QuantumCircuit) -> QuantumCircuit:
-    """Decompose a circuit to basic gates that PyZX can parse via QASM2.
-
-    Repeatedly decomposes until only basic gates remain (cx, h, t, tdg, s, sdg,
-    x, y, z, rz, ry, rx, id, cz, cp, swap, ccx, etc. that QASM2/PyZX supports).
-    For large MCX gates (5+ controls), Qiskit emits custom QASM gate definitions
-    that PyZX cannot parse. This function ensures full decomposition.
-    """
-    from qiskit.transpiler.preset_passmanagers import generate_preset_pass_manager
-
-    pm = generate_preset_pass_manager(
-        optimization_level=0,
-        basis_gates=["cx", "h", "t", "tdg", "s", "sdg", "x", "y", "z",
-                      "rz", "ry", "rx", "id"],
-    )
-    return pm.run(qc)
+from zx_motifs.algorithms._helpers import decompose_to_basic_gates
 
 
 @register_algorithm(
@@ -60,7 +43,7 @@ def make_grover(n_qubits=3, marked_state=0, n_iterations=1, **kwargs) -> Quantum
 
     # Decompose MCX gates to basic gates so PyZX can parse the QASM2 output.
     # Without this, MCX with 5+ controls emits custom gate defs that PyZX rejects.
-    return _decompose_to_basic_gates(qc)
+    return decompose_to_basic_gates(qc)
 
 
 @register_algorithm(

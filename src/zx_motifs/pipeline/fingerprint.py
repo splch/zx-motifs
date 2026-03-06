@@ -13,7 +13,7 @@ from zx_motifs.pipeline.featurizer import pyzx_to_networkx
 from zx_motifs.pipeline.matcher import MotifPattern, find_motif_in_graph
 from zx_motifs.pipeline.motif_generators import (
     EXTENDED_MOTIFS,
-    _is_isomorphic,
+    is_isomorphic,
     find_neighborhood_motifs,
     find_recurring_subgraphs,
     wl_hash,
@@ -88,7 +88,7 @@ def discover_motifs(corpus: dict) -> list[MotifPattern]:
             h = wl_hash(mp.graph)
             if h in seen_hashes:
                 existing = all_motifs[seen_hashes[h]]
-                if _is_isomorphic(mp.graph, existing.graph):
+                if is_isomorphic(mp.graph, existing.graph):
                     continue
             seen_hashes[h] = len(all_motifs)
             all_motifs.append(mp)

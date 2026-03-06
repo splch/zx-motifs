@@ -85,6 +85,8 @@ def track_motif_evolution(
             sg_vec = compute_motif_feature_vector(sg)
             sim = motif_similarity(motif_vec, sg_vec)
             best_sim = max(best_sim, sim)
+            if best_sim >= transform_threshold:
+                break
 
         if best_sim >= transform_threshold:
             evo.transforms_at.append(level)

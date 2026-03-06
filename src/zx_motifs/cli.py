@@ -34,7 +34,7 @@ from zx_motifs.algorithms._registry_core import register_algorithm
 @register_algorithm(
     name="{name}",
     family="{family}",
-    qubit_range=(2, 8),
+    qubit_range=(2, None),
     tags=[],
     description="TODO: describe this algorithm",
 )

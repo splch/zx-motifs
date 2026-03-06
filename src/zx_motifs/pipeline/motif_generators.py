@@ -209,19 +209,6 @@ def make_trotter_layer_motif() -> MotifPattern:
     )
 
 
-_HANDCRAFTED_MOTIFS_INLINE = [
-    make_phase_gadget_motif(2),
-    make_phase_gadget_motif(3),
-    make_cx_spider_motif(),
-    make_hadamard_sandwich_motif(),
-    make_zz_interaction_motif(),
-    make_syndrome_extraction_motif(),
-    make_toffoli_core_motif(),
-    make_cluster_chain_motif(),
-    make_trotter_layer_motif(),
-]
-
-
 # ════════════════════════════════════════════════════════════════════
 # Phase-parametric motifs (wildcard phase classes)
 # ════════════════════════════════════════════════════════════════════
@@ -325,15 +312,6 @@ def make_pauli_x_hub_3z_motif() -> MotifPattern:
     )
 
 
-_PARAMETRIC_MOTIFS_INLINE = [
-    make_syndrome_extraction_param_motif(),
-    make_zz_interaction_param_motif(),
-    make_toffoli_core_param_motif(),
-    make_x_hub_3z_param_motif(),
-    make_hadamard_pauli_pair_motif(),
-    make_pauli_x_hub_3z_motif(),
-]
-
 HANDCRAFTED_MOTIFS = [
     make_phase_gadget_motif(2),
     make_phase_gadget_motif(3),
@@ -392,7 +370,7 @@ def canonical_hash(subg: nx.Graph) -> str:
     return hashlib.md5(raw.encode()).hexdigest()[:12]
 
 
-def _is_isomorphic(g1: nx.Graph, g2: nx.Graph) -> bool:
+def is_isomorphic(g1: nx.Graph, g2: nx.Graph) -> bool:
     """Check labeled isomorphism between two small graphs."""
     gm = isomorphism.GraphMatcher(
         g1, g2, node_match=node_match_fn, edge_match=edge_match_fn
@@ -434,7 +412,7 @@ def enumerate_connected_subgraphs(
             if h not in seen_hashes:
                 seen_hashes[h] = subg
                 subgraphs.append(subg)
-            elif not _is_isomorphic(seen_hashes[h], subg):
+            elif not is_isomorphic(seen_hashes[h], subg):
                 # Hash collision — store under disambiguated key
                 alt_h = h + f"_{len(seen_hashes)}"
                 if alt_h not in seen_hashes:
@@ -494,7 +472,7 @@ def find_recurring_subgraphs(
             if h in hash_registry:
                 existing, algo_set = hash_registry[h]
                 # Confirm isomorphism to guard against hash collisions
-                if _is_isomorphic(existing, sg):
+                if is_isomorphic(existing, sg):
                     algo_set.add(algo_name)
                 else:
                     alt_h = h + f"_{algo_name}"
@@ -566,7 +544,7 @@ def find_recurring_subgraphs_multilevel(
     for motif, level in all_motifs:
         merged = False
         for existing_motif, level_set in deduped:
-            if _is_isomorphic(existing_motif.graph, motif.graph):
+            if is_isomorphic(existing_motif.graph, motif.graph):
                 level_set.add(level)
                 # Merge algorithm info into description
                 merged = True
@@ -677,7 +655,7 @@ def find_neighborhood_motifs(
                 h = _HASH_FN(subg)
                 if h in hash_registry:
                     existing, algo_set = hash_registry[h]
-                    if _is_isomorphic(existing, subg):
+                    if is_isomorphic(existing, subg):
                         algo_set.add(algo_name)
                     else:
                         alt_h = h + f"_{algo_name}"

@@ -12,7 +12,7 @@ from zx_motifs.pipeline.matcher import (
 )
 from zx_motifs.pipeline.motif_generators import (
     HANDCRAFTED_MOTIFS,
-    _is_isomorphic,
+    is_isomorphic,
     find_neighborhood_motifs,
     find_recurring_subgraphs,
     find_recurring_subgraphs_multilevel,

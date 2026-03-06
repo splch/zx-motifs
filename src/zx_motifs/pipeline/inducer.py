@@ -10,7 +10,7 @@ from zx_motifs.config import CONFIG
 from .decomposer import decompose_graph, DecompositionResult
 from .featurizer import extract_local_neighborhood
 from .matcher import MotifPattern, find_motif_in_graph
-from .motif_generators import _HASH_FN, _is_isomorphic
+from .motif_generators import _HASH_FN, is_isomorphic
 
 
 @dataclass
@@ -187,7 +187,7 @@ def induce_motifs_from_gaps(
         # Deduplicate
         h = _HASH_FN(candidate)
         if h in seen_hashes:
-            if _is_isomorphic(seen_hashes[h], candidate):
+            if is_isomorphic(seen_hashes[h], candidate):
                 continue
         seen_hashes[h] = candidate
 

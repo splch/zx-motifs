@@ -109,8 +109,7 @@ def make_quantum_multiplier(n_qubits=8, **kwargs) -> QuantumCircuit:
     # Accumulate partial products: a[i] * b[j] -> p[i+j]
     for i in range(k):
         for j in range(k):
-            if i + j < 2 * k:
-                decompose_toffoli(qc, a[i], b[j], p[i + j])
+            decompose_toffoli(qc, a[i], b[j], p[i + j])
 
     # Carry propagation on product register
     for i in range(2 * k - 1):
