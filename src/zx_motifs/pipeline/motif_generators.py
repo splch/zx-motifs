@@ -36,6 +36,8 @@ def run_parallel(
     max_workers: int | None = None,
     desc: str = "Processing",
     unit: str = "task",
+    initializer: Callable | None = None,
+    initargs: tuple = (),
 ) -> list:
     """Run a worker function over tasks using ProcessPoolExecutor.
 
@@ -52,15 +54,25 @@ def run_parallel(
         Number of parallel workers. ``None`` uses all available CPUs.
     desc, unit : str
         Labels for the tqdm progress bar.
+    initializer : callable or None
+        Optional per-worker initializer (e.g. to set up shared state).
+    initargs : tuple
+        Arguments passed to *initializer*.
 
     Returns
     -------
     list of worker results, one per task (order is not guaranteed).
     """
     if max_workers == 1:
+        if initializer is not None:
+            initializer(*initargs)
         return [worker(*t) for t in tqdm(tasks, desc=desc, unit=unit)]
 
-    with ProcessPoolExecutor(max_workers=max_workers) as executor:
+    with ProcessPoolExecutor(
+        max_workers=max_workers,
+        initializer=initializer,
+        initargs=initargs,
+    ) as executor:
         futures = [executor.submit(worker, *t) for t in tasks]
         return [
             f.result()
@@ -687,9 +699,13 @@ def extract_interesting_neighborhoods(
     host: nx.Graph,
     radius: int = CONFIG.neighbourhood_radius,
     interest_criteria: str = "non_clifford",
+    max_size: int = CONFIG.max_motif_size,
 ) -> list[nx.Graph]:
     """
     Extract local neighborhoods around 'interesting' vertices.
+
+    Neighborhoods larger than *max_size* nodes are skipped — they
+    represent large graph sections, not reusable motif patterns.
 
     Criteria:
       - "non_clifford": vertices with T-like or arbitrary phases
@@ -722,13 +738,14 @@ def extract_interesting_neighborhoods(
         neighborhood = extract_local_neighborhood(host, center, radius)
         # Remove boundary nodes
         interior = {n for n in neighborhood.nodes() if not host.nodes[n].get("is_boundary")}
-        if len(interior) >= 3:
-            subg = host.subgraph(interior).copy()
-            if nx.is_connected(subg):
-                h = _HASH_FN(subg)
-                if h not in seen_hashes:
-                    seen_hashes.add(h)
-                    neighborhoods.append(subg)
+        if len(interior) < 3 or len(interior) > max_size:
+            continue
+        subg = host.subgraph(interior).copy()
+        if nx.is_connected(subg):
+            h = _HASH_FN(subg)
+            if h not in seen_hashes:
+                seen_hashes.add(h)
+                neighborhoods.append(subg)
 
     return neighborhoods
 
