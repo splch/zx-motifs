@@ -13,7 +13,7 @@ def make_quantum_fingerprinting(n_qubits=6, **kwargs) -> QuantumCircuit:
     """Quantum fingerprinting for equality testing.
 
     Two parties (Alice and Bob) each encode their classical input into
-    quantum fingerprint states.  A referee then performs a controlled-SWAP
+    quantum fingerprint states. A referee then performs a controlled-SWAP
     test to determine whether the two inputs are equal.
 
     Layout:

@@ -121,7 +121,7 @@ def make_five_qubit_code(n_qubits=5, **kwargs) -> QuantumCircuit:
     """[[5,1,3]] perfect code encoder.
 
     The smallest quantum error-correcting code that corrects arbitrary
-    single-qubit errors.  5 physical qubits encode 1 logical qubit.
+    single-qubit errors. 5 physical qubits encode 1 logical qubit.
     """
     qc = QuantumCircuit(5)
     # Qubit 4 holds the logical input; qubits 0-3 are ancillas.
@@ -286,9 +286,9 @@ def make_bacon_shor(n_qubits=9, **kwargs) -> QuantumCircuit:
 def make_reed_muller_code(n_qubits=15, **kwargs) -> QuantumCircuit:
     """[[15,1,3]] quantum Reed-Muller code encoder.
 
-    15 physical qubits encoding 1 logical qubit.  This code is a CSS
+    15 physical qubits encoding 1 logical qubit. This code is a CSS
     code constructed from the classical punctured Reed-Muller codes
-    RM(1,4) and RM(2,4).  Its key property is supporting a transversal
+    RM(1,4) and RM(2,4). Its key property is supporting a transversal
     T gate, making it valuable for fault-tolerant quantum computation.
 
     Args:

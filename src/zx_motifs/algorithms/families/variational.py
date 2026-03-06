@@ -79,7 +79,7 @@ def make_adapt_vqe(n_qubits=4, n_operators=3, **kwargs) -> QuantumCircuit:
     """ADAPT-VQE with iteratively grown operator pool.
 
     Starts from the Hartree-Fock state (X on the first n//2 qubits to
-    fill the lowest spin-orbitals).  Then appends n_operators single-excitation
+    fill the lowest spin-orbitals). Then appends n_operators single-excitation
     operators, each implemented as a CNOT-ladder + RZ + reverse CNOT-ladder.
 
     Args:
@@ -283,7 +283,7 @@ def make_qaoa_weighted(n_qubits=4, p=1, gamma=0.5, beta=0.3,
     """QAOA for weighted MaxCut on a ring graph with non-uniform edge weights.
 
     Same structure as standard QAOA MaxCut but each edge in the ring graph
-    has a different weight.  The ZZ interaction angle for each edge is
+    has a different weight. The ZZ interaction angle for each edge is
     gamma * weight (instead of a uniform gamma).
 
     Args:

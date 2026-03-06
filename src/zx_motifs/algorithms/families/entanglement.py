@@ -85,7 +85,7 @@ def make_dicke_state(n_qubits=4, k=2, **kwargs) -> QuantumCircuit:
     """Dicke state |D_n^k> preparation.
 
     Prepares the symmetric superposition of all n-qubit states with
-    exactly k excitations (Hamming weight k).  For example, |D_4^2>
+    exactly k excitations (Hamming weight k). For example, |D_4^2>
     is the equal superposition of |0011>, |0101>, |0110>, |1001>,
     |1010>, |1100>.
 
@@ -94,7 +94,7 @@ def make_dicke_state(n_qubits=4, k=2, **kwargs) -> QuantumCircuit:
            |1...1 0...0>  (k ones, n-k zeros)
         2) For each qubit position i from 0 to n-2, distribute the
            remaining excitations into the suffix qubits using
-           controlled-RY rotations.  The rotation angle for splitting
+           controlled-RY rotations. The rotation angle for splitting
            m excitations among r remaining qubits is:
                theta = 2*arccos(sqrt((r-1)/r))  when distributing 1 of m
            This is implemented via: RY(theta/2) - CX - RY(-theta/2) - CX
@@ -116,7 +116,7 @@ def make_dicke_state(n_qubits=4, k=2, **kwargs) -> QuantumCircuit:
         qc.x(i)
 
     # Step 2: Distribute excitations using the SCS (Split-and-Cyclic-Shift)
-    # approach.  Process qubits from left to right; at each position,
+    # approach. Process qubits from left to right; at each position,
     # determine how many excitations remain to distribute and among how
     # many qubits.
     for i in range(n - 1):
@@ -145,7 +145,7 @@ def make_graph_state(n_qubits=5, **kwargs) -> QuantumCircuit:
     """Graph state with star topology.
 
     Prepares a graph state where qubit 0 is the centre of a star graph
-    and all other qubits are leaves.  The preparation is:
+    and all other qubits are leaves. The preparation is:
         1) H on all qubits -- initialise each qubit in |+>.
         2) CZ from the centre (q0) to every other qubit -- create edges
            of the star graph.

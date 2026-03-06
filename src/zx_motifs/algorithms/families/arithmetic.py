@@ -14,7 +14,7 @@ def make_ripple_carry_adder(n_qubits=5, **kwargs) -> QuantumCircuit:
     """Cuccaro-style ripple-carry adder for n-bit addition.
 
     Uses 2n+1 qubits: 1 carry qubit (c), n a-qubits, n b-qubits,
-    where n = (n_qubits - 1) // 2.  n_qubits must be odd and >= 5.
+    where n = (n_qubits - 1) // 2. n_qubits must be odd and >= 5.
     MAJ(c,a,b) = CX(c,b), CX(c,a), Toffoli(a,b,c).
     UMA(c,a,b) = Toffoli(a,b,c), CX(c,a), CX(a,b).
     Toffoli gates decomposed into Clifford+T.
@@ -128,7 +128,7 @@ def make_quantum_comparator(n_qubits=5, **kwargs) -> QuantumCircuit:
     """Quantum less-than comparator for two n-bit unsigned integers.
 
     Uses 2n+1 qubits: n a-qubits, n b-qubits, 1 result qubit,
-    where n = (n_qubits - 1) // 2.  n_qubits must be odd and >= 5.
+    where n = (n_qubits - 1) // 2. n_qubits must be odd and >= 5.
     Result qubit is set to |1> iff A < B.
     Toffoli gates decomposed into Clifford+T.
     """

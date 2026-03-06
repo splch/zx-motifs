@@ -192,7 +192,7 @@ def make_deutsch(n_qubits=2, oracle_type="balanced", **kwargs) -> QuantumCircuit
     """Deutsch's algorithm -- the simplest quantum oracle algorithm.
 
     The original Deutsch algorithm for f:{0,1}->{0,1} using 2 qubits:
-    qubit 0 = input, qubit 1 = ancilla.  Determines whether f is constant
+    qubit 0 = input, qubit 1 = ancilla. Determines whether f is constant
     or balanced with a single query.
 
     Args:
@@ -276,7 +276,7 @@ def make_hidden_shift(n_qubits=4, shift=None, **kwargs) -> QuantumCircuit:
 def make_element_distinctness(n_qubits=5, n_steps=1, **kwargs) -> QuantumCircuit:
     """Grover-walk hybrid for element distinctness / collision detection.
 
-    Uses 1 coin qubit + position qubits + data qubits.  Alternates between
+    Uses 1 coin qubit + position qubits + data qubits. Alternates between
     Grover diffusion on the coin register and quantum-walk shift steps on
     the position register, with data qubits acting as an oracle workspace.
 

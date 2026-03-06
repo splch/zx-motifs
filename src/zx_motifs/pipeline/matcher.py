@@ -124,7 +124,7 @@ def edge_match_fn(e1_attrs: dict, e2_attrs: dict) -> bool:
 def can_possibly_match(pattern: nx.Graph, host: nx.Graph) -> bool:
     """
     O(V+E) necessary-condition check: can `pattern` possibly be a
-    subgraph of `host`?  Returns False only when it's provably impossible.
+    subgraph of `host`? Returns False only when it's provably impossible.
 
     Checks:
       - Host has >= pattern's count of each vertex_type
@@ -176,7 +176,7 @@ def find_motif_in_graph(
     Find all subgraph isomorphism matches of `pattern` in `host`.
 
     Uses VF2 via ``GraphMatcher(host, pattern)``, which yields raw
-    mappings ``{host_node: pattern_node}``.  These are inverted to
+    mappings ``{host_node: pattern_node}``. These are inverted to
     ``{pattern_node: host_node}`` before being returned, so callers
     always receive pattern-keyed dicts.
 
@@ -233,7 +233,7 @@ def find_motif_across_corpus(
     Search for a motif across all algorithm graphs at a given level.
 
     Convenience wrapper around :func:`find_motif_across_corpus_multilevel`
-    for the common single-level case.  Populates ``pattern.occurrences``
+    for the common single-level case. Populates ``pattern.occurrences``
     with :class:`MotifMatch` objects.
     """
     return find_motif_across_corpus_multilevel(

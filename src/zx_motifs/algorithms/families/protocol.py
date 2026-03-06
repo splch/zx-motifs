@@ -68,7 +68,7 @@ def make_swap_test(n_qubits=3, **kwargs) -> QuantumCircuit:
     """SWAP test for quantum state fidelity estimation.
 
     Estimates |<psi|phi>|^2 by interfering two states through a
-    controlled-SWAP operation.  Measuring the ancilla qubit in the
+    controlled-SWAP operation. Measuring the ancilla qubit in the
     |0> state occurs with probability (1 + |<psi|phi>|^2) / 2.
 
     Qubit layout:

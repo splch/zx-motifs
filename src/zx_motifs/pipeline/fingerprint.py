@@ -260,7 +260,7 @@ def build_fingerprint_matrix(
 
     counts_df = pd.DataFrame(counts, index=instances, columns=motif_ids)
 
-    # L1-normalise each row.  Rows with no motif matches remain all-zero
+    # L1-normalise each row. Rows with no motif matches remain all-zero
     # rather than being converted to a uniform distribution.
     row_sums = counts_df.sum(axis=1)
     nonzero = row_sums != 0
