@@ -6,10 +6,12 @@ Three strategies for generating candidate motifs to search for:
 3. Hybrid: Extract neighborhoods around "interesting" vertices and cluster.
 """
 import hashlib
+from concurrent.futures import ProcessPoolExecutor, as_completed
 from typing import Callable
 
 import networkx as nx
 from networkx.algorithms import isomorphism
+from tqdm import tqdm
 
 from zx_motifs.config import CONFIG
 
@@ -443,44 +445,103 @@ def enumerate_connected_subgraphs(
     return subgraphs
 
 
+def _enumerate_subgraphs_for_graph(
+    algo_name: str,
+    host_graph: nx.Graph,
+    min_size: int,
+    max_size: int,
+) -> list[tuple[str, nx.Graph, str]]:
+    """Enumerate and hash subgraphs for a single host graph.
+
+    Top-level function so it is picklable by ProcessPoolExecutor.
+
+    Returns list of (wl_hash, subgraph, algo_name) tuples.
+    """
+    subgraphs = enumerate_connected_subgraphs(
+        host_graph, min_size=min_size, max_size=max_size,
+    )
+    results = []
+    for sg in subgraphs:
+        h = _HASH_FN(sg)
+        results.append((h, sg, algo_name))
+    return results
+
+
+def _merge_into_hash_registry(
+    hash_registry: dict[str, tuple[nx.Graph, set[str]]],
+    items: list[tuple[str, nx.Graph, str]],
+) -> None:
+    """Merge (hash, subgraph, algo_name) tuples into a shared registry.
+
+    Uses VF2 isomorphism to guard against hash collisions.
+    """
+    for h, sg, algo_name in items:
+        if h in hash_registry:
+            existing, algo_set = hash_registry[h]
+            if is_isomorphic(existing, sg):
+                algo_set.add(algo_name)
+            else:
+                alt_h = h + f"_{algo_name}"
+                if alt_h not in hash_registry:
+                    hash_registry[alt_h] = (sg, {algo_name})
+                else:
+                    hash_registry[alt_h][1].add(algo_name)
+        else:
+            hash_registry[h] = (sg, {algo_name})
+
+
 def find_recurring_subgraphs(
     corpus: dict,
     target_level: str = "spider_fused",
     min_size: int = CONFIG.min_motif_size,
     max_size: int = CONFIG.max_motif_size,
     min_algorithms: int = CONFIG.min_algorithms,
+    max_workers: int | None = None,
 ) -> list[MotifPattern]:
     """
     Bottom-up motif discovery: enumerate subgraphs, hash them,
     keep the ones that appear across multiple algorithms.
+
+    Uses parallel processing to enumerate subgraphs across graphs
+    concurrently, then merges results sequentially.
+
+    Parameters
+    ----------
+    max_workers : int or None
+        Number of parallel workers. None uses all available CPUs.
+        Use 1 for sequential execution.
     """
-    # hash → (representative graph, set of algorithm names)
+    graph_items = [
+        (algo_name, host_graph)
+        for (algo_name, level), host_graph in corpus.items()
+        if level == target_level
+    ]
+
     hash_registry: dict[str, tuple[nx.Graph, set[str]]] = {}
 
-    for (algo_name, level), host_graph in corpus.items():
-        if level != target_level:
-            continue
-
-        subgraphs = enumerate_connected_subgraphs(
-            host_graph, min_size=min_size, max_size=max_size,
-        )
-
-        for sg in subgraphs:
-            h = _HASH_FN(sg)
-
-            if h in hash_registry:
-                existing, algo_set = hash_registry[h]
-                # Confirm isomorphism to guard against hash collisions
-                if is_isomorphic(existing, sg):
-                    algo_set.add(algo_name)
-                else:
-                    alt_h = h + f"_{algo_name}"
-                    if alt_h not in hash_registry:
-                        hash_registry[alt_h] = (sg, {algo_name})
-                    else:
-                        hash_registry[alt_h][1].add(algo_name)
-            else:
-                hash_registry[h] = (sg, {algo_name})
+    if max_workers == 1:
+        # Sequential path — avoids subprocess overhead for small corpora
+        for algo_name, host_graph in graph_items:
+            items = _enumerate_subgraphs_for_graph(
+                algo_name, host_graph, min_size, max_size,
+            )
+            _merge_into_hash_registry(hash_registry, items)
+    else:
+        with ProcessPoolExecutor(max_workers=max_workers) as executor:
+            futures = {
+                executor.submit(
+                    _enumerate_subgraphs_for_graph,
+                    algo_name, host_graph, min_size, max_size,
+                ): algo_name
+                for algo_name, host_graph in graph_items
+            }
+            for future in tqdm(
+                as_completed(futures),
+                total=len(futures),
+                desc="Enumerating subgraphs",
+                unit="graph",
+            ):
+                _merge_into_hash_registry(hash_registry, future.result())
 
     # Filter to motifs appearing in enough distinct algorithms
     motifs = []
@@ -512,6 +573,7 @@ def find_recurring_subgraphs_multilevel(
     min_size: int = CONFIG.min_motif_size,
     max_size: int = CONFIG.max_motif_size,
     min_algorithms: int = CONFIG.min_algorithms,
+    max_workers: int | None = None,
 ) -> list[MotifPattern]:
     """
     Bottom-up motif discovery across multiple simplification levels.
@@ -532,6 +594,7 @@ def find_recurring_subgraphs_multilevel(
             min_size=min_size,
             max_size=max_size,
             min_algorithms=min_algorithms,
+            max_workers=max_workers,
         )
         for m in level_motifs:
             all_motifs.append((m, level))
@@ -615,16 +678,43 @@ def extract_interesting_neighborhoods(
     return neighborhoods
 
 
+def _extract_neighborhoods_for_graph(
+    algo_name: str,
+    host_graph: nx.Graph,
+    radius: int,
+    criteria: list[str],
+) -> list[tuple[str, nx.Graph, str]]:
+    """Extract and hash neighborhood subgraphs for a single host graph.
+
+    Top-level function so it is picklable by ProcessPoolExecutor.
+
+    Returns list of (wl_hash, subgraph, algo_name) tuples.
+    """
+    results = []
+    for criterion in criteria:
+        neighborhoods = extract_interesting_neighborhoods(
+            host_graph, radius=radius, interest_criteria=criterion
+        )
+        for subg in neighborhoods:
+            h = _HASH_FN(subg)
+            results.append((h, subg, algo_name))
+    return results
+
+
 def find_neighborhood_motifs(
     corpus: dict,
     target_level: str = "spider_fused",
     radius: int = CONFIG.neighbourhood_radius,
     criteria: list[str] | None = None,
     min_algorithms: int = CONFIG.min_algorithms,
+    max_workers: int | None = None,
 ) -> list[MotifPattern]:
     """
     Strategy 3: Extract neighborhoods around interesting vertices across
     the corpus and return those that recur in multiple algorithms.
+
+    Uses parallel processing to extract neighborhoods across graphs
+    concurrently, then merges results sequentially.
 
     Args:
         corpus: {(algo_name, level): nx.Graph}
@@ -632,6 +722,8 @@ def find_neighborhood_motifs(
         radius: BFS radius for neighborhood extraction.
         criteria: Interest criteria to apply. Defaults to all three.
         min_algorithms: Minimum algorithms a neighborhood must appear in.
+        max_workers: Number of parallel workers. None uses all available
+            CPUs. Use 1 for sequential execution.
 
     Returns:
         List of MotifPattern with source="neighborhood".
@@ -639,31 +731,36 @@ def find_neighborhood_motifs(
     if criteria is None:
         criteria = ["non_clifford", "high_degree", "color_boundary"]
 
-    # hash → (representative graph, set of algorithm names)
+    graph_items = [
+        (algo_name, host_graph)
+        for (algo_name, level), host_graph in corpus.items()
+        if level == target_level
+    ]
+
     hash_registry: dict[str, tuple[nx.Graph, set[str]]] = {}
 
-    for (algo_name, level), host_graph in corpus.items():
-        if level != target_level:
-            continue
-
-        for criterion in criteria:
-            neighborhoods = extract_interesting_neighborhoods(
-                host_graph, radius=radius, interest_criteria=criterion
+    if max_workers == 1:
+        for algo_name, host_graph in graph_items:
+            items = _extract_neighborhoods_for_graph(
+                algo_name, host_graph, radius, criteria,
             )
-            for subg in neighborhoods:
-                h = _HASH_FN(subg)
-                if h in hash_registry:
-                    existing, algo_set = hash_registry[h]
-                    if is_isomorphic(existing, subg):
-                        algo_set.add(algo_name)
-                    else:
-                        alt_h = h + f"_{algo_name}"
-                        if alt_h not in hash_registry:
-                            hash_registry[alt_h] = (subg, {algo_name})
-                        else:
-                            hash_registry[alt_h][1].add(algo_name)
-                else:
-                    hash_registry[h] = (subg, {algo_name})
+            _merge_into_hash_registry(hash_registry, items)
+    else:
+        with ProcessPoolExecutor(max_workers=max_workers) as executor:
+            futures = {
+                executor.submit(
+                    _extract_neighborhoods_for_graph,
+                    algo_name, host_graph, radius, criteria,
+                ): algo_name
+                for algo_name, host_graph in graph_items
+            }
+            for future in tqdm(
+                as_completed(futures),
+                total=len(futures),
+                desc="Extracting neighborhoods",
+                unit="graph",
+            ):
+                _merge_into_hash_registry(hash_registry, future.result())
 
     motifs = []
     for h, (sg, algo_set) in sorted(

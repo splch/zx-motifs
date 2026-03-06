@@ -60,13 +60,19 @@ def build_corpus(max_qubits: int = CONFIG.max_qubits) -> dict[tuple[str, str], "
     return corpus
 
 
-def discover_motifs(corpus: dict) -> list[MotifPattern]:
+def discover_motifs(
+    corpus: dict,
+    max_workers: int | None = None,
+) -> list[MotifPattern]:
     """Combine hand-crafted, bottom-up, and neighbourhood motifs; deduplicate.
 
     Parameters
     ----------
     corpus : dict
         Mapping from (instance_name, level) to NetworkX graph.
+    max_workers : int or None
+        Number of parallel workers for discovery. None uses all available
+        CPUs. Use 1 for sequential execution.
 
     Returns
     -------
@@ -98,6 +104,7 @@ def discover_motifs(corpus: dict) -> list[MotifPattern]:
             target_level="spider_fused",
             min_size=CONFIG.min_motif_size,
             max_size=CONFIG.max_motif_size,
+            max_workers=max_workers,
         )
         n_bu = _add_if_novel(bottom_up)
         print(f"  Bottom-up: {len(bottom_up)} found, {n_bu} novel")
@@ -109,6 +116,7 @@ def discover_motifs(corpus: dict) -> list[MotifPattern]:
             corpus,
             target_level="spider_fused",
             radius=CONFIG.neighbourhood_radius,
+            max_workers=max_workers,
         )
         n_nb = _add_if_novel(neighbourhood)
         print(f"  Neighbourhood: {len(neighbourhood)} found, {n_nb} novel")
