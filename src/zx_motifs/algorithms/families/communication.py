@@ -6,7 +6,7 @@ from zx_motifs.algorithms._helpers import decompose_toffoli
 
 
 @register_algorithm(
-    "quantum_fingerprinting", "communication", (4, 8),
+    "quantum_fingerprinting", "communication", (4, None),
     tags=["communication", "exponential_saving"],
 )
 def make_quantum_fingerprinting(n_qubits=6, **kwargs) -> QuantumCircuit:

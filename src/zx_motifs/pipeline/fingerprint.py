@@ -38,12 +38,10 @@ def build_corpus(max_qubits: int = 5) -> dict[tuple[str, str], "nx.Graph"]:
 
     for entry in tqdm(REGISTRY, desc="Building corpus", unit="algo"):
         lo, hi = entry.qubit_range
-        qubit_sizes = list(range(lo, min(hi, max_qubits) + 1))
+        effective_hi = max_qubits if hi is None else min(hi, max_qubits)
+        qubit_sizes = list(range(lo, effective_hi + 1))
 
         for n in qubit_sizes:
-            if entry.name == "grover" and n >= 6:
-                continue
-
             instance = f"{entry.name}_q{n}"
             try:
                 qc = entry.generator(n)

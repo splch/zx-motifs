@@ -61,7 +61,7 @@ def make_entanglement_swapping(n_qubits=4, **kwargs) -> QuantumCircuit:
 
 
 @register_algorithm(
-    "swap_test", "protocol", (3, 7),
+    "swap_test", "protocol", (3, None),
     tags=["fidelity", "comparison"],
 )
 def make_swap_test(n_qubits=3, **kwargs) -> QuantumCircuit:

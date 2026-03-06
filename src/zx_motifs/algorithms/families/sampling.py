@@ -6,7 +6,7 @@ from zx_motifs.algorithms._registry_core import register_algorithm
 
 
 @register_algorithm(
-    "iqp_sampling", "sampling", (2, 8),
+    "iqp_sampling", "sampling", (2, None),
     tags=["commuting_gates", "supremacy"],
 )
 def make_iqp_sampling(n_qubits=5, seed=77, **kwargs) -> QuantumCircuit:
@@ -46,7 +46,7 @@ def make_iqp_sampling(n_qubits=5, seed=77, **kwargs) -> QuantumCircuit:
 
 
 @register_algorithm(
-    "random_circuit_sampling", "sampling", (2, 8),
+    "random_circuit_sampling", "sampling", (2, None),
     tags=["random_circuit", "supremacy"],
 )
 def make_random_circuit_sampling(n_qubits=5, depth=6, seed=55,

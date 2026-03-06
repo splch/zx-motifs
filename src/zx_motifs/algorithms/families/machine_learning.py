@@ -7,7 +7,7 @@ from zx_motifs.algorithms._registry_core import register_algorithm
 
 
 @register_algorithm(
-    "quantum_kernel", "machine_learning", (2, 8),
+    "quantum_kernel", "machine_learning", (2, None),
     tags=["feature_map", "zz_interaction", "kernel_method"],
 )
 def make_quantum_kernel(n_qubits=4, **kwargs) -> QuantumCircuit:
@@ -34,7 +34,7 @@ def make_quantum_kernel(n_qubits=4, **kwargs) -> QuantumCircuit:
 
 
 @register_algorithm(
-    "data_reuploading", "machine_learning", (2, 6),
+    "data_reuploading", "machine_learning", (2, None),
     tags=["classifier", "reuploading", "variational"],
 )
 def make_data_reuploading(n_qubits=2, layers=3, **kwargs) -> QuantumCircuit:
@@ -58,7 +58,7 @@ def make_data_reuploading(n_qubits=2, layers=3, **kwargs) -> QuantumCircuit:
 
 
 @register_algorithm(
-    "qsvm", "machine_learning", (2, 8),
+    "qsvm", "machine_learning", (2, None),
     tags=["kernel_method", "classification"],
 )
 def make_qsvm(n_qubits=4, **kwargs) -> QuantumCircuit:
@@ -99,7 +99,7 @@ def make_qsvm(n_qubits=4, **kwargs) -> QuantumCircuit:
 
 
 @register_algorithm(
-    "qcnn", "machine_learning", (4, 8),
+    "qcnn", "machine_learning", (4, None),
     tags=["neural_network", "classification"],
 )
 def make_qcnn(n_qubits=8, **kwargs) -> QuantumCircuit:
@@ -155,7 +155,7 @@ def make_qcnn(n_qubits=8, **kwargs) -> QuantumCircuit:
 
 
 @register_algorithm(
-    "qgan_generator", "machine_learning", (2, 8),
+    "qgan_generator", "machine_learning", (2, None),
     tags=["generative", "adversarial"],
 )
 def make_qgan_generator(n_qubits=4, layers=3, **kwargs) -> QuantumCircuit:
@@ -193,7 +193,7 @@ def make_qgan_generator(n_qubits=4, layers=3, **kwargs) -> QuantumCircuit:
 
 
 @register_algorithm(
-    "quantum_autoencoder", "machine_learning", (4, 8),
+    "quantum_autoencoder", "machine_learning", (4, None),
     tags=["compression", "autoencoder"],
 )
 def make_quantum_autoencoder(n_qubits=6, **kwargs) -> QuantumCircuit:

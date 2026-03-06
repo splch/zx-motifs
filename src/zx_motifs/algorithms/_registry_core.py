@@ -8,7 +8,7 @@ class AlgorithmEntry:
     name: str
     family: str
     generator: Callable  # (n_qubits, **kwargs) -> QuantumCircuit
-    qubit_range: tuple  # (min_qubits, max_qubits)
+    qubit_range: tuple  # (min_qubits, max_qubits) — max_qubits=None means unlimited
     tags: list = field(default_factory=list)
     description: str = ""
 

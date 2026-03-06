@@ -6,7 +6,7 @@ from zx_motifs.algorithms._registry_core import register_algorithm
 
 
 @register_algorithm(
-    "betti_number", "tda", (3, 8),
+    "betti_number", "tda", (3, None),
     tags=["topology", "homology"],
 )
 def make_betti_number(n_qubits=4, **kwargs) -> QuantumCircuit:

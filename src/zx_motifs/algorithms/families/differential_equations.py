@@ -6,7 +6,7 @@ from zx_motifs.algorithms._registry_core import register_algorithm
 
 
 @register_algorithm(
-    "poisson_solver", "differential_equations", (4, 7),
+    "poisson_solver", "differential_equations", (4, None),
     tags=["linear_systems", "pde"],
 )
 def make_poisson_solver(n_qubits=5, **kwargs) -> QuantumCircuit:

@@ -8,7 +8,7 @@ from zx_motifs.algorithms._helpers import decompose_toffoli
 
 
 @register_algorithm(
-    "qaoa_maxcut", "variational", (3, 8),
+    "qaoa_maxcut", "variational", (3, None),
     tags=["combinatorial", "zz_interaction", "mixer"],
 )
 def make_qaoa_maxcut(n_qubits=4, p=1, gamma=0.5, beta=0.3, **kwargs) -> QuantumCircuit:
@@ -51,7 +51,7 @@ def make_vqe_uccsd_fragment(n_qubits=4, theta=0.5, **kwargs) -> QuantumCircuit:
 
 
 @register_algorithm(
-    "hw_efficient_ansatz", "variational", (3, 8),
+    "hw_efficient_ansatz", "variational", (3, None),
     tags=["hardware_efficient", "brick_layer"],
 )
 def make_hardware_efficient_ansatz(n_qubits=4, layers=2, **kwargs) -> QuantumCircuit:
@@ -72,7 +72,7 @@ def make_hardware_efficient_ansatz(n_qubits=4, layers=2, **kwargs) -> QuantumCir
 
 
 @register_algorithm(
-    "adapt_vqe", "variational", (4, 8),
+    "adapt_vqe", "variational", (4, None),
     tags=["chemistry", "adaptive", "excitation"],
 )
 def make_adapt_vqe(n_qubits=4, n_operators=3, **kwargs) -> QuantumCircuit:
@@ -117,7 +117,7 @@ def make_adapt_vqe(n_qubits=4, n_operators=3, **kwargs) -> QuantumCircuit:
 
 
 @register_algorithm(
-    "vqd", "variational", (4, 8),
+    "vqd", "variational", (4, None),
     tags=["chemistry", "excited_states"],
 )
 def make_vqd(n_qubits=4, layers=2, **kwargs) -> QuantumCircuit:
@@ -171,7 +171,7 @@ def make_vqd(n_qubits=4, layers=2, **kwargs) -> QuantumCircuit:
 
 
 @register_algorithm(
-    "recursive_qaoa", "variational", (4, 8),
+    "recursive_qaoa", "variational", (4, None),
     tags=["combinatorial", "recursive"],
 )
 def make_recursive_qaoa(n_qubits=6, p=1, gamma=0.5, beta=0.3,
@@ -235,7 +235,7 @@ def make_recursive_qaoa(n_qubits=6, p=1, gamma=0.5, beta=0.3,
 
 
 @register_algorithm(
-    "varqite", "variational", (3, 8),
+    "varqite", "variational", (3, None),
     tags=["imaginary_time", "variational"],
 )
 def make_varqite(n_qubits=4, layers=3, **kwargs) -> QuantumCircuit:
@@ -275,7 +275,7 @@ def make_varqite(n_qubits=4, layers=3, **kwargs) -> QuantumCircuit:
 
 
 @register_algorithm(
-    "qaoa_weighted", "variational", (3, 8),
+    "qaoa_weighted", "variational", (3, None),
     tags=["combinatorial", "weighted"],
 )
 def make_qaoa_weighted(n_qubits=4, p=1, gamma=0.5, beta=0.3,
@@ -322,7 +322,7 @@ def make_qaoa_weighted(n_qubits=4, p=1, gamma=0.5, beta=0.3,
 
 
 @register_algorithm(
-    "quantum_boltzmann", "variational", (4, 8),
+    "quantum_boltzmann", "variational", (4, None),
     tags=["generative", "thermal"],
 )
 def make_quantum_boltzmann(n_qubits=4, layers=2, beta_param=0.5,

@@ -6,7 +6,7 @@ from zx_motifs.algorithms._registry_core import register_algorithm
 
 
 @register_algorithm(
-    "qft", "transform", (2, 7),
+    "qft", "transform", (2, None),
     tags=["phase_rotation", "butterfly"],
 )
 def make_qft(n_qubits=4, **kwargs) -> QuantumCircuit:
@@ -23,13 +23,15 @@ def make_qft(n_qubits=4, **kwargs) -> QuantumCircuit:
 
 
 @register_algorithm(
-    "phase_estimation", "transform", (4, 8),
+    "phase_estimation", "transform", (4, None),
     tags=["phase_kickback", "inverse_qft"],
 )
 def make_phase_estimation(
-    n_qubits=4, n_counting=3, angle=np.pi / 4, **kwargs
+    n_qubits=4, n_counting=None, angle=np.pi / 4, **kwargs
 ) -> QuantumCircuit:
     """Quantum Phase Estimation for a single-qubit Z-rotation."""
+    if n_counting is None:
+        n_counting = n_qubits - 1
     total = n_counting + 1
     qc = QuantumCircuit(total)
     qc.x(n_counting)
@@ -109,7 +111,7 @@ def make_iterative_qpe(n_qubits=3, n_bits=3, angle=np.pi / 4,
 
 
 @register_algorithm(
-    "amplitude_estimation", "transform", (4, 8),
+    "amplitude_estimation", "transform", (4, None),
     tags=["amplitude_estimation", "grover_qpe"],
 )
 def make_amplitude_estimation(n_qubits=5, **kwargs) -> QuantumCircuit:

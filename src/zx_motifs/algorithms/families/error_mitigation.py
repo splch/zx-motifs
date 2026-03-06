@@ -6,7 +6,7 @@ from zx_motifs.algorithms._registry_core import register_algorithm
 
 
 @register_algorithm(
-    "zne_folding", "error_mitigation", (2, 8),
+    "zne_folding", "error_mitigation", (2, None),
     tags=["noise_mitigation", "folding"],
 )
 def make_zne_folding(n_qubits=4, **kwargs) -> QuantumCircuit:
@@ -43,7 +43,7 @@ def make_zne_folding(n_qubits=4, **kwargs) -> QuantumCircuit:
 
 
 @register_algorithm(
-    "pauli_twirling", "error_mitigation", (2, 8),
+    "pauli_twirling", "error_mitigation", (2, None),
     tags=["noise_mitigation", "randomized_compiling"],
 )
 def make_pauli_twirling(n_qubits=4, seed=33, **kwargs) -> QuantumCircuit:

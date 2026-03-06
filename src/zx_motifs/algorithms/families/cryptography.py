@@ -7,7 +7,7 @@ from zx_motifs.algorithms._helpers import bell_pair
 
 
 @register_algorithm(
-    "bb84_encode", "cryptography", (2, 16),
+    "bb84_encode", "cryptography", (2, None),
     tags=["qkd", "prepare_measure"],
 )
 def make_bb84_encode(n_qubits=8, seed=42, **kwargs) -> QuantumCircuit:
@@ -41,7 +41,7 @@ def make_bb84_encode(n_qubits=8, seed=42, **kwargs) -> QuantumCircuit:
 
 
 @register_algorithm(
-    "e91_protocol", "cryptography", (2, 16),
+    "e91_protocol", "cryptography", (2, None),
     tags=["qkd", "entanglement_based"],
 )
 def make_e91_protocol(n_qubits=8, seed=99, **kwargs) -> QuantumCircuit:

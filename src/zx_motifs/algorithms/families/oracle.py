@@ -6,8 +6,26 @@ from qiskit import QuantumCircuit
 from zx_motifs.algorithms._registry_core import register_algorithm
 
 
+def _decompose_to_basic_gates(qc: QuantumCircuit) -> QuantumCircuit:
+    """Decompose a circuit to basic gates that PyZX can parse via QASM2.
+
+    Repeatedly decomposes until only basic gates remain (cx, h, t, tdg, s, sdg,
+    x, y, z, rz, ry, rx, id, cz, cp, swap, ccx, etc. that QASM2/PyZX supports).
+    For large MCX gates (5+ controls), Qiskit emits custom QASM gate definitions
+    that PyZX cannot parse. This function ensures full decomposition.
+    """
+    from qiskit.transpiler.preset_passmanagers import generate_preset_pass_manager
+
+    pm = generate_preset_pass_manager(
+        optimization_level=0,
+        basis_gates=["cx", "h", "t", "tdg", "s", "sdg", "x", "y", "z",
+                      "rz", "ry", "rx", "id"],
+    )
+    return pm.run(qc)
+
+
 @register_algorithm(
-    "grover", "oracle", (3, 6),
+    "grover", "oracle", (3, None),
     tags=["amplitude_amplification", "diffusion", "oracle"],
 )
 def make_grover(n_qubits=3, marked_state=0, n_iterations=1, **kwargs) -> QuantumCircuit:
@@ -40,11 +58,13 @@ def make_grover(n_qubits=3, marked_state=0, n_iterations=1, **kwargs) -> Quantum
         qc.x(range(n_qubits))
         qc.h(range(n_qubits))
 
-    return qc
+    # Decompose MCX gates to basic gates so PyZX can parse the QASM2 output.
+    # Without this, MCX with 5+ controls emits custom gate defs that PyZX rejects.
+    return _decompose_to_basic_gates(qc)
 
 
 @register_algorithm(
-    "bernstein_vazirani", "oracle", (3, 6),
+    "bernstein_vazirani", "oracle", (3, None),
     tags=["hidden_structure", "oracle"],
 )
 def make_bernstein_vazirani(n_qubits=4, secret=None, **kwargs) -> QuantumCircuit:
@@ -65,7 +85,7 @@ def make_bernstein_vazirani(n_qubits=4, secret=None, **kwargs) -> QuantumCircuit
 
 
 @register_algorithm(
-    "deutsch_jozsa", "oracle", (2, 6),
+    "deutsch_jozsa", "oracle", (2, None),
     tags=["decision_problem", "oracle"],
 )
 def make_deutsch_jozsa(n_qubits=3, balanced=True, **kwargs) -> QuantumCircuit:
@@ -83,7 +103,7 @@ def make_deutsch_jozsa(n_qubits=3, balanced=True, **kwargs) -> QuantumCircuit:
 
 
 @register_algorithm(
-    "simon", "oracle", (4, 8),
+    "simon", "oracle", (4, None),
     tags=["hidden_structure", "oracle", "xor_mask"],
 )
 def make_simon(n_qubits=4, secret=None, **kwargs) -> QuantumCircuit:
@@ -120,7 +140,7 @@ def make_simon(n_qubits=4, secret=None, **kwargs) -> QuantumCircuit:
 
 
 @register_algorithm(
-    "quantum_counting", "oracle", (5, 8),
+    "quantum_counting", "oracle", (5, None),
     tags=["grover_qpe", "counting", "hybrid"],
 )
 def make_quantum_counting(n_qubits=5, **kwargs) -> QuantumCircuit:
@@ -214,7 +234,7 @@ def make_deutsch(n_qubits=2, oracle_type="balanced", **kwargs) -> QuantumCircuit
 
 
 @register_algorithm(
-    "hidden_shift", "oracle", (4, 8),
+    "hidden_shift", "oracle", (4, None),
     tags=["hidden_structure", "oracle"],
 )
 def make_hidden_shift(n_qubits=4, shift=None, **kwargs) -> QuantumCircuit:
@@ -267,7 +287,7 @@ def make_hidden_shift(n_qubits=4, shift=None, **kwargs) -> QuantumCircuit:
 
 
 @register_algorithm(
-    "element_distinctness", "oracle", (5, 8),
+    "element_distinctness", "oracle", (5, None),
     tags=["quantum_walk", "oracle"],
 )
 def make_element_distinctness(n_qubits=5, n_steps=1, **kwargs) -> QuantumCircuit:
@@ -320,7 +340,7 @@ def make_element_distinctness(n_qubits=5, n_steps=1, **kwargs) -> QuantumCircuit
 
 
 @register_algorithm(
-    "quantum_walk_search", "oracle", (3, 8),
+    "quantum_walk_search", "oracle", (3, None),
     tags=["quantum_walk", "search"],
 )
 def make_quantum_walk_search(n_qubits=5, n_steps=2, **kwargs) -> QuantumCircuit:

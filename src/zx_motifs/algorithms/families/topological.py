@@ -6,7 +6,7 @@ from zx_motifs.algorithms._registry_core import register_algorithm
 
 
 @register_algorithm(
-    "jones_polynomial", "topological", (3, 8),
+    "jones_polynomial", "topological", (3, None),
     tags=["knot_invariant", "topological"],
 )
 def make_jones_polynomial(n_qubits=4, **kwargs) -> QuantumCircuit:

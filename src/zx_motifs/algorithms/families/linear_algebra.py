@@ -6,7 +6,7 @@ from zx_motifs.algorithms._registry_core import register_algorithm
 
 
 @register_algorithm(
-    "hhl", "linear_algebra", (4, 7),
+    "hhl", "linear_algebra", (4, None),
     tags=["linear_systems", "phase_estimation"],
 )
 def make_hhl(n_qubits=5, **kwargs) -> QuantumCircuit:
@@ -80,7 +80,7 @@ def make_hhl(n_qubits=5, **kwargs) -> QuantumCircuit:
 
 
 @register_algorithm(
-    "vqls", "linear_algebra", (2, 8),
+    "vqls", "linear_algebra", (2, None),
     tags=["linear_systems", "variational"],
 )
 def make_vqls(n_qubits=4, layers=2, **kwargs) -> QuantumCircuit:

@@ -6,7 +6,7 @@ from zx_motifs.algorithms._registry_core import register_algorithm
 
 
 @register_algorithm(
-    "bell_state", "entanglement", (2, 8),
+    "bell_state", "entanglement", (2, None),
     tags=["entanglement", "baseline"],
 )
 def make_bell_state(n_qubits=2, **kwargs) -> QuantumCircuit:
@@ -19,7 +19,7 @@ def make_bell_state(n_qubits=2, **kwargs) -> QuantumCircuit:
 
 
 @register_algorithm(
-    "ghz_state", "entanglement", (3, 8),
+    "ghz_state", "entanglement", (3, None),
     tags=["entanglement", "multipartite"],
 )
 def make_ghz_state(n_qubits=3, **kwargs) -> QuantumCircuit:
@@ -32,7 +32,7 @@ def make_ghz_state(n_qubits=3, **kwargs) -> QuantumCircuit:
 
 
 @register_algorithm(
-    "w_state", "entanglement", (3, 8),
+    "w_state", "entanglement", (3, None),
     tags=["entanglement", "multipartite", "arbitrary_rotation"],
 )
 def make_w_state(n_qubits=3, **kwargs) -> QuantumCircuit:
@@ -60,7 +60,7 @@ def make_w_state(n_qubits=3, **kwargs) -> QuantumCircuit:
 
 
 @register_algorithm(
-    "cluster_state", "entanglement", (2, 8),
+    "cluster_state", "entanglement", (2, None),
     tags=["graph_state", "mbqc", "cz_only"],
 )
 def make_cluster_state(n_qubits=4, **kwargs) -> QuantumCircuit:
@@ -78,7 +78,7 @@ def make_cluster_state(n_qubits=4, **kwargs) -> QuantumCircuit:
 
 
 @register_algorithm(
-    "dicke_state", "entanglement", (3, 8),
+    "dicke_state", "entanglement", (3, None),
     tags=["symmetric_state", "entanglement"],
 )
 def make_dicke_state(n_qubits=4, k=2, **kwargs) -> QuantumCircuit:
@@ -139,7 +139,7 @@ def make_dicke_state(n_qubits=4, k=2, **kwargs) -> QuantumCircuit:
 
 
 @register_algorithm(
-    "graph_state", "entanglement", (3, 8),
+    "graph_state", "entanglement", (3, None),
     tags=["graph_state", "multipartite"],
 )
 def make_graph_state(n_qubits=5, **kwargs) -> QuantumCircuit:

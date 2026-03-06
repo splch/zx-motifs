@@ -7,7 +7,7 @@ from zx_motifs.algorithms._registry_core import register_algorithm
 
 
 @register_algorithm(
-    "trotter_ising", "simulation", (2, 8),
+    "trotter_ising", "simulation", (2, None),
     tags=["hamiltonian_simulation", "zz_interaction", "trotter"],
 )
 def make_trotter_ising(n_qubits=4, n_steps=1, dt=0.5, j_coupling=1.0,
@@ -31,7 +31,7 @@ def make_trotter_ising(n_qubits=4, n_steps=1, dt=0.5, j_coupling=1.0,
 
 
 @register_algorithm(
-    "trotter_heisenberg", "simulation", (2, 8),
+    "trotter_heisenberg", "simulation", (2, None),
     tags=["hamiltonian_simulation", "trotter", "mixed_interaction"],
 )
 def make_trotter_heisenberg(n_qubits=4, n_steps=1, dt=0.5, **kwargs) -> QuantumCircuit:
@@ -72,7 +72,7 @@ def make_trotter_heisenberg(n_qubits=4, n_steps=1, dt=0.5, **kwargs) -> QuantumC
 
 
 @register_algorithm(
-    "quantum_walk", "simulation", (3, 6),
+    "quantum_walk", "simulation", (3, None),
     tags=["discrete_walk", "coin_operator"],
 )
 def make_quantum_walk(n_qubits=3, n_steps=2, **kwargs) -> QuantumCircuit:
@@ -101,7 +101,7 @@ def make_quantum_walk(n_qubits=3, n_steps=2, **kwargs) -> QuantumCircuit:
 
 
 @register_algorithm(
-    "qdrift", "simulation", (2, 8),
+    "qdrift", "simulation", (2, None),
     tags=["hamiltonian_simulation", "randomized"],
 )
 def make_qdrift(n_qubits=4, n_steps=4, dt=0.3, seed=42, **kwargs) -> QuantumCircuit:
@@ -146,7 +146,7 @@ def make_qdrift(n_qubits=4, n_steps=4, dt=0.3, seed=42, **kwargs) -> QuantumCirc
 
 
 @register_algorithm(
-    "higher_order_trotter", "simulation", (2, 8),
+    "higher_order_trotter", "simulation", (2, None),
     tags=["hamiltonian_simulation", "trotter", "higher_order"],
 )
 def make_higher_order_trotter(n_qubits=4, n_steps=1, dt=0.5,
@@ -187,7 +187,7 @@ def make_higher_order_trotter(n_qubits=4, n_steps=1, dt=0.5,
 
 
 @register_algorithm(
-    "hubbard_trotter", "simulation", (2, 8),
+    "hubbard_trotter", "simulation", (2, None),
     tags=["hamiltonian_simulation", "fermionic", "trotter"],
 )
 def make_hubbard_trotter(n_qubits=4, n_steps=1, dt=0.5,
@@ -223,7 +223,7 @@ def make_hubbard_trotter(n_qubits=4, n_steps=1, dt=0.5,
 
 
 @register_algorithm(
-    "ctqw", "simulation", (2, 8),
+    "ctqw", "simulation", (2, None),
     tags=["quantum_walk", "continuous_time"],
 )
 def make_ctqw(n_qubits=4, n_steps=2, dt=0.5, **kwargs) -> QuantumCircuit:
@@ -250,7 +250,7 @@ def make_ctqw(n_qubits=4, n_steps=2, dt=0.5, **kwargs) -> QuantumCircuit:
 
 
 @register_algorithm(
-    "vqs_real_time", "simulation", (2, 8),
+    "vqs_real_time", "simulation", (2, None),
     tags=["variational", "real_time"],
 )
 def make_vqs_real_time(n_qubits=4, layers=2, dt=0.3, **kwargs) -> QuantumCircuit:

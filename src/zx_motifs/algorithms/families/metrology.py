@@ -6,7 +6,7 @@ from zx_motifs.algorithms._registry_core import register_algorithm
 
 
 @register_algorithm(
-    "ghz_metrology", "metrology", (2, 8),
+    "ghz_metrology", "metrology", (2, None),
     tags=["sensing", "heisenberg_limit"],
 )
 def make_ghz_metrology(n_qubits=4, phi=0.3, **kwargs) -> QuantumCircuit:
@@ -41,7 +41,7 @@ def make_ghz_metrology(n_qubits=4, phi=0.3, **kwargs) -> QuantumCircuit:
 
 
 @register_algorithm(
-    "quantum_fisher_info", "metrology", (2, 8),
+    "quantum_fisher_info", "metrology", (2, None),
     tags=["sensing", "parameter_estimation"],
 )
 def make_quantum_fisher_info(n_qubits=4, phi=0.5, layers=2,

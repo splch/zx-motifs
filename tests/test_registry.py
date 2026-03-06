@@ -45,13 +45,11 @@ class TestRegistryGenerators:
         assert g.num_edges() > 0
 
     def test_max_qubit_generation(self, registry_entry):
-        """Generator also works at max qubit count."""
-        # Grover at 6 qubits uses MCX(5-control) which produces custom QASM
-        # gates that PyZX cannot parse — skip this known limitation
-        if registry_entry.name == "grover" and registry_entry.qubit_range[1] > 4:
-            max_q = 4
-        else:
-            max_q = registry_entry.qubit_range[1]
+        """Generator also works at a reasonable qubit count above minimum."""
+        max_q = registry_entry.qubit_range[1]
+        if max_q is None:
+            # Unlimited — test at min + 5 (capped at 12 for test speed)
+            max_q = min(registry_entry.qubit_range[0] + 5, 12)
         qc = registry_entry.generator(n_qubits=max_q)
         zx_circ = qiskit_to_zx(qc)
         g = zx_circ.to_graph()

@@ -7,41 +7,46 @@ from zx_motifs.algorithms._helpers import decompose_toffoli
 
 
 @register_algorithm(
-    "ripple_carry_adder", "arithmetic", (5, 5),
+    "ripple_carry_adder", "arithmetic", (5, None),
     tags=["toffoli", "addition", "classical_reversible"],
 )
 def make_ripple_carry_adder(n_qubits=5, **kwargs) -> QuantumCircuit:
-    """Cuccaro-style ripple-carry adder for 2-bit addition.
+    """Cuccaro-style ripple-carry adder for n-bit addition.
 
-    Uses 5 qubits: c0 (carry_in=0), a0, b0, a1, b1.
-    After execution: b0 = sum bit 0, b1 = sum bit 1, a1 = carry_out.
+    Uses 2n+1 qubits: 1 carry qubit (c), n a-qubits, n b-qubits,
+    where n = (n_qubits - 1) // 2.  n_qubits must be odd and >= 5.
     MAJ(c,a,b) = CX(c,b), CX(c,a), Toffoli(a,b,c).
     UMA(c,a,b) = Toffoli(a,b,c), CX(c,a), CX(a,b).
     Toffoli gates decomposed into Clifford+T.
     """
-    qc = QuantumCircuit(5)
-    c0, a0, b0, a1, b1 = 0, 1, 2, 3, 4
-    # MAJ(c0, a0, b0): propagate carry through bit 0
-    qc.cx(c0, b0)
-    qc.cx(c0, a0)
-    decompose_toffoli(qc, a0, b0, c0)
-    # MAJ(c0, a1, b1): propagate carry through bit 1
-    qc.cx(c0, b1)
-    qc.cx(c0, a1)
-    decompose_toffoli(qc, a1, b1, c0)
-    # UMA(c0, a1, b1): uncompute and add bit 1
-    decompose_toffoli(qc, a1, b1, c0)
-    qc.cx(c0, a1)
-    qc.cx(a1, b1)
-    # UMA(c0, a0, b0): uncompute and add bit 0
-    decompose_toffoli(qc, a0, b0, c0)
-    qc.cx(c0, a0)
-    qc.cx(a0, b0)
+    n_qubits = max(5, n_qubits)
+    # Force odd qubit count (2n+1 layout)
+    if n_qubits % 2 == 0:
+        n_qubits -= 1
+    n_bits = (n_qubits - 1) // 2  # number of bits per operand
+
+    qc = QuantumCircuit(n_qubits)
+    c = 0  # carry qubit
+    a = list(range(1, n_bits + 1))              # a register
+    b = list(range(n_bits + 1, 2 * n_bits + 1)) # b register
+
+    # Forward pass: MAJ chain to propagate carries
+    for i in range(n_bits):
+        qc.cx(c, b[i])
+        qc.cx(c, a[i])
+        decompose_toffoli(qc, a[i], b[i], c)
+
+    # Reverse pass: UMA chain to uncompute carries and produce sums
+    for i in range(n_bits - 1, -1, -1):
+        decompose_toffoli(qc, a[i], b[i], c)
+        qc.cx(c, a[i])
+        qc.cx(a[i], b[i])
+
     return qc
 
 
 @register_algorithm(
-    "qft_adder", "arithmetic", (4, 8),
+    "qft_adder", "arithmetic", (4, None),
     tags=["addition", "controlled_phase", "qft_based"],
 )
 def make_qft_adder(n_qubits=4, **kwargs) -> QuantumCircuit:
@@ -81,78 +86,78 @@ def make_qft_adder(n_qubits=4, **kwargs) -> QuantumCircuit:
 
 
 @register_algorithm(
-    "quantum_multiplier", "arithmetic", (6, 6),
+    "quantum_multiplier", "arithmetic", (8, None),
     tags=["multiplication", "classical_reversible"],
 )
-def make_quantum_multiplier(n_qubits=6, **kwargs) -> QuantumCircuit:
-    """Schoolbook quantum multiplier for 2-bit x 2-bit unsigned integers.
+def make_quantum_multiplier(n_qubits=8, **kwargs) -> QuantumCircuit:
+    """Schoolbook quantum multiplier for k-bit x k-bit unsigned integers.
 
-    Qubit layout (minimum 6):
-        q0, q1 -- input register A  (2-bit multiplicand)
-        q2, q3 -- input register B  (2-bit multiplier)
-        q4, q5 -- output / accumulator P
-
-    Tags: multiplication, classical_reversible
+    Uses 4k qubits: k a-qubits (multiplicand), k b-qubits (multiplier),
+    2k p-qubits (product accumulator), where k = n_qubits // 4.
+    Partial products are accumulated via Toffoli gates (decomposed into
+    Clifford+T), followed by CX carry propagation on the product register.
     """
-    qc = QuantumCircuit(max(6, n_qubits))
-    a0, a1 = 0, 1        # multiplicand A
-    b0, b1 = 2, 3        # multiplier B
-    p0, p1 = 4, 5        # product / accumulator
+    n_qubits = max(8, n_qubits)
+    k = n_qubits // 4
+    total = 4 * k
 
-    # Partial product a0*b0 -> p0
-    decompose_toffoli(qc, a0, b0, p0)
+    qc = QuantumCircuit(total)
+    a = list(range(k))                     # multiplicand A
+    b = list(range(k, 2 * k))              # multiplier B
+    p = list(range(2 * k, 4 * k))          # product / accumulator P
 
-    # Partial product a0*b1 -> p1
-    decompose_toffoli(qc, a0, b1, p1)
+    # Accumulate partial products: a[i] * b[j] -> p[i+j]
+    for i in range(k):
+        for j in range(k):
+            if i + j < 2 * k:
+                decompose_toffoli(qc, a[i], b[j], p[i + j])
 
-    # Partial product a1*b0 -> p1 (shifted by 1)
-    decompose_toffoli(qc, a1, b0, p1)
-
-    # Cross term a1*b1 carry propagation
-    decompose_toffoli(qc, a1, b1, p0)
-
-    # Carry propagation
-    qc.cx(p0, p1)
-    qc.cx(p1, p0)
+    # Carry propagation on product register
+    for i in range(2 * k - 1):
+        qc.cx(p[i], p[i + 1])
+    for i in range(2 * k - 2, -1, -1):
+        qc.cx(p[i + 1], p[i])
 
     return qc
 
 
 @register_algorithm(
-    "quantum_comparator", "arithmetic", (5, 5),
+    "quantum_comparator", "arithmetic", (5, None),
     tags=["comparison", "classical_reversible"],
 )
 def make_quantum_comparator(n_qubits=5, **kwargs) -> QuantumCircuit:
-    """Quantum less-than comparator for two 2-bit unsigned integers.
+    """Quantum less-than comparator for two n-bit unsigned integers.
 
-    Qubit layout (minimum 5):
-        q0, q1 -- input register A  (2-bit, A = 2*a1 + a0)
-        q2, q3 -- input register B  (2-bit, B = 2*b1 + b0)
-        q4     -- result qubit (set to |1> iff A < B)
-
-    Tags: comparison, classical_reversible
+    Uses 2n+1 qubits: n a-qubits, n b-qubits, 1 result qubit,
+    where n = (n_qubits - 1) // 2.  n_qubits must be odd and >= 5.
+    Result qubit is set to |1> iff A < B.
+    Toffoli gates decomposed into Clifford+T.
     """
-    qc = QuantumCircuit(max(5, n_qubits))
-    a0, a1 = 0, 1        # A register
-    b0, b1 = 2, 3        # B register
-    result = 4            # output: 1 iff A < B
+    n_qubits = max(5, n_qubits)
+    # Force odd qubit count (2n+1 layout)
+    if n_qubits % 2 == 0:
+        n_qubits -= 1
+    n_bits = (n_qubits - 1) // 2  # number of bits per operand
 
-    # Bit-0 borrow: borrow if a0=0 AND b0=1
-    qc.x(a0)
-    decompose_toffoli(qc, a0, b0, result)
-    qc.x(a0)
+    qc = QuantumCircuit(n_qubits)
+    a = list(range(n_bits))                     # A register
+    b = list(range(n_bits, 2 * n_bits))         # B register
+    result = 2 * n_bits                         # output qubit
 
-    # Propagate borrow into bit-1 comparison
-    qc.cx(result, a1)
-    qc.cx(result, b1)
+    for i in range(n_bits):
+        # Borrow at bit i: borrow if a[i]=0 AND b[i]=1
+        qc.x(a[i])
+        decompose_toffoli(qc, a[i], b[i], result)
+        qc.x(a[i])
 
-    # Bit-1 borrow: borrow if (adjusted) a1=0 AND b1=1
-    qc.x(a1)
-    decompose_toffoli(qc, a1, b1, result)
-    qc.x(a1)
+        # Propagate borrow into next bit's comparison (except last)
+        if i < n_bits - 1:
+            qc.cx(result, a[i + 1])
+            qc.cx(result, b[i + 1])
 
-    # Uncompute the borrow propagation into a1, b1
-    qc.cx(result, b1)
-    qc.cx(result, a1)
+    # Uncompute borrow propagation in reverse (leave result intact)
+    for i in range(n_bits - 2, -1, -1):
+        qc.cx(result, b[i + 1])
+        qc.cx(result, a[i + 1])
 
     return qc
