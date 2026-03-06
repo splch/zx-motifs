@@ -17,7 +17,7 @@ class PipelineConfig:
     # Upper bound on qubit count when generating algorithm instances for the
     # corpus. Larger values yield richer graphs but increase conversion and
     # matching time roughly quadratically.
-    max_qubits: int = 9
+    max_qubits: int = 10
 
     # -- Bottom-up motif discovery --
 
