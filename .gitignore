@@ -38,7 +38,7 @@ coverage.xml
 .vscode/
 
 # Generated outputs
-scripts/output/
+scripts/
 notebooks/*.png
 motif_library/
 .claude/

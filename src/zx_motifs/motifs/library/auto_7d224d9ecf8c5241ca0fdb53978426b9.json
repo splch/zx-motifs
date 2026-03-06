@@ -1,0 +1,43 @@
+{
+  "motif_id": "auto_7d224d9ecf8c5241ca0fdb53978426b9",
+  "description": "Auto-discovered 3-node motif, found in 3 algorithms: iqp_sampling_q3, iqp_sampling_q4, iqp_sampling_q5",
+  "source": "bottom_up",
+  "tags": [
+    "irreducible",
+    "auto_discovered"
+  ],
+  "graph": {
+    "nodes": [
+      {
+        "id": 0,
+        "vertex_type": "Z",
+        "phase_class": "t_like",
+        "is_boundary": false
+      },
+      {
+        "id": 1,
+        "vertex_type": "Z",
+        "phase_class": "t_like",
+        "is_boundary": false
+      },
+      {
+        "id": 2,
+        "vertex_type": "Z",
+        "phase_class": "zero",
+        "is_boundary": false
+      }
+    ],
+    "links": [
+      {
+        "source": 1,
+        "target": 0,
+        "edge_type": "HADAMARD"
+      },
+      {
+        "source": 2,
+        "target": 0,
+        "edge_type": "HADAMARD"
+      }
+    ]
+  }
+}
