@@ -454,10 +454,14 @@ def enumerate_connected_subgraphs(
     subgraphs: list[nx.Graph] = []
     seen_fast: dict[str, nx.Graph] = {}  # canonical_hash → representative
 
-    def _expand(node_set: frozenset, candidates: frozenset) -> None:
-        """Recursively expand node_set by adding neighbors from candidates."""
+    def _expand(node_set: frozenset, candidates: frozenset) -> bool:
+        """Recursively expand node_set by adding neighbors from candidates.
+
+        Returns True if the subgraph cap has been reached and search
+        should stop immediately.
+        """
         if len(subgraphs) >= max_subgraphs:
-            return
+            return True
         size = len(node_set)
         if size >= min_size:
             subg = host.subgraph(node_set).copy()
@@ -472,7 +476,7 @@ def enumerate_connected_subgraphs(
                     subgraphs.append(subg)
 
         if size >= max_size:
-            return
+            return False
 
         # Find all neighbors of current set that are valid candidates
         new_candidates = set()
@@ -484,7 +488,9 @@ def enumerate_connected_subgraphs(
         for nbr in sorted(new_candidates):
             # Only consider candidates > nbr to avoid duplicates
             remaining = frozenset(c for c in new_candidates if c > nbr)
-            _expand(node_set | {nbr}, remaining)
+            if _expand(node_set | {nbr}, remaining):
+                return True
+        return False
 
     for start in interior_nodes:
         if len(subgraphs) >= max_subgraphs:
