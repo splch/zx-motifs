@@ -157,11 +157,7 @@ def _cmd_info(args: argparse.Namespace) -> None:
 def _cmd_info_algorithm(name: str) -> None:
     from zx_motifs.algorithms import REGISTRY
 
-    entry = None
-    for e in REGISTRY:
-        if e.name == name:
-            entry = e
-            break
+    entry = next((e for e in REGISTRY if e.name == name), None)
 
     if entry is None:
         print(f"Algorithm '{name}' not found in registry.")
@@ -235,7 +231,9 @@ def _cmd_scaffold_motif(args: argparse.Namespace) -> None:
 
     if target.exists():
         print(f"Motif file already exists: {target}")
-        sys.exit(1)
+        print("Template printed to stdout (save manually to avoid overwriting):\n")
+        print(content)
+        return
 
     target.write_text(content)
     print(f"Created motif template: {target}")

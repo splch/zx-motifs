@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import networkx as nx
 import numpy as np
 import pandas as pd
 from tqdm import tqdm
@@ -32,8 +33,6 @@ def build_corpus(max_qubits: int = CONFIG.max_qubits) -> dict[tuple[str, str], "
     -------
     dict mapping (instance_name, level_value) to NetworkX graph.
     """
-    import networkx as nx
-
     corpus: dict[tuple[str, str], nx.Graph] = {}
     errors: list[str] = []
 
@@ -55,10 +54,8 @@ def build_corpus(max_qubits: int = CONFIG.max_qubits) -> dict[tuple[str, str], "
 
     if errors:
         print(f"  Skipped {len(errors)} instances due to errors:")
-        for err in errors[:10]:
+        for err in errors:
             print(f"    {err}")
-        if len(errors) > 10:
-            print(f"    ... and {len(errors) - 10} more")
 
     return corpus
 
@@ -159,7 +156,11 @@ def build_fingerprint_matrix(
 
     counts_df = pd.DataFrame(counts, index=instances, columns=motif_ids)
 
-    row_sums = counts_df.sum(axis=1).replace(0, 1)
-    freq_df = counts_df.div(row_sums, axis=0)
+    # L1-normalise each row.  Rows with no motif matches remain all-zero
+    # rather than being converted to a uniform distribution.
+    row_sums = counts_df.sum(axis=1)
+    nonzero = row_sums != 0
+    freq_df = pd.DataFrame(0.0, index=counts_df.index, columns=counts_df.columns)
+    freq_df.loc[nonzero] = counts_df.loc[nonzero].div(row_sums[nonzero], axis=0)
 
     return counts_df, freq_df

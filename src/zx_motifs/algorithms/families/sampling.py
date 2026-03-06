@@ -20,7 +20,6 @@ def make_iqp_sampling(n_qubits=5, seed=77, **kwargs) -> QuantumCircuit:
 
     Tags: commuting_gates, supremacy
     """
-    seed = kwargs.get("seed", seed)
     n = max(2, n_qubits)
     qc = QuantumCircuit(n)
     rng = np.random.default_rng(seed)
@@ -59,8 +58,6 @@ def make_random_circuit_sampling(n_qubits=5, depth=6, seed=55,
 
     Tags: random_circuit, supremacy
     """
-    depth = kwargs.get("depth", depth)
-    seed = kwargs.get("seed", seed)
     n = max(2, n_qubits)
     qc = QuantumCircuit(n)
     rng = np.random.default_rng(seed)

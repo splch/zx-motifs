@@ -5,21 +5,16 @@ import networkx as nx
 from zx_motifs.pipeline.converter import convert_at_all_levels
 from zx_motifs.pipeline.featurizer import pyzx_to_networkx
 from zx_motifs.pipeline.matcher import (
-    MotifMatch,
     MotifPattern,
     find_motif_across_corpus,
     find_motif_across_corpus_multilevel,
 )
 from zx_motifs.pipeline.motif_generators import (
     HANDCRAFTED_MOTIFS,
-    is_isomorphic,
     find_neighborhood_motifs,
     find_recurring_subgraphs,
     find_recurring_subgraphs_multilevel,
     make_cx_spider_motif,
-    make_phase_gadget_motif,
-    make_toffoli_core_motif,
-    make_trotter_layer_motif,
 )
 
 

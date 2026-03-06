@@ -2,13 +2,13 @@
 Motif library optimization: rank motifs by marginal coverage contribution,
 prune redundant ones via weighted greedy set cover.
 """
-from dataclasses import dataclass, field
-
-import networkx as nx
+import logging
+from dataclasses import dataclass
 
 from zx_motifs.config import CONFIG
-from .decomposer import decompose_graph
 from .matcher import MotifPattern, find_motif_in_graph
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -166,6 +166,10 @@ def optimize_library(
             marginal = new_verts / total_interior
 
             if marginal < min_marginal_coverage:
+                logger.debug(
+                    "Dropping motif %s: marginal coverage %.4f < threshold %.4f",
+                    motif.motif_id, marginal, min_marginal_coverage,
+                )
                 continue
 
             diversity = (new_algos / max(total_algos, 1)) if total_algos > 0 else 0

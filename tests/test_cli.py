@@ -92,7 +92,7 @@ def test_info_not_found():
 # ── scaffold motif ───────────────────────────────────────────────────
 
 
-def test_scaffold_motif(tmp_path, monkeypatch):
+def test_scaffold_motif():
     """``scaffold motif`` creates a JSON template file."""
     # Run from the project root; the CLI writes into
     # src/zx_motifs/motifs/library/<name>.json

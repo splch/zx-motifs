@@ -55,7 +55,6 @@ def make_pauli_twirling(n_qubits=4, seed=33, **kwargs) -> QuantumCircuit:
 
     Tags: noise_mitigation, randomized_compiling
     """
-    seed = kwargs.get("seed", seed)
     n = max(2, n_qubits)
     qc = QuantumCircuit(n)
     rng = np.random.default_rng(seed)

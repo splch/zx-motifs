@@ -2,9 +2,8 @@
 import networkx as nx
 import pytest
 
-from zx_motifs.pipeline.decomposer import decompose_graph, DecompositionResult
+from zx_motifs.pipeline.decomposer import decompose_graph
 from zx_motifs.pipeline.inducer import (
-    NeighborhoodSignature,
     analyze_uncovered_vertices,
     compute_vertex_signature,
     extract_motif_from_uncovered_cluster,

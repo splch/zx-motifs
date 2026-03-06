@@ -49,22 +49,21 @@ class ZXSnapshot:
 
 def count_t_gates(g: Graph) -> int:
     """Count spiders with phase π/4 or 7π/4 (T and T†)."""
-    count = 0
-    for v in g.vertices():
-        phase = g.phase(v)
-        if phase == Fraction(1, 4) or phase == Fraction(7, 4):
-            count += 1
-    return count
+    if g.num_vertices() == 0:
+        return 0
+    return sum(
+        1 for v in g.vertices()
+        if g.phase(v) in (Fraction(1, 4), Fraction(7, 4))
+    )
 
 
 def has_circuit_like_structure(g: Graph) -> bool:
     """Heuristic: circuit-like if most vertices have low degree."""
-    degrees = [len(list(g.neighbors(v))) for v in g.vertices()]
-    if not degrees:
+    if g.num_vertices() == 0:
         return False
+    degrees = [len(list(g.neighbors(v))) for v in g.vertices()]
     avg_degree = sum(degrees) / len(degrees)
-    max_degree = max(degrees)
-    return avg_degree < 4.0 and max_degree < 10
+    return avg_degree < 4.0 and max(degrees) < 10
 
 
 def qiskit_to_zx(qc: QuantumCircuit) -> zx.Circuit:

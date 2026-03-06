@@ -6,6 +6,7 @@ from dataclasses import dataclass, field
 import networkx as nx
 
 from zx_motifs.config import CONFIG
+from .converter import SimplificationLevel
 from .featurizer import compute_motif_feature_vector, motif_similarity
 from .matcher import MotifPattern, find_motif_in_graph
 from .motif_generators import enumerate_connected_subgraphs
@@ -22,10 +23,7 @@ class MotifEvolution:
     vanishes_at: list[str] = field(default_factory=list)
 
 
-_DEFAULT_LEVELS = [
-    "raw", "spider_fused", "interior_cliff",
-    "clifford_simp", "full_reduce", "teleport_reduce",
-]
+_DEFAULT_LEVELS = [level.value for level in SimplificationLevel]
 
 
 def track_motif_evolution(

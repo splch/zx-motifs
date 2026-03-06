@@ -112,9 +112,6 @@ def make_qdrift(n_qubits=4, n_steps=4, dt=0.3, seed=42, **kwargs) -> QuantumCirc
 
     Tags: hamiltonian_simulation, randomized
     """
-    n_steps = kwargs.get("n_steps", n_steps)
-    dt = kwargs.get("dt", dt)
-    seed = kwargs.get("seed", seed)
     n = max(2, n_qubits)
     qc = QuantumCircuit(n)
     rng = np.random.default_rng(seed)
@@ -161,8 +158,6 @@ def make_higher_order_trotter(n_qubits=4, n_steps=1, dt=0.5,
 
     Tags: hamiltonian_simulation, trotter, higher_order
     """
-    n_steps = kwargs.get("n_steps", n_steps)
-    dt = kwargs.get("dt", dt)
     n = max(2, n_qubits)
     qc = QuantumCircuit(n)
 
@@ -196,10 +191,6 @@ def make_hubbard_trotter(n_qubits=4, n_steps=1, dt=0.5,
 
     Tags: hamiltonian_simulation, fermionic, trotter
     """
-    n_steps = kwargs.get("n_steps", n_steps)
-    dt = kwargs.get("dt", dt)
-    t_hop = kwargs.get("t_hop", t_hop)
-    u_int = kwargs.get("u_int", u_int)
     n = max(2, n_qubits)
     qc = QuantumCircuit(n)
 
@@ -231,8 +222,6 @@ def make_ctqw(n_qubits=4, n_steps=2, dt=0.5, **kwargs) -> QuantumCircuit:
 
     Tags: quantum_walk, continuous_time
     """
-    n_steps = kwargs.get("n_steps", n_steps)
-    dt = kwargs.get("dt", dt)
     n = max(2, n_qubits)
     qc = QuantumCircuit(n)
 
@@ -263,8 +252,6 @@ def make_vqs_real_time(n_qubits=4, layers=2, dt=0.3, **kwargs) -> QuantumCircuit
 
     Tags: variational, real_time
     """
-    layers = kwargs.get("layers", layers)
-    dt = kwargs.get("dt", dt)
     n = max(2, n_qubits)
     qc = QuantumCircuit(n)
     rng = np.random.default_rng(717)

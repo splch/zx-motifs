@@ -1,8 +1,6 @@
 """Shared test fixtures for ZX motif pipeline tests."""
 import numpy as np
-import pyzx as zx
 import pytest
-from fractions import Fraction
 from qiskit import QuantumCircuit
 
 

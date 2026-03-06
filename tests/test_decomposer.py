@@ -6,11 +6,9 @@ from zx_motifs.pipeline.converter import convert_at_all_levels
 from zx_motifs.pipeline.featurizer import pyzx_to_networkx
 from zx_motifs.pipeline.decomposer import (
     DecompositionResult,
-    MotifPlacement,
     decompose_across_corpus,
     decompose_graph,
 )
-from zx_motifs.pipeline.matcher import MotifPattern
 from zx_motifs.pipeline.motif_generators import (
     HANDCRAFTED_MOTIFS,
     make_cx_spider_motif,

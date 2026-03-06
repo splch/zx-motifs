@@ -4,6 +4,7 @@ These attributes are critical for meaningful subgraph isomorphism —
 without them, you're just doing graph isomorphism on the topology,
 which misses the entire point of ZX.
 """
+from collections import Counter
 from fractions import Fraction
 
 import networkx as nx
@@ -135,13 +136,12 @@ def compute_graph_features(nxg: nx.Graph) -> dict:
     if nxg.number_of_nodes() == 0:
         return {"n_nodes": 0}
 
-    type_counts: dict[str, int] = {}
-    phase_class_counts: dict[str, int] = {}
-    for _, data in nxg.nodes(data=True):
-        vt = data.get("vertex_type", "UNK")
-        pc = data.get("phase_class", "UNK")
-        type_counts[vt] = type_counts.get(vt, 0) + 1
-        phase_class_counts[pc] = phase_class_counts.get(pc, 0) + 1
+    type_counts = Counter(
+        data.get("vertex_type", "UNK") for _, data in nxg.nodes(data=True)
+    )
+    phase_class_counts = Counter(
+        data.get("phase_class", "UNK") for _, data in nxg.nodes(data=True)
+    )
 
     degrees = [d for _, d in nxg.degree()]
 
@@ -208,10 +208,13 @@ def compute_motif_feature_vector(nxg: nx.Graph) -> np.ndarray:
 def motif_similarity(vec_a: np.ndarray, vec_b: np.ndarray) -> float:
     """
     Cosine similarity between two motif feature vectors, in [0, 1].
-    Returns 0.0 if either vector is all-zero.
+    Returns 1.0 if both vectors are all-zero (identical empty signals).
+    Returns 0.0 if exactly one vector is all-zero.
     """
     norm_a = np.linalg.norm(vec_a)
     norm_b = np.linalg.norm(vec_b)
+    if norm_a == 0 and norm_b == 0:
+        return 1.0
     if norm_a == 0 or norm_b == 0:
         return 0.0
     return float(np.dot(vec_a, vec_b) / (norm_a * norm_b))

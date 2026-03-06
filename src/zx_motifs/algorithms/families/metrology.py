@@ -19,7 +19,6 @@ def make_ghz_metrology(n_qubits=4, phi=0.3, **kwargs) -> QuantumCircuit:
 
     Tags: sensing, heisenberg_limit
     """
-    phi = kwargs.get("phi", phi)
     n = max(2, n_qubits)
     qc = QuantumCircuit(n)
 
@@ -54,8 +53,6 @@ def make_quantum_fisher_info(n_qubits=4, phi=0.5, layers=2,
 
     Tags: sensing, parameter_estimation
     """
-    phi = kwargs.get("phi", phi)
-    layers = kwargs.get("layers", layers)
     n = max(2, n_qubits)
     qc = QuantumCircuit(n)
 

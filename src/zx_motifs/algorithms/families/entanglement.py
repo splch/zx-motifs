@@ -106,9 +106,8 @@ def make_dicke_state(n_qubits=4, k=2, **kwargs) -> QuantumCircuit:
 
     Tags: symmetric_state, entanglement
     """
-    k = kwargs.get("k", k)
     n = max(2, n_qubits)
-    k = max(1, min(k, n - 1))  # clamp k to valid range
+    k = max(1, min(k, n))  # clamp k to valid range
 
     qc = QuantumCircuit(n)
 

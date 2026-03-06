@@ -1,17 +1,13 @@
 """Tests for cross-level motif tracking and structural catalog similarity (Phase 3)."""
 import pytest
-import networkx as nx
-import numpy as np
 
 from zx_motifs.pipeline.converter import convert_at_all_levels
-from zx_motifs.pipeline.featurizer import pyzx_to_networkx, compute_motif_feature_vector
+from zx_motifs.pipeline.featurizer import pyzx_to_networkx
 from zx_motifs.pipeline.cross_level import (
-    MotifEvolution,
     track_motif_evolution,
     track_all_motifs_evolution,
 )
-from zx_motifs.pipeline.catalog import CatalogEntry, MotifCatalog
-from zx_motifs.pipeline.matcher import MotifPattern
+from zx_motifs.pipeline.catalog import MotifCatalog
 from zx_motifs.pipeline.motif_generators import (
     make_cx_spider_motif,
     make_zz_interaction_motif,

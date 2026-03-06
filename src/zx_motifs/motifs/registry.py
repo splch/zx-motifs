@@ -6,14 +6,16 @@ MotifPattern objects for use in the pipeline.
 from __future__ import annotations
 
 import json
+import logging
 from pathlib import Path
 
-import networkx as nx
 from networkx.readwrite import json_graph as _json_graph
 
 import jsonschema
 
 from zx_motifs.pipeline.matcher import MotifPattern
+
+logger = logging.getLogger(__name__)
 
 # ── Paths ────────────────────────────────────────────────────────────
 
@@ -84,19 +86,44 @@ def _discover_motifs() -> list[MotifPattern]:
     """
     Discover all JSON motif files in the library/ directory,
     validate each against the schema, and return as MotifPattern list.
+
+    Files that fail to parse or validate are logged as warnings and
+    skipped rather than aborting the entire registry load.
     """
     schema = _get_schema()
     motifs: list[MotifPattern] = []
 
     if not _LIBRARY_DIR.is_dir():
+        logger.warning("Motif library directory not found: %s", _LIBRARY_DIR)
         return motifs
 
     for json_path in sorted(_LIBRARY_DIR.glob("*.json")):
-        with open(json_path) as f:
-            data = json.load(f)
+        try:
+            with open(json_path) as f:
+                data = json.load(f)
+        except json.JSONDecodeError as exc:
+            logger.warning("Skipping %s: invalid JSON — %s", json_path.name, exc)
+            continue
 
-        jsonschema.validate(instance=data, schema=schema)
-        motifs.append(_json_to_motif(data))
+        try:
+            jsonschema.validate(instance=data, schema=schema)
+        except jsonschema.ValidationError as exc:
+            logger.warning(
+                "Skipping %s: schema validation failed — %s",
+                json_path.name,
+                exc.message,
+            )
+            continue
+
+        try:
+            motifs.append(_json_to_motif(data))
+        except Exception as exc:
+            logger.warning(
+                "Skipping %s: failed to convert to MotifPattern — %s",
+                json_path.name,
+                exc,
+            )
+            continue
 
     return motifs
 
@@ -108,10 +135,7 @@ MOTIF_REGISTRY: list[MotifPattern] = _discover_motifs()
 
 def get_motif(motif_id: str) -> MotifPattern | None:
     """Look up a motif by its unique ID. Returns None if not found."""
-    for m in MOTIF_REGISTRY:
-        if m.motif_id == motif_id:
-            return m
-    return None
+    return next((m for m in MOTIF_REGISTRY if m.motif_id == motif_id), None)
 
 
 def list_motifs(

@@ -8,7 +8,6 @@ from collections import Counter
 from dataclasses import asdict, dataclass, field
 
 import numpy as np
-import networkx as nx
 from networkx.readwrite import json_graph as _json_graph
 
 from .featurizer import compute_motif_feature_vector, motif_similarity
@@ -56,10 +55,13 @@ class MotifCatalog:
         )
         node_sig = "_".join(f"{t}{c}" for t, c in sorted(type_counts.items()))
 
+        _EDGE_ABBREV = {"SIMPLE": "S", "HADAMARD": "H"}
         edge_counts = Counter(
             g.edges[e].get("edge_type", "?") for e in g.edges()
         )
-        edge_sig = "_".join(f"{t[0]}{c}" for t, c in sorted(edge_counts.items()))
+        edge_sig = "_".join(
+            f"{_EDGE_ABBREV.get(t, t)}{c}" for t, c in sorted(edge_counts.items())
+        )
 
         # Count occurrences by algorithm family
         algo_counts = Counter(m.host_algorithm for m in motif.occurrences)

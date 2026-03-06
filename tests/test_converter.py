@@ -1,5 +1,4 @@
 """Tests for circuit-to-ZX conversion pipeline."""
-import numpy as np
 import pyzx as zx
 
 from zx_motifs.pipeline.converter import (

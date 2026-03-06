@@ -1,10 +1,9 @@
 """Tests for ZX box composition."""
-import numpy as np
 import pyzx as zx
+import pytest
 from qiskit import QuantumCircuit
 
 from zx_motifs.pipeline.composer import (
-    BoundaryDestroyedError,
     compose_parallel,
     compose_sequential,
     make_box_from_circuit,
@@ -48,11 +47,8 @@ class TestComposeSequential:
         qc3 = QuantumCircuit(3)
         box2 = make_box_from_circuit("b2", qc2)
         box3 = make_box_from_circuit("b3", qc3)
-        try:
+        with pytest.raises(ValueError):
             compose_sequential(box2, box3)
-            assert False, "Should have raised ValueError"
-        except ValueError:
-            pass
 
     def test_semantic_preservation(self):
         """Composing H then CNOT should match a Bell state circuit."""
@@ -127,8 +123,5 @@ class TestSimplifyBox:
 
     def test_unknown_level_raises(self, bell_circuit):
         box = make_box_from_circuit("bell", bell_circuit)
-        try:
+        with pytest.raises(ValueError):
             simplify_box(box, level="nonexistent")
-            assert False, "Should have raised ValueError"
-        except ValueError:
-            pass

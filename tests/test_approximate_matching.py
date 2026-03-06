@@ -8,7 +8,6 @@ from zx_motifs.pipeline.featurizer import (
     motif_similarity,
 )
 from zx_motifs.pipeline.matcher import (
-    ApproximateMatch,
     can_possibly_match,
     find_approximate_matches,
     find_motif_in_graph,
@@ -163,12 +162,12 @@ class TestMotifSimilarity:
         v = compute_motif_feature_vector(make_cx_spider_motif().graph)
         assert motif_similarity(v, v) == pytest.approx(1.0)
 
-    def test_empty_is_zero(self):
-        """Zero vector has similarity 0.0."""
+    def test_zero_vector_similarity(self):
+        """One zero vector vs non-zero gives 0.0; two zero vectors give 1.0."""
         v = compute_motif_feature_vector(make_cx_spider_motif().graph)
         z = np.zeros(12)
         assert motif_similarity(v, z) == 0.0
-        assert motif_similarity(z, z) == 0.0
+        assert motif_similarity(z, z) == 1.0
 
     def test_symmetric(self):
         """Similarity is symmetric."""

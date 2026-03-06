@@ -72,8 +72,6 @@ def make_iterative_qpe(n_qubits=3, n_bits=3, angle=np.pi / 4,
 
     Tags: phase_estimation, iterative
     """
-    n_bits = kwargs.get("n_bits", n_bits)
-    angle = kwargs.get("angle", angle)
     qc = QuantumCircuit(2)
     ancilla = 0
     system = 1
@@ -97,7 +95,7 @@ def make_iterative_qpe(n_qubits=3, n_bits=3, angle=np.pi / 4,
         correction = 0.0
         for idx, phase_bit in enumerate(extracted_phases):
             correction += phase_bit / (2 ** (idx + 1))
-        if correction != 0.0:
+        if abs(correction) > 1e-10:
             qc.rz(-2 * np.pi * correction, ancilla)
 
         # Step 4: H on ancilla

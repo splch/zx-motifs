@@ -89,7 +89,6 @@ def make_vqls(n_qubits=4, layers=2, **kwargs) -> QuantumCircuit:
     Prepares a parameterized trial state |x(theta)> using a hardware-efficient
     ansatz with RY + RZ single-qubit rotations and CX entangling layers.
     """
-    layers = kwargs.get("layers", layers)
     n = max(2, n_qubits)
     qc = QuantumCircuit(n)
     rng = np.random.default_rng(789)

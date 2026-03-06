@@ -11,6 +11,12 @@ Key design decisions:
      the "guts" of a pattern, not its I/O connections.
   4. Phase wildcards allow parametric motifs (any, any_nonzero, any_nonclifford).
 
+VF2 mapping convention:
+  NetworkX's GraphMatcher(G1, G2).subgraph_isomorphisms_iter() yields
+  mappings {G1_node: G2_node}. We call GraphMatcher(host, pattern), so
+  raw mappings are {host_node: pattern_node}. All public APIs in this
+  module invert that to {pattern_node: host_node} for consistency.
+
 This gives you commutation-aware pattern detection "for free" because
 ZX diagrams have already absorbed commutation relations into their topology.
 """
@@ -169,6 +175,11 @@ def find_motif_in_graph(
     """
     Find all subgraph isomorphism matches of `pattern` in `host`.
 
+    Uses VF2 via ``GraphMatcher(host, pattern)``, which yields raw
+    mappings ``{host_node: pattern_node}``.  These are inverted to
+    ``{pattern_node: host_node}`` before being returned, so callers
+    always receive pattern-keyed dicts.
+
     Args:
         pattern: The motif to search for (small graph, ~3-10 nodes).
         host: The algorithm's ZX graph to search in.
@@ -177,7 +188,7 @@ def find_motif_in_graph(
             before matching (we want interior structure).
 
     Returns:
-        List of node mappings {pattern_node: host_node}.
+        List of node mappings ``{pattern_node: host_node}``.
     """
     if exclude_boundary:
         interior_nodes = [
@@ -220,7 +231,10 @@ def find_motif_across_corpus(
 ) -> MotifPattern:
     """
     Search for a motif across all algorithm graphs at a given level.
-    Populates pattern.occurrences with MotifMatch objects.
+
+    Convenience wrapper around :func:`find_motif_across_corpus_multilevel`
+    for the common single-level case.  Populates ``pattern.occurrences``
+    with :class:`MotifMatch` objects.
     """
     return find_motif_across_corpus_multilevel(
         pattern, corpus, levels=[target_level],

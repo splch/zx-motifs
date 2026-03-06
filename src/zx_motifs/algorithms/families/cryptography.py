@@ -23,7 +23,6 @@ def make_bb84_encode(n_qubits=8, seed=42, **kwargs) -> QuantumCircuit:
 
     Uses a fixed-seed RNG for reproducibility.
     """
-    seed = kwargs.get("seed", seed)
     n = max(1, n_qubits)
     qc = QuantumCircuit(n)
     rng = np.random.default_rng(seed)
@@ -51,7 +50,6 @@ def make_e91_protocol(n_qubits=8, seed=99, **kwargs) -> QuantumCircuit:
     rotations (RY) on each qubit to simulate Alice and Bob independently
     choosing measurement bases.
     """
-    seed = kwargs.get("seed", seed)
     n = max(2, n_qubits)
     n_pairs = n // 2
     total = 2 * n_pairs  # ensure even number of qubits

@@ -338,7 +338,6 @@ def make_quantum_walk_search(n_qubits=5, n_steps=2, **kwargs) -> QuantumCircuit:
 
     Tags: quantum_walk, search
     """
-    n_steps = kwargs.get("n_steps", n_steps)
     n = max(3, n_qubits)
     qc = QuantumCircuit(n)
 

@@ -170,7 +170,6 @@ def make_qgan_generator(n_qubits=4, layers=3, **kwargs) -> QuantumCircuit:
 
     Tags: generative, adversarial
     """
-    layers = kwargs.get("layers", layers)
     n = max(2, n_qubits)
     qc = QuantumCircuit(n)
     rng = np.random.default_rng(606)

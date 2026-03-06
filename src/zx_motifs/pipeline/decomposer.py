@@ -2,7 +2,7 @@
 Motif decomposition: invert the pipeline by decomposing a ZX graph
 into its constituent motifs using a greedy set-cover approach.
 """
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 import networkx as nx
 

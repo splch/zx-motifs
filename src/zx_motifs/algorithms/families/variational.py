@@ -294,9 +294,6 @@ def make_qaoa_weighted(n_qubits=4, p=1, gamma=0.5, beta=0.3,
 
     Tags: combinatorial, weighted
     """
-    p = kwargs.get("p", p)
-    gamma = kwargs.get("gamma", gamma)
-    beta = kwargs.get("beta", beta)
     n = max(3, n_qubits)
     qc = QuantumCircuit(n)
 
@@ -339,8 +336,6 @@ def make_quantum_boltzmann(n_qubits=4, layers=2, beta_param=0.5,
 
     Tags: generative, thermal
     """
-    layers = kwargs.get("layers", layers)
-    beta_param = kwargs.get("beta_param", beta_param)
     n = max(4, n_qubits)
     qc = QuantumCircuit(n)
     rng = np.random.default_rng(505)
