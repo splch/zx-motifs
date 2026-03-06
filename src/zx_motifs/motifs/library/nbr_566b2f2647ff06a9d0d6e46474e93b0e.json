@@ -1,0 +1,40 @@
+{
+  "motif_id": "nbr_566b2f2647ff06a9d0d6e46474e93b0e",
+  "description": "Neighborhood-extracted 3-node motif, found in 7 algorithms: hubbard_trotter_q2, hubbard_trotter_q3, hubbard_trotter_q4, hubbard_trotter_q5, hubbard_trotter_q6, hubbard_trotter_q7, hubbard_trotter_q8",
+  "source": "neighborhood",
+  "tags": [
+    "auto_discovered",
+    "neighborhood"
+  ],
+  "graph": {
+    "nodes": [
+      {
+        "id": 2,
+        "vertex_type": "Z",
+        "phase_class": "clifford"
+      },
+      {
+        "id": 3,
+        "vertex_type": "X",
+        "phase_class": "clifford"
+      },
+      {
+        "id": 4,
+        "vertex_type": "Z",
+        "phase_class": "zero"
+      }
+    ],
+    "links": [
+      {
+        "source": 2,
+        "target": 3,
+        "edge_type": "SIMPLE"
+      },
+      {
+        "source": 3,
+        "target": 4,
+        "edge_type": "SIMPLE"
+      }
+    ]
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "motif_id": "nbr_7681a438fec399149e59a7bde69aadb8",
+  "description": "Neighborhood-extracted 3-node motif, found in 21 algorithms: data_reuploading_q2, data_reuploading_q3, data_reuploading_q4, data_reuploading_q5, qgan_generator_q2, qgan_generator_q3, qgan_generator_q4, qgan_generator_q5, varqite_q3, varqite_q4, varqite_q5, vqd_q4, vqd_q5, vqd_q6, vqd_q7, vqd_q8, vqls_q2, vqls_q3, vqls_q4, vqls_q5, vqls_q6",
+  "source": "neighborhood",
+  "tags": [
+    "auto_discovered",
+    "neighborhood"
+  ],
+  "graph": {
+    "nodes": [
+      {
+        "id": 5,
+        "vertex_type": "Z",
+        "phase_class": "clifford"
+      },
+      {
+        "id": 6,
+        "vertex_type": "X",
+        "phase_class": "arbitrary"
+      },
+      {
+        "id": 7,
+        "vertex_type": "Z",
+        "phase_class": "arbitrary"
+      }
+    ],
+    "links": [
+      {
+        "source": 5,
+        "target": 6,
+        "edge_type": "SIMPLE"
+      },
+      {
+        "source": 6,
+        "target": 7,
+        "edge_type": "SIMPLE"
+      }
+    ]
+  }
+}

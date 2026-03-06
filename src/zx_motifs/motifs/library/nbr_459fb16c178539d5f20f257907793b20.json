@@ -1,0 +1,40 @@
+{
+  "motif_id": "nbr_459fb16c178539d5f20f257907793b20",
+  "description": "Neighborhood-extracted 3-node motif, found in 25 algorithms: hw_efficient_ansatz_q10, hw_efficient_ansatz_q11, hw_efficient_ansatz_q3, hw_efficient_ansatz_q4, hw_efficient_ansatz_q5, hw_efficient_ansatz_q6, hw_efficient_ansatz_q7, hw_efficient_ansatz_q8, hw_efficient_ansatz_q9, qcnn_q4, quantum_autoencoder_q4, quantum_autoencoder_q5, quantum_autoencoder_q6, quantum_boltzmann_q4, quantum_boltzmann_q5, quantum_boltzmann_q6, quantum_boltzmann_q7, quantum_boltzmann_q8, quantum_boltzmann_q9, quantum_fisher_info_q2, quantum_fisher_info_q3, quantum_fisher_info_q4, quantum_fisher_info_q5, quantum_fisher_info_q6, quantum_fisher_info_q7",
+  "source": "neighborhood",
+  "tags": [
+    "auto_discovered",
+    "neighborhood"
+  ],
+  "graph": {
+    "nodes": [
+      {
+        "id": 3,
+        "vertex_type": "Z",
+        "phase_class": "clifford"
+      },
+      {
+        "id": 4,
+        "vertex_type": "X",
+        "phase_class": "arbitrary"
+      },
+      {
+        "id": 5,
+        "vertex_type": "Z",
+        "phase_class": "zero"
+      }
+    ],
+    "links": [
+      {
+        "source": 3,
+        "target": 4,
+        "edge_type": "SIMPLE"
+      },
+      {
+        "source": 4,
+        "target": 5,
+        "edge_type": "SIMPLE"
+      }
+    ]
+  }
+}

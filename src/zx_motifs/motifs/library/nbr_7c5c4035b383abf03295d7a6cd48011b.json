@@ -1,0 +1,40 @@
+{
+  "motif_id": "nbr_7c5c4035b383abf03295d7a6cd48011b",
+  "description": "Neighborhood-extracted 3-node motif, found in 15 algorithms: dicke_state_q3, dicke_state_q4, dicke_state_q5, dicke_state_q6, dicke_state_q7, e91_protocol_q10, e91_protocol_q11, e91_protocol_q8, e91_protocol_q9, w_state_q3, w_state_q4, w_state_q5, w_state_q6, w_state_q7, w_state_q8",
+  "source": "neighborhood",
+  "tags": [
+    "auto_discovered",
+    "neighborhood"
+  ],
+  "graph": {
+    "nodes": [
+      {
+        "id": 16,
+        "vertex_type": "Z",
+        "phase_class": "clifford"
+      },
+      {
+        "id": 14,
+        "vertex_type": "Z",
+        "phase_class": "clifford"
+      },
+      {
+        "id": 15,
+        "vertex_type": "X",
+        "phase_class": "t_like"
+      }
+    ],
+    "links": [
+      {
+        "source": 16,
+        "target": 15,
+        "edge_type": "SIMPLE"
+      },
+      {
+        "source": 14,
+        "target": 15,
+        "edge_type": "SIMPLE"
+      }
+    ]
+  }
+}

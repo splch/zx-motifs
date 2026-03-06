@@ -1,0 +1,40 @@
+{
+  "motif_id": "nbr_52415d7f7c9480fbd1f333118ad68d1b",
+  "description": "Neighborhood-extracted 3-node motif, found in 10 algorithms: e91_protocol_q10, e91_protocol_q11, e91_protocol_q2, e91_protocol_q3, e91_protocol_q4, e91_protocol_q5, e91_protocol_q6, e91_protocol_q7, e91_protocol_q8, e91_protocol_q9",
+  "source": "neighborhood",
+  "tags": [
+    "auto_discovered",
+    "neighborhood"
+  ],
+  "graph": {
+    "nodes": [
+      {
+        "id": 2,
+        "vertex_type": "Z",
+        "phase_class": "clifford"
+      },
+      {
+        "id": 6,
+        "vertex_type": "X",
+        "phase_class": "clifford"
+      },
+      {
+        "id": 7,
+        "vertex_type": "Z",
+        "phase_class": "clifford"
+      }
+    ],
+    "links": [
+      {
+        "source": 2,
+        "target": 6,
+        "edge_type": "SIMPLE"
+      },
+      {
+        "source": 6,
+        "target": 7,
+        "edge_type": "SIMPLE"
+      }
+    ]
+  }
+}

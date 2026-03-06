@@ -1,0 +1,50 @@
+{
+  "motif_id": "nbr_8685a8f7d709ea40656aea11ec0aad89",
+  "description": "Neighborhood-extracted 4-node motif, found in 7 algorithms: pauli_twirling_q10, pauli_twirling_q11, pauli_twirling_q5, pauli_twirling_q6, pauli_twirling_q7, pauli_twirling_q8, pauli_twirling_q9",
+  "source": "neighborhood",
+  "tags": [
+    "auto_discovered",
+    "neighborhood"
+  ],
+  "graph": {
+    "nodes": [
+      {
+        "id": 26,
+        "vertex_type": "X",
+        "phase_class": "pauli"
+      },
+      {
+        "id": 27,
+        "vertex_type": "X",
+        "phase_class": "pauli"
+      },
+      {
+        "id": 29,
+        "vertex_type": "Z",
+        "phase_class": "zero"
+      },
+      {
+        "id": 30,
+        "vertex_type": "X",
+        "phase_class": "pauli"
+      }
+    ],
+    "links": [
+      {
+        "source": 26,
+        "target": 29,
+        "edge_type": "SIMPLE"
+      },
+      {
+        "source": 27,
+        "target": 29,
+        "edge_type": "SIMPLE"
+      },
+      {
+        "source": 29,
+        "target": 30,
+        "edge_type": "SIMPLE"
+      }
+    ]
+  }
+}
