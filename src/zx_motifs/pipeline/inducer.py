@@ -6,6 +6,7 @@ from dataclasses import dataclass
 
 import networkx as nx
 
+from zx_motifs.config import CONFIG
 from .decomposer import decompose_graph, DecompositionResult
 from .featurizer import extract_local_neighborhood
 from .matcher import MotifPattern, find_motif_in_graph
@@ -57,9 +58,9 @@ def analyze_uncovered_vertices(
 def extract_motif_from_uncovered_cluster(
     host: nx.Graph,
     vertices: list[int],
-    radius: int = 1,
-    min_subgraph_size: int = 2,
-    max_subgraph_size: int = 6,
+    radius: int = CONFIG.inducer_radius,
+    min_subgraph_size: int = CONFIG.inducer_min_subgraph_size,
+    max_subgraph_size: int = CONFIG.inducer_max_subgraph_size,
 ) -> nx.Graph | None:
     """
     Extract a representative motif from a cluster of uncovered vertices.
@@ -113,10 +114,10 @@ def induce_motifs_from_gaps(
     corpus: dict,
     motif_library: list[MotifPattern],
     target_level: str = "spider_fused",
-    min_occurrences: int = 5,
-    min_algorithms: int = 2,
-    radius: int = 1,
-    max_new_motifs: int = 20,
+    min_occurrences: int = CONFIG.inducer_min_occurrences,
+    min_algorithms: int = CONFIG.inducer_min_algorithms,
+    radius: int = CONFIG.inducer_radius,
+    max_new_motifs: int = CONFIG.inducer_max_new_motifs,
 ) -> list[MotifPattern]:
     """
     Discover new motifs from decomposition gaps across a corpus.
@@ -196,7 +197,7 @@ def induce_motifs_from_gaps(
         for (a, lvl), hg in corpus.items():
             if lvl != target_level:
                 continue
-            matches = find_motif_in_graph(candidate, hg, max_matches=10)
+            matches = find_motif_in_graph(candidate, hg, max_matches=CONFIG.inducer_max_matches)
             if matches:
                 total_matches += len(matches)
                 algos_matched.add(a)
@@ -222,7 +223,7 @@ def iterative_induction(
     corpus: dict,
     initial_library: list[MotifPattern],
     target_level: str = "spider_fused",
-    max_rounds: int = 3,
+    max_rounds: int = CONFIG.inducer_max_rounds,
     min_coverage_gain: float = 0.02,
 ) -> tuple[list[MotifPattern], list[float]]:
     """

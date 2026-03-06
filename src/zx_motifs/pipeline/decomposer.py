@@ -6,6 +6,7 @@ from dataclasses import dataclass, field
 
 import networkx as nx
 
+from zx_motifs.config import CONFIG
 from .matcher import MotifPattern, find_motif_in_graph
 
 
@@ -46,7 +47,7 @@ class DecompositionResult:
 def decompose_graph(
     host: nx.Graph,
     motif_library: list[MotifPattern],
-    max_matches_per_motif: int = 100,
+    max_matches_per_motif: int = CONFIG.decomposer_max_matches_per_motif,
     exclude_boundary: bool = True,
     prefer_larger: bool = True,
 ) -> DecompositionResult:
@@ -123,7 +124,7 @@ def decompose_across_corpus(
     corpus: dict,
     motif_library: list[MotifPattern],
     target_level: str = "spider_fused",
-    max_matches_per_motif: int = 100,
+    max_matches_per_motif: int = CONFIG.decomposer_max_matches_per_motif,
 ) -> dict[str, DecompositionResult]:
     """
     Decompose all algorithms in a corpus at a given level.

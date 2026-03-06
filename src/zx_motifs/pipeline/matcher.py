@@ -18,6 +18,8 @@ from collections import Counter
 from dataclasses import dataclass, field
 
 import networkx as nx
+
+from zx_motifs.config import CONFIG
 from networkx.algorithms import isomorphism
 
 
@@ -161,7 +163,7 @@ def can_possibly_match(pattern: nx.Graph, host: nx.Graph) -> bool:
 def find_motif_in_graph(
     pattern: nx.Graph,
     host: nx.Graph,
-    max_matches: int = 100,
+    max_matches: int = CONFIG.match_max_matches,
     exclude_boundary: bool = True,
 ) -> list[dict]:
     """
@@ -214,7 +216,7 @@ def find_motif_across_corpus(
     pattern: MotifPattern,
     corpus: dict,  # {(algo_name, level): nx.Graph}
     target_level: str = "spider_fused",
-    max_matches_per_graph: int = 50,
+    max_matches_per_graph: int = CONFIG.batch_max_matches_per_graph,
 ) -> MotifPattern:
     """
     Search for a motif across all algorithm graphs at a given level.
@@ -252,7 +254,7 @@ def find_motif_across_corpus_multilevel(
     pattern: MotifPattern,
     corpus: dict,
     levels: list[str] | None = None,
-    max_matches_per_graph: int = 50,
+    max_matches_per_graph: int = CONFIG.batch_max_matches_per_graph,
 ) -> MotifPattern:
     """
     Search for a motif across all algorithm graphs at multiple levels.
@@ -338,8 +340,8 @@ def _count_label_mismatches(
 def find_approximate_matches(
     pattern: nx.Graph,
     host: nx.Graph,
-    max_edit_distance: int = 2,
-    max_matches: int = 50,
+    max_edit_distance: int = CONFIG.approximate_max_edit_distance,
+    max_matches: int = CONFIG.approximate_max_matches,
     exclude_boundary: bool = True,
 ) -> list[ApproximateMatch]:
     """

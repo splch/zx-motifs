@@ -7,6 +7,7 @@ import pandas as pd
 from tqdm import tqdm
 
 from zx_motifs.algorithms.registry import REGISTRY
+from zx_motifs.config import CONFIG
 from zx_motifs.pipeline.converter import convert_at_all_levels
 from zx_motifs.pipeline.featurizer import pyzx_to_networkx
 from zx_motifs.pipeline.matcher import MotifPattern, find_motif_in_graph
@@ -19,7 +20,7 @@ from zx_motifs.pipeline.motif_generators import (
 )
 
 
-def build_corpus(max_qubits: int = 5) -> dict[tuple[str, str], "nx.Graph"]:
+def build_corpus(max_qubits: int = CONFIG.max_qubits) -> dict[tuple[str, str], "nx.Graph"]:
     """Convert all REGISTRY algorithms to NetworkX at all simplification levels.
 
     Parameters
@@ -98,8 +99,8 @@ def discover_motifs(corpus: dict) -> list[MotifPattern]:
         bottom_up = find_recurring_subgraphs(
             corpus,
             target_level="spider_fused",
-            min_size=3,
-            max_size=5,
+            min_size=CONFIG.min_motif_size,
+            max_size=CONFIG.max_motif_size,
         )
         n_bu = _add_if_novel(bottom_up)
         print(f"  Bottom-up: {len(bottom_up)} found, {n_bu} novel")
@@ -110,7 +111,7 @@ def discover_motifs(corpus: dict) -> list[MotifPattern]:
         neighbourhood = find_neighborhood_motifs(
             corpus,
             target_level="spider_fused",
-            radius=2,
+            radius=CONFIG.neighbourhood_radius,
         )
         n_nb = _add_if_novel(neighbourhood)
         print(f"  Neighbourhood: {len(neighbourhood)} found, {n_nb} novel")
@@ -153,7 +154,7 @@ def build_fingerprint_matrix(
             continue
         host = corpus[key]
         for j, mp in enumerate(motifs):
-            matches = find_motif_in_graph(mp.graph, host, max_matches=20)
+            matches = find_motif_in_graph(mp.graph, host, max_matches=CONFIG.fingerprint_max_matches)
             counts[i, j] = len(matches)
 
     counts_df = pd.DataFrame(counts, index=instances, columns=motif_ids)

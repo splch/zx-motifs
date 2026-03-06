@@ -11,6 +11,8 @@ from typing import Callable
 import networkx as nx
 from networkx.algorithms import isomorphism
 
+from zx_motifs.config import CONFIG
+
 from .featurizer import extract_local_neighborhood
 from .matcher import (
     PHASE_ANY,
@@ -400,9 +402,9 @@ def _is_isomorphic(g1: nx.Graph, g2: nx.Graph) -> bool:
 
 def enumerate_connected_subgraphs(
     host: nx.Graph,
-    min_size: int = 3,
-    max_size: int = 6,
-    max_subgraphs: int = 500,
+    min_size: int = CONFIG.min_motif_size,
+    max_size: int = CONFIG.max_motif_size,
+    max_subgraphs: int = CONFIG.max_subgraphs,
     exclude_boundary: bool = True,
 ) -> list[nx.Graph]:
     """
@@ -467,9 +469,9 @@ def enumerate_connected_subgraphs(
 def find_recurring_subgraphs(
     corpus: dict,
     target_level: str = "spider_fused",
-    min_size: int = 3,
-    max_size: int = 6,
-    min_algorithms: int = 2,
+    min_size: int = CONFIG.min_motif_size,
+    max_size: int = CONFIG.max_motif_size,
+    min_algorithms: int = CONFIG.min_algorithms,
 ) -> list[MotifPattern]:
     """
     Bottom-up motif discovery: enumerate subgraphs, hash them,
@@ -530,9 +532,9 @@ def find_recurring_subgraphs(
 def find_recurring_subgraphs_multilevel(
     corpus: dict,
     levels: list[str] | None = None,
-    min_size: int = 3,
-    max_size: int = 6,
-    min_algorithms: int = 2,
+    min_size: int = CONFIG.min_motif_size,
+    max_size: int = CONFIG.max_motif_size,
+    min_algorithms: int = CONFIG.min_algorithms,
 ) -> list[MotifPattern]:
     """
     Bottom-up motif discovery across multiple simplification levels.
@@ -588,7 +590,7 @@ def find_recurring_subgraphs_multilevel(
 
 def extract_interesting_neighborhoods(
     host: nx.Graph,
-    radius: int = 2,
+    radius: int = CONFIG.neighbourhood_radius,
     interest_criteria: str = "non_clifford",
 ) -> list[nx.Graph]:
     """
@@ -639,9 +641,9 @@ def extract_interesting_neighborhoods(
 def find_neighborhood_motifs(
     corpus: dict,
     target_level: str = "spider_fused",
-    radius: int = 2,
+    radius: int = CONFIG.neighbourhood_radius,
     criteria: list[str] | None = None,
-    min_algorithms: int = 2,
+    min_algorithms: int = CONFIG.min_algorithms,
 ) -> list[MotifPattern]:
     """
     Strategy 3: Extract neighborhoods around interesting vertices across

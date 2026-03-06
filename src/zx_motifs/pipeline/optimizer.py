@@ -6,6 +6,7 @@ from dataclasses import dataclass, field
 
 import networkx as nx
 
+from zx_motifs.config import CONFIG
 from .decomposer import decompose_graph
 from .matcher import MotifPattern, find_motif_in_graph
 
@@ -63,7 +64,7 @@ def compute_motif_coverage_map(
         if level != target_level:
             continue
         matches = find_motif_in_graph(
-            motif.graph, host_graph, max_matches=100,
+            motif.graph, host_graph, max_matches=CONFIG.match_max_matches,
         )
         if matches:
             verts = set()
@@ -77,7 +78,7 @@ def optimize_library(
     candidates: list[MotifPattern],
     corpus: dict,
     target_level: str = "spider_fused",
-    max_library_size: int = 30,
+    max_library_size: int = CONFIG.optimizer_max_library_size,
     min_marginal_coverage: float = 0.005,
     algorithm_diversity_weight: float = 0.3,
     size_preference_weight: float = 0.1,

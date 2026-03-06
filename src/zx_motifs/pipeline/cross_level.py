@@ -5,6 +5,7 @@ from dataclasses import dataclass, field
 
 import networkx as nx
 
+from zx_motifs.config import CONFIG
 from .featurizer import compute_motif_feature_vector, motif_similarity
 from .matcher import MotifPattern, find_motif_in_graph
 from .motif_generators import enumerate_connected_subgraphs
@@ -78,7 +79,7 @@ def track_motif_evolution(
             host,
             min_size=max(motif_size - 1, 2),
             max_size=motif_size + 1,
-            max_subgraphs=100,
+            max_subgraphs=CONFIG.cross_level_max_subgraphs,
         )
         for sg in subgraphs:
             sg_vec = compute_motif_feature_vector(sg)
