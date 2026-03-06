@@ -78,7 +78,7 @@ def run_parallel(
 
 def _ensure_wl_label(subg: nx.Graph) -> nx.Graph:
     """Set ``wl_label`` on each node from vertex_type + phase_class."""
-    for n, d in subg.nodes(data=True):
+    for _, d in subg.nodes(data=True):
         d["wl_label"] = f"{d.get('vertex_type', '?')}_{d.get('phase_class', '?')}"
     return subg
 
@@ -443,7 +443,9 @@ def enumerate_connected_subgraphs(
     Enumerate small connected induced subgraphs via recursive expansion.
 
     Grows subgraphs one node at a time from each starting vertex,
-    collecting unique subgraphs of each size along the way.
+    collecting unique subgraphs of each size along the way. Stops when
+    *max_subgraphs* unique results are found or when consecutive
+    expansions stop producing new subgraphs (dry streak early stopping).
     """
     interior_nodes = sorted(
         n for n, d in host.nodes(data=True)
@@ -451,16 +453,24 @@ def enumerate_connected_subgraphs(
     )
     interior_set = set(interior_nodes)
 
+    # Early stopping: if this many consecutive expansions produce no new
+    # unique subgraph, the remaining search space is almost certainly
+    # duplicates. Stop early to avoid wasting time.
+    dry_streak = 0
+    max_dry_streak = max(5000, max_subgraphs * 10)
+
     subgraphs: list[nx.Graph] = []
     seen_fast: dict[str, nx.Graph] = {}  # canonical_hash → representative
 
     def _expand(node_set: frozenset, candidates: frozenset) -> bool:
         """Recursively expand node_set by adding neighbors from candidates.
 
-        Returns True if the subgraph cap has been reached and search
-        should stop immediately.
+        Returns True if search should stop (cap or dry streak reached).
         """
-        if len(subgraphs) >= max_subgraphs:
+        nonlocal dry_streak
+        dry_streak += 1
+        if (len(subgraphs) >= max_subgraphs
+                or dry_streak >= max_dry_streak):
             return True
         size = len(node_set)
         if size >= min_size:
@@ -469,11 +479,13 @@ def enumerate_connected_subgraphs(
             if h not in seen_fast:
                 seen_fast[h] = subg
                 subgraphs.append(subg)
+                dry_streak = 0
             elif not is_isomorphic(seen_fast[h], subg):
                 alt_h = h + f"_{len(seen_fast)}"
                 if alt_h not in seen_fast:
                     seen_fast[alt_h] = subg
                     subgraphs.append(subg)
+                    dry_streak = 0
 
         if size >= max_size:
             return False
@@ -493,7 +505,7 @@ def enumerate_connected_subgraphs(
         return False
 
     for start in interior_nodes:
-        if len(subgraphs) >= max_subgraphs:
+        if len(subgraphs) >= max_subgraphs or dry_streak >= max_dry_streak:
             break
         # Candidates: all interior nodes > start (canonical ordering avoids dupes)
         initial_candidates = frozenset(n for n in interior_nodes if n > start)

@@ -29,9 +29,6 @@ def _convert_instance(
     """Convert a single algorithm instance to NetworkX graphs at all levels.
 
     Top-level function so it is picklable by ProcessPoolExecutor.
-
-    Exceptions are caught so that one bad instance does not abort the
-    entire parallel batch.
     """
     instance = f"{name}_q{n_qubits}"
     qc = generator(n_qubits)
@@ -72,7 +69,6 @@ def build_corpus(
     ]
 
     corpus: dict[tuple[str, str], nx.Graph] = {}
-    errors: list[str] = []
 
     for instance, graphs in run_parallel(
         _convert_instance, tasks,
@@ -80,11 +76,6 @@ def build_corpus(
     ):
         for level, nxg in graphs.items():
             corpus[(instance, level)] = nxg
-
-    if errors:
-        print(f"  Skipped {len(errors)} instances due to errors:")
-        for err in errors:
-            print(f"    {err}")
 
     return corpus
 
