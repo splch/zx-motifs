@@ -1,0 +1,19 @@
+{
+  "motif_id": "trotter_layer",
+  "description": "Alternating ZZ-interaction + rotation from Trotter simulation",
+  "source": "hand_crafted",
+  "tags": ["trotter", "simulation"],
+  "graph": {
+    "nodes": [
+      {"id": 0, "vertex_type": "Z", "phase_class": "zero", "is_boundary": false},
+      {"id": 1, "vertex_type": "Z", "phase_class": "arbitrary", "is_boundary": false},
+      {"id": 2, "vertex_type": "Z", "phase_class": "zero", "is_boundary": false},
+      {"id": 3, "vertex_type": "Z", "phase_class": "arbitrary", "is_boundary": false}
+    ],
+    "links": [
+      {"source": 0, "target": 1, "edge_type": "SIMPLE"},
+      {"source": 1, "target": 2, "edge_type": "SIMPLE"},
+      {"source": 2, "target": 3, "edge_type": "SIMPLE"}
+    ]
+  }
+}

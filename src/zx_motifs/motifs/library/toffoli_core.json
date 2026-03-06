@@ -1,0 +1,17 @@
+{
+  "motif_id": "toffoli_core",
+  "description": "T-gate chain from decomposed Toffoli gate",
+  "source": "hand_crafted",
+  "tags": ["toffoli", "t_gate"],
+  "graph": {
+    "nodes": [
+      {"id": 0, "vertex_type": "Z", "phase_class": "t_like", "is_boundary": false},
+      {"id": 1, "vertex_type": "Z", "phase_class": "zero", "is_boundary": false},
+      {"id": 2, "vertex_type": "Z", "phase_class": "t_like", "is_boundary": false}
+    ],
+    "links": [
+      {"source": 0, "target": 1, "edge_type": "SIMPLE"},
+      {"source": 1, "target": 2, "edge_type": "SIMPLE"}
+    ]
+  }
+}

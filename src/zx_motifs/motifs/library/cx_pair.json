@@ -1,0 +1,15 @@
+{
+  "motif_id": "cx_pair",
+  "description": "CNOT as Z-X spider pair",
+  "source": "hand_crafted",
+  "tags": ["cnot", "basic"],
+  "graph": {
+    "nodes": [
+      {"id": 0, "vertex_type": "Z", "phase_class": "zero", "is_boundary": false},
+      {"id": 1, "vertex_type": "X", "phase_class": "zero", "is_boundary": false}
+    ],
+    "links": [
+      {"source": 0, "target": 1, "edge_type": "SIMPLE"}
+    ]
+  }
+}

@@ -1,0 +1,22 @@
+"""Algorithm family modules — importing triggers decorator registration."""
+from . import (
+    entanglement,
+    protocol,
+    oracle,
+    transform,
+    variational,
+    error_correction,
+    simulation,
+    arithmetic,
+    distillation,
+    machine_learning,
+    linear_algebra,
+    cryptography,
+    sampling,
+    error_mitigation,
+    topological,
+    metrology,
+    differential_equations,
+    tda,
+    communication,
+)

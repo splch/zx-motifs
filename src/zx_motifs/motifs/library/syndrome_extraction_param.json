@@ -1,0 +1,17 @@
+{
+  "motif_id": "syndrome_extraction_param",
+  "description": "Syndrome extraction fan-out with any-phase center",
+  "source": "hand_crafted",
+  "tags": ["error_correction", "syndrome", "parametric"],
+  "graph": {
+    "nodes": [
+      {"id": 0, "vertex_type": "Z", "phase_class": "any", "is_boundary": false},
+      {"id": 1, "vertex_type": "X", "phase_class": "zero", "is_boundary": false},
+      {"id": 2, "vertex_type": "X", "phase_class": "zero", "is_boundary": false}
+    ],
+    "links": [
+      {"source": 0, "target": 1, "edge_type": "SIMPLE"},
+      {"source": 0, "target": 2, "edge_type": "SIMPLE"}
+    ]
+  }
+}

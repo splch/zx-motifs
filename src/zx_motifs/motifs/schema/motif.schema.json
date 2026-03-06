@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/splch/zx-motifs/motif.schema.json",
+  "title": "ZX-calculus Motif Definition",
+  "description": "Schema for declarative ZX-calculus motif definitions using the node_link_data format.",
+  "type": "object",
+  "required": ["motif_id", "description", "graph"],
+  "additionalProperties": false,
+  "properties": {
+    "motif_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$",
+      "description": "Unique identifier for the motif (lowercase alphanumeric with underscores)."
+    },
+    "description": {
+      "type": "string",
+      "description": "Human-readable description of the motif."
+    },
+    "source": {
+      "type": "string",
+      "default": "contributed",
+      "description": "Origin of the motif (e.g. hand_crafted, contributed, bottom_up)."
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" },
+      "default": [],
+      "description": "Classification tags for filtering and grouping."
+    },
+    "graph": {
+      "type": "object",
+      "required": ["nodes", "links"],
+      "additionalProperties": false,
+      "description": "Graph structure in node_link_data format.",
+      "properties": {
+        "nodes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "vertex_type", "phase_class"],
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "integer",
+                "description": "Unique integer node identifier."
+              },
+              "vertex_type": {
+                "type": "string",
+                "enum": ["Z", "X", "H_BOX"],
+                "description": "Type of ZX-calculus vertex."
+              },
+              "phase_class": {
+                "type": "string",
+                "enum": ["zero", "pauli", "clifford", "t_like", "arbitrary", "any", "any_nonzero", "any_nonclifford"],
+                "description": "Phase classification or wildcard for matching."
+              },
+              "is_boundary": {
+                "type": "boolean",
+                "default": false,
+                "description": "Whether this node is a boundary (I/O) node."
+              }
+            }
+          }
+        },
+        "links": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["source", "target", "edge_type"],
+            "additionalProperties": false,
+            "properties": {
+              "source": {
+                "type": "integer",
+                "description": "Source node id."
+              },
+              "target": {
+                "type": "integer",
+                "description": "Target node id."
+              },
+              "edge_type": {
+                "type": "string",
+                "enum": ["SIMPLE", "HADAMARD"],
+                "description": "Type of edge in the ZX diagram."
+              }
+            }
+          }
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Optional freeform metadata."
+    }
+  }
+}

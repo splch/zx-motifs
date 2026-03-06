@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=68.0", "setuptools-scm>=8.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "zx-motifs"
+version = "0.1.0"
+description = "ZX-calculus motif discovery pipeline for quantum algorithm analysis"
+requires-python = ">=3.10"
+dependencies = [
+    "pyzx>=0.8.0,<1.0",
+    "qiskit>=1.0,<3.0",
+    "networkx>=3.0",
+    "matplotlib>=3.7",
+    "pandas>=2.0",
+    "tqdm>=4.60",
+    "jsonschema>=4.0",
+]
+
+[project.optional-dependencies]
+viz = [
+    "seaborn>=0.12",
+    "ipywidgets>=8.0",
+]
+notebooks = [
+    "jupyter>=1.0",
+    "seaborn>=0.12",
+]
+dev = [
+    "pytest>=7.0",
+    "seaborn>=0.12",
+    "jupyter>=1.0",
+]
+
+[project.scripts]
+zx-motifs = "zx_motifs.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
