@@ -402,10 +402,10 @@ def enumerate_connected_subgraphs(
 
     def _expand(node_set: frozenset, candidates: frozenset) -> None:
         """Recursively expand node_set by adding neighbors from candidates."""
+        if len(subgraphs) >= max_subgraphs:
+            return
         size = len(node_set)
         if size >= min_size:
-            if len(subgraphs) >= max_subgraphs:
-                return
             subg = host.subgraph(node_set).copy()
             h = _HASH_FN(subg)
             if h not in seen_hashes:

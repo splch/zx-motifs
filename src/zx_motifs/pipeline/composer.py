@@ -123,7 +123,7 @@ def compose_sequential(box_a: ZXBox, box_b: ZXBox) -> ZXBox:
     # Requires each boundary vertex to have exactly one neighbor.
     try:
         return _compose_via_pyzx(box_a, box_b)
-    except (TypeError, ValueError):
+    except (TypeError, ValueError, KeyError):
         return _compose_manual(box_a, box_b)
 
 
