@@ -1,27 +1,34 @@
 {
-  "motif_id": "auto_610792fa287d7141ed2c6a5c053b57c0",
-  "description": "Auto-discovered 3-node motif, found in 2 algorithms: betti_number_q4, betti_number_q5",
+  "motif_id": "graph_state_star_3",
+  "description": "Phaseless Z-spider hub connected to three leaves via Hadamard edges, the ZX form of a degree-3 star graph state",
   "source": "bottom_up",
   "tags": [
-    "irreducible",
-    "auto_discovered"
+    "graph_state",
+    "star",
+    "cluster_state"
   ],
   "graph": {
     "nodes": [
       {
         "id": 0,
         "vertex_type": "Z",
-        "phase_class": "arbitrary",
+        "phase_class": "zero",
         "is_boundary": false
       },
       {
         "id": 1,
         "vertex_type": "Z",
-        "phase_class": "arbitrary",
+        "phase_class": "zero",
         "is_boundary": false
       },
       {
         "id": 2,
+        "vertex_type": "Z",
+        "phase_class": "zero",
+        "is_boundary": false
+      },
+      {
+        "id": 3,
         "vertex_type": "Z",
         "phase_class": "zero",
         "is_boundary": false
@@ -36,6 +43,11 @@
       {
         "source": 0,
         "target": 2,
+        "edge_type": "HADAMARD"
+      },
+      {
+        "source": 0,
+        "target": 3,
         "edge_type": "HADAMARD"
       }
     ]

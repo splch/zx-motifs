@@ -1,23 +1,24 @@
 {
-  "motif_id": "auto_b71107166c6dbf434e12e77ee4a6088a",
-  "description": "Auto-discovered 3-node motif, found in 2 algorithms: iqp_sampling_q4, iqp_sampling_q5",
+  "motif_id": "hadamard_path_param",
+  "description": "Two arbitrary-phase Z-spiders and one phaseless Z-spider in a Hadamard-edge path, arising from controlled-phase gates in topological data analysis circuits",
   "source": "bottom_up",
   "tags": [
-    "irreducible",
-    "auto_discovered"
+    "parametric",
+    "tda",
+    "hadamard"
   ],
   "graph": {
     "nodes": [
       {
         "id": 0,
         "vertex_type": "Z",
-        "phase_class": "t_like",
+        "phase_class": "arbitrary",
         "is_boundary": false
       },
       {
         "id": 1,
         "vertex_type": "Z",
-        "phase_class": "zero",
+        "phase_class": "arbitrary",
         "is_boundary": false
       },
       {
@@ -29,13 +30,13 @@
     ],
     "links": [
       {
-        "source": 2,
-        "target": 0,
+        "source": 0,
+        "target": 1,
         "edge_type": "HADAMARD"
       },
       {
         "source": 0,
-        "target": 1,
+        "target": 2,
         "edge_type": "HADAMARD"
       }
     ]

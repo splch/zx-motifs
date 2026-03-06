@@ -1,10 +1,11 @@
 {
-  "motif_id": "auto_a4116c0e9161996c346ae2d5e02595a3",
-  "description": "Auto-discovered 5-node motif, found in 3 algorithms: amplitude_estimation_q4, amplitude_estimation_q5, graph_state_q5",
+  "motif_id": "graph_state_star_4",
+  "description": "Phaseless Z-spider hub connected to four leaves via Hadamard edges, the ZX form of a degree-4 star graph state",
   "source": "bottom_up",
   "tags": [
-    "irreducible",
-    "auto_discovered"
+    "graph_state",
+    "star",
+    "amplitude_estimation"
   ],
   "graph": {
     "nodes": [

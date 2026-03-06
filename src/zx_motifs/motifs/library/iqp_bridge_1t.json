@@ -1,10 +1,11 @@
 {
-  "motif_id": "auto_4f85981043c4bce2d1d579a234e586b1",
-  "description": "Auto-discovered 3-node motif, found in 2 algorithms: iqp_sampling_q4, iqp_sampling_q5",
+  "motif_id": "iqp_bridge_1t",
+  "description": "T-like Z-spider bridging two phaseless Z-spiders via Hadamard edges, a single-rotation IQP interaction",
   "source": "bottom_up",
   "tags": [
-    "irreducible",
-    "auto_discovered"
+    "iqp",
+    "t_gate",
+    "bridge"
   ],
   "graph": {
     "nodes": [
@@ -17,7 +18,7 @@
       {
         "id": 1,
         "vertex_type": "Z",
-        "phase_class": "t_like",
+        "phase_class": "zero",
         "is_boundary": false
       },
       {
@@ -29,18 +30,13 @@
     ],
     "links": [
       {
-        "source": 0,
-        "target": 2,
+        "source": 2,
+        "target": 0,
         "edge_type": "HADAMARD"
       },
       {
         "source": 0,
         "target": 1,
-        "edge_type": "HADAMARD"
-      },
-      {
-        "source": 1,
-        "target": 2,
         "edge_type": "HADAMARD"
       }
     ]

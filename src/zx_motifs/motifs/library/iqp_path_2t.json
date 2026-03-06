@@ -1,10 +1,11 @@
 {
-  "motif_id": "auto_7d224d9ecf8c5241ca0fdb53978426b9",
-  "description": "Auto-discovered 3-node motif, found in 3 algorithms: iqp_sampling_q3, iqp_sampling_q4, iqp_sampling_q5",
+  "motif_id": "iqp_path_2t",
+  "description": "Two T-like and one phaseless Z-spider in a Hadamard-edge path, a linear IQP interaction fragment",
   "source": "bottom_up",
   "tags": [
-    "irreducible",
-    "auto_discovered"
+    "iqp",
+    "t_gate",
+    "chain"
   ],
   "graph": {
     "nodes": [
