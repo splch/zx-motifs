@@ -25,6 +25,51 @@ from .matcher import (
     edge_match_fn,
 )
 
+# ════════════════════════════════════════════════════════════════════
+# Parallel execution helper
+# ════════════════════════════════════════════════════════════════════
+
+
+def run_parallel(
+    worker: Callable,
+    tasks: list[tuple],
+    max_workers: int | None = None,
+    desc: str = "Processing",
+    unit: str = "task",
+) -> list:
+    """Run a worker function over tasks using ProcessPoolExecutor.
+
+    Falls back to sequential execution when *max_workers* is 1,
+    avoiding subprocess overhead for small workloads or testing.
+
+    Parameters
+    ----------
+    worker : callable
+        Top-level picklable function. Called as ``worker(*task)``.
+    tasks : list of tuples
+        Each tuple is unpacked as positional args to *worker*.
+    max_workers : int or None
+        Number of parallel workers. ``None`` uses all available CPUs.
+    desc, unit : str
+        Labels for the tqdm progress bar.
+
+    Returns
+    -------
+    list of worker results, one per task (order is not guaranteed).
+    """
+    if max_workers == 1:
+        return [worker(*t) for t in tqdm(tasks, desc=desc, unit=unit)]
+
+    with ProcessPoolExecutor(max_workers=max_workers) as executor:
+        futures = [executor.submit(worker, *t) for t in tasks]
+        return [
+            f.result()
+            for f in tqdm(
+                as_completed(futures), total=len(futures),
+                desc=desc, unit=unit,
+            )
+        ]
+
 
 # ════════════════════════════════════════════════════════════════════
 # Hashing: WL hash for better deduplication quality
@@ -353,19 +398,17 @@ def canonical_hash(subg: nx.Graph) -> str:
         (d.get("vertex_type", "?"), d.get("phase_class", "?"))
         for _, d in subg.nodes(data=True)
     )
+    nodes = subg.nodes
     edge_labels = sorted(
         (
-            min(
-                subg.nodes[u].get("vertex_type", "?"),
-                subg.nodes[v].get("vertex_type", "?"),
-            ),
-            max(
-                subg.nodes[u].get("vertex_type", "?"),
-                subg.nodes[v].get("vertex_type", "?"),
-            ),
+            min(ut, vt), max(ut, vt),
             d.get("edge_type", "?"),
         )
         for u, v, d in subg.edges(data=True)
+        for ut, vt in [(
+            nodes[u].get("vertex_type", "?"),
+            nodes[v].get("vertex_type", "?"),
+        )]
     )
     degree_seq = sorted(subg.degree(n) for n in subg.nodes())
     raw = str((node_labels, edge_labels, degree_seq))
@@ -527,29 +570,15 @@ def find_recurring_subgraphs(
 
     hash_registry: dict[str, tuple[nx.Graph, set[str]]] = {}
 
-    if max_workers == 1:
-        # Sequential path — avoids subprocess overhead for small corpora
-        for algo_name, host_graph in graph_items:
-            items = _enumerate_subgraphs_for_graph(
-                algo_name, host_graph, min_size, max_size,
-            )
-            _merge_into_hash_registry(hash_registry, items)
-    else:
-        with ProcessPoolExecutor(max_workers=max_workers) as executor:
-            futures = {
-                executor.submit(
-                    _enumerate_subgraphs_for_graph,
-                    algo_name, host_graph, min_size, max_size,
-                ): algo_name
-                for algo_name, host_graph in graph_items
-            }
-            for future in tqdm(
-                as_completed(futures),
-                total=len(futures),
-                desc="Enumerating subgraphs",
-                unit="graph",
-            ):
-                _merge_into_hash_registry(hash_registry, future.result())
+    results = run_parallel(
+        _enumerate_subgraphs_for_graph,
+        [(name, graph, min_size, max_size) for name, graph in graph_items],
+        max_workers=max_workers,
+        desc="Enumerating subgraphs",
+        unit="graph",
+    )
+    for items in results:
+        _merge_into_hash_registry(hash_registry, items)
 
     # Filter to motifs appearing in enough distinct algorithms
     motifs = []
@@ -724,17 +753,25 @@ def find_neighborhood_motifs(
     Uses parallel processing to extract neighborhoods across graphs
     concurrently, then merges results sequentially.
 
-    Args:
-        corpus: {(algo_name, level): nx.Graph}
-        target_level: Which simplification level to search.
-        radius: BFS radius for neighborhood extraction.
-        criteria: Interest criteria to apply. Defaults to all three.
-        min_algorithms: Minimum algorithms a neighborhood must appear in.
-        max_workers: Number of parallel workers. None uses all available
-            CPUs. Use 1 for sequential execution.
+    Parameters
+    ----------
+    corpus : dict
+        Mapping {(algo_name, level): nx.Graph}.
+    target_level : str
+        Which simplification level to search.
+    radius : int
+        BFS radius for neighborhood extraction.
+    criteria : list[str] or None
+        Interest criteria to apply. Defaults to all three.
+    min_algorithms : int
+        Minimum algorithms a neighborhood must appear in.
+    max_workers : int or None
+        Number of parallel workers. None uses all available CPUs.
+        Use 1 for sequential execution.
 
-    Returns:
-        List of MotifPattern with source="neighborhood".
+    Returns
+    -------
+    list of MotifPattern with source="neighborhood".
     """
     if criteria is None:
         criteria = ["non_clifford", "high_degree", "color_boundary"]
@@ -747,28 +784,15 @@ def find_neighborhood_motifs(
 
     hash_registry: dict[str, tuple[nx.Graph, set[str]]] = {}
 
-    if max_workers == 1:
-        for algo_name, host_graph in graph_items:
-            items = _extract_neighborhoods_for_graph(
-                algo_name, host_graph, radius, criteria,
-            )
-            _merge_into_hash_registry(hash_registry, items)
-    else:
-        with ProcessPoolExecutor(max_workers=max_workers) as executor:
-            futures = {
-                executor.submit(
-                    _extract_neighborhoods_for_graph,
-                    algo_name, host_graph, radius, criteria,
-                ): algo_name
-                for algo_name, host_graph in graph_items
-            }
-            for future in tqdm(
-                as_completed(futures),
-                total=len(futures),
-                desc="Extracting neighborhoods",
-                unit="graph",
-            ):
-                _merge_into_hash_registry(hash_registry, future.result())
+    results = run_parallel(
+        _extract_neighborhoods_for_graph,
+        [(name, graph, radius, criteria) for name, graph in graph_items],
+        max_workers=max_workers,
+        desc="Extracting neighborhoods",
+        unit="graph",
+    )
+    for items in results:
+        _merge_into_hash_registry(hash_registry, items)
 
     motifs = []
     for h, (sg, algo_set) in sorted(

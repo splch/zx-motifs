@@ -2,12 +2,9 @@
 
 from __future__ import annotations
 
-from concurrent.futures import ProcessPoolExecutor, as_completed
-
 import networkx as nx
 import numpy as np
 import pandas as pd
-from tqdm import tqdm
 
 from zx_motifs.algorithms.registry import REGISTRY
 from zx_motifs.config import CONFIG
@@ -19,6 +16,7 @@ from zx_motifs.pipeline.motif_generators import (
     is_isomorphic,
     find_neighborhood_motifs,
     find_recurring_subgraphs,
+    run_parallel,
     wl_hash,
 )
 
@@ -27,25 +25,22 @@ def _convert_instance(
     generator,
     name: str,
     n_qubits: int,
-) -> tuple[str, dict[str, nx.Graph]] | tuple[str, str]:
+) -> tuple[str, dict[str, nx.Graph]]:
     """Convert a single algorithm instance to NetworkX graphs at all levels.
 
     Top-level function so it is picklable by ProcessPoolExecutor.
 
-    Returns (instance_name, {level: graph}) on success,
-    or (instance_name, error_message) on failure.
+    Exceptions are caught so that one bad instance does not abort the
+    entire parallel batch.
     """
     instance = f"{name}_q{n_qubits}"
-    try:
-        qc = generator(n_qubits)
-        snapshots = convert_at_all_levels(qc, instance)
-        graphs = {}
-        for snap in snapshots:
-            nxg = pyzx_to_networkx(snap.graph, coarsen_phases=True)
-            graphs[snap.level.value] = nxg
-        return (instance, graphs)
-    except Exception as e:
-        return (instance, str(e))
+    qc = generator(n_qubits)
+    snapshots = convert_at_all_levels(qc, instance)
+    graphs = {}
+    for snap in snapshots:
+        nxg = pyzx_to_networkx(snap.graph, coarsen_phases=True)
+        graphs[snap.level.value] = nxg
+    return (instance, graphs)
 
 
 def build_corpus(
@@ -66,44 +61,25 @@ def build_corpus(
     -------
     dict mapping (instance_name, level_value) to NetworkX graph.
     """
-    # Build list of (generator, name, n_qubits) tasks
-    tasks = []
-    for entry in REGISTRY:
-        lo, hi = entry.qubit_range
-        effective_hi = max_qubits if hi is None else min(hi, max_qubits)
-        for n in range(lo, effective_hi + 1):
-            tasks.append((entry.generator, entry.name, n))
+    tasks = [
+        (entry.generator, entry.name, n)
+        for entry in REGISTRY
+        for n in range(
+            entry.qubit_range[0],
+            (max_qubits if entry.qubit_range[1] is None
+             else min(entry.qubit_range[1], max_qubits)) + 1,
+        )
+    ]
 
     corpus: dict[tuple[str, str], nx.Graph] = {}
     errors: list[str] = []
 
-    if max_workers == 1:
-        for generator, name, n in tqdm(tasks, desc="Building corpus", unit="inst"):
-            result = _convert_instance(generator, name, n)
-            instance, payload = result
-            if isinstance(payload, str):
-                errors.append(f"{instance}: {payload}")
-            else:
-                for level, nxg in payload.items():
-                    corpus[(instance, level)] = nxg
-    else:
-        with ProcessPoolExecutor(max_workers=max_workers) as executor:
-            futures = {
-                executor.submit(_convert_instance, gen, name, n): (name, n)
-                for gen, name, n in tasks
-            }
-            for future in tqdm(
-                as_completed(futures),
-                total=len(futures),
-                desc="Building corpus",
-                unit="inst",
-            ):
-                instance, payload = future.result()
-                if isinstance(payload, str):
-                    errors.append(f"{instance}: {payload}")
-                else:
-                    for level, nxg in payload.items():
-                        corpus[(instance, level)] = nxg
+    for instance, graphs in run_parallel(
+        _convert_instance, tasks,
+        max_workers=max_workers, desc="Building corpus", unit="inst",
+    ):
+        for level, nxg in graphs.items():
+            corpus[(instance, level)] = nxg
 
     if errors:
         print(f"  Skipped {len(errors)} instances due to errors:")
@@ -180,20 +156,21 @@ def discover_motifs(
 
 
 def _fingerprint_instance(
+    inst: str,
     host: nx.Graph,
     motif_graphs: list[nx.Graph],
     max_matches: int,
-) -> list[int]:
+) -> tuple[str, list[int]]:
     """Count motif occurrences in a single host graph.
 
     Top-level function so it is picklable by ProcessPoolExecutor.
 
-    Returns list of match counts, one per motif.
+    Returns (instance_name, match_counts).
     """
-    return [
+    return (inst, [
         len(find_motif_in_graph(mg, host, max_matches=max_matches))
         for mg in motif_graphs
-    ]
+    ])
 
 
 def build_fingerprint_matrix(
@@ -223,40 +200,24 @@ def build_fingerprint_matrix(
     instances = sorted(
         {name for (name, level) in corpus if level == target_level}
     )
+    inst_to_idx = {inst: i for i, inst in enumerate(instances)}
     motif_ids = [mp.motif_id for mp in motifs]
     motif_graphs = [mp.graph for mp in motifs]
 
+    tasks = [
+        (inst, corpus[(inst, target_level)], motif_graphs,
+         CONFIG.fingerprint_max_matches)
+        for inst in instances
+        if (inst, target_level) in corpus
+    ]
+
     counts = np.zeros((len(instances), len(motifs)), dtype=int)
 
-    if max_workers == 1:
-        for i, inst in enumerate(tqdm(instances, desc="Fingerprinting", unit="inst")):
-            key = (inst, target_level)
-            if key not in corpus:
-                continue
-            counts[i, :] = _fingerprint_instance(
-                corpus[key], motif_graphs, CONFIG.fingerprint_max_matches,
-            )
-    else:
-        inst_to_idx = {inst: i for i, inst in enumerate(instances)}
-        with ProcessPoolExecutor(max_workers=max_workers) as executor:
-            futures = {}
-            for inst in instances:
-                key = (inst, target_level)
-                if key not in corpus:
-                    continue
-                futures[executor.submit(
-                    _fingerprint_instance,
-                    corpus[key], motif_graphs,
-                    CONFIG.fingerprint_max_matches,
-                )] = inst
-            for future in tqdm(
-                as_completed(futures),
-                total=len(futures),
-                desc="Fingerprinting",
-                unit="inst",
-            ):
-                inst = futures[future]
-                counts[inst_to_idx[inst], :] = future.result()
+    for inst, row_counts in run_parallel(
+        _fingerprint_instance, tasks,
+        max_workers=max_workers, desc="Fingerprinting", unit="inst",
+    ):
+        counts[inst_to_idx[inst], :] = row_counts
 
     counts_df = pd.DataFrame(counts, index=instances, columns=motif_ids)
 

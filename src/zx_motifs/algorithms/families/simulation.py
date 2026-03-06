@@ -107,7 +107,7 @@ def make_quantum_walk(n_qubits=3, n_steps=2, **kwargs) -> QuantumCircuit:
 def make_qdrift(n_qubits=4, n_steps=4, dt=0.3, seed=42, **kwargs) -> QuantumCircuit:
     """qDRIFT randomised Hamiltonian simulation.
 
-    Simulates an Ising-like Hamiltonian  H = Sum_i ZZ_{i,i+1} + Sum_i X_i
+    Simulates an Ising-like Hamiltonian H = Sum_i ZZ_{i,i+1} + Sum_i X_i
     using the qDRIFT channel.
 
     Tags: hamiltonian_simulation, randomized

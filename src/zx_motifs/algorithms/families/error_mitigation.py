@@ -30,7 +30,7 @@ def make_zne_folding(n_qubits=4, **kwargs) -> QuantumCircuit:
     def _append_base_inverse(circuit):
         for i in range(n - 2, -1, -1):
             circuit.cx(i, i + 1)       # CX is self-adjoint
-        circuit.h(0)                    # H  is self-adjoint
+        circuit.h(0)                    # H is self-adjoint
 
     # fold-1: U
     _append_base(qc)
