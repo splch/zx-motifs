@@ -373,7 +373,16 @@ def canonical_hash(subg: nx.Graph) -> str:
 
 
 def is_isomorphic(g1: nx.Graph, g2: nx.Graph) -> bool:
-    """Check labeled isomorphism between two small graphs."""
+    """Check labeled isomorphism between two small graphs.
+
+    Applies cheap structural pre-checks before running VF2.
+    """
+    if g1.number_of_nodes() != g2.number_of_nodes():
+        return False
+    if g1.number_of_edges() != g2.number_of_edges():
+        return False
+    if sorted(d for _, d in g1.degree()) != sorted(d for _, d in g2.degree()):
+        return False
     gm = isomorphism.GraphMatcher(
         g1, g2, node_match=node_match_fn, edge_match=edge_match_fn
     )
@@ -400,7 +409,7 @@ def enumerate_connected_subgraphs(
     interior_set = set(interior_nodes)
 
     subgraphs: list[nx.Graph] = []
-    seen_hashes: dict[str, nx.Graph] = {}  # hash → representative graph
+    seen_fast: dict[str, nx.Graph] = {}  # canonical_hash → representative
 
     def _expand(node_set: frozenset, candidates: frozenset) -> None:
         """Recursively expand node_set by adding neighbors from candidates."""
@@ -409,15 +418,14 @@ def enumerate_connected_subgraphs(
         size = len(node_set)
         if size >= min_size:
             subg = host.subgraph(node_set).copy()
-            h = _HASH_FN(subg)
-            if h not in seen_hashes:
-                seen_hashes[h] = subg
+            h = canonical_hash(subg)
+            if h not in seen_fast:
+                seen_fast[h] = subg
                 subgraphs.append(subg)
-            elif not is_isomorphic(seen_hashes[h], subg):
-                # Hash collision — store under disambiguated key
-                alt_h = h + f"_{len(seen_hashes)}"
-                if alt_h not in seen_hashes:
-                    seen_hashes[alt_h] = subg
+            elif not is_isomorphic(seen_fast[h], subg):
+                alt_h = h + f"_{len(seen_fast)}"
+                if alt_h not in seen_fast:
+                    seen_fast[alt_h] = subg
                     subgraphs.append(subg)
 
         if size >= max_size:
