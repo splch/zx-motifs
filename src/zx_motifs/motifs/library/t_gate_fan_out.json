@@ -1,0 +1,17 @@
+{
+  "motif_id": "t_gate_fan_out",
+  "description": "Phaseless X-spider hub connected to two T-like Z-spiders, capturing the T-gate conjugation pattern from Toffoli decomposition and arithmetic circuits",
+  "source": "data_driven",
+  "tags": ["t_gate", "fan_out", "arithmetic"],
+  "graph": {
+    "nodes": [
+      {"id": 0, "vertex_type": "X", "phase_class": "zero", "is_boundary": false},
+      {"id": 1, "vertex_type": "Z", "phase_class": "t_like", "is_boundary": false},
+      {"id": 2, "vertex_type": "Z", "phase_class": "t_like", "is_boundary": false}
+    ],
+    "links": [
+      {"source": 0, "target": 1, "edge_type": "SIMPLE"},
+      {"source": 0, "target": 2, "edge_type": "SIMPLE"}
+    ]
+  }
+}

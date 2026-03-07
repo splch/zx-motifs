@@ -1,0 +1,17 @@
+{
+  "motif_id": "oracle_marker",
+  "description": "Z-spider connected to a Pauli X-spider via SIMPLE edge and another Z-spider via HADAMARD edge through the X-spider, marking phase-flip oracles in Grover search and quantum walk circuits",
+  "source": "data_driven",
+  "tags": ["oracle", "grover", "phase_flip"],
+  "graph": {
+    "nodes": [
+      {"id": 0, "vertex_type": "Z", "phase_class": "zero", "is_boundary": false},
+      {"id": 1, "vertex_type": "X", "phase_class": "pauli", "is_boundary": false},
+      {"id": 2, "vertex_type": "Z", "phase_class": "zero", "is_boundary": false}
+    ],
+    "links": [
+      {"source": 0, "target": 1, "edge_type": "SIMPLE"},
+      {"source": 1, "target": 2, "edge_type": "HADAMARD"}
+    ]
+  }
+}

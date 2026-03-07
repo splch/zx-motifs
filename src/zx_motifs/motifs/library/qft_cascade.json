@@ -1,0 +1,24 @@
+{
+  "motif_id": "qft_cascade",
+  "description": "6-node interleaved ladder of arbitrary-phase Z-spiders and phaseless X-spider hubs, capturing the cascaded controlled-phase structure of QFT and phase estimation circuits",
+  "source": "data_driven",
+  "tags": ["qft", "phase_estimation", "cascade"],
+  "graph": {
+    "nodes": [
+      {"id": 0, "vertex_type": "Z", "phase_class": "arbitrary", "is_boundary": false},
+      {"id": 1, "vertex_type": "Z", "phase_class": "arbitrary", "is_boundary": false},
+      {"id": 2, "vertex_type": "X", "phase_class": "zero", "is_boundary": false},
+      {"id": 3, "vertex_type": "Z", "phase_class": "arbitrary", "is_boundary": false},
+      {"id": 4, "vertex_type": "X", "phase_class": "zero", "is_boundary": false},
+      {"id": 5, "vertex_type": "Z", "phase_class": "arbitrary", "is_boundary": false}
+    ],
+    "links": [
+      {"source": 0, "target": 2, "edge_type": "SIMPLE"},
+      {"source": 1, "target": 2, "edge_type": "SIMPLE"},
+      {"source": 1, "target": 4, "edge_type": "SIMPLE"},
+      {"source": 2, "target": 3, "edge_type": "SIMPLE"},
+      {"source": 3, "target": 4, "edge_type": "SIMPLE"},
+      {"source": 4, "target": 5, "edge_type": "SIMPLE"}
+    ]
+  }
+}

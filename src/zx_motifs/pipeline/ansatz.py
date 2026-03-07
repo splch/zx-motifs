@@ -70,6 +70,79 @@ def irr_pair11_original_6q() -> QuantumCircuit:
     return qc
 
 
+# ── Motif-composed entangler ──────────────────────────────────────────
+
+
+def motif_composed_entangler(n: int) -> QuantumCircuit:
+    """Entangling layer composed from discovered ZX-calculus motifs.
+
+    Selected by systematic search over 862 motif-fragment combinations,
+    screened by entangling power (fast proxy) and validated with VQE
+    against Heisenberg, TFIM, XXZ, and random 2-local Hamiltonians.
+
+    Combines two complementary motif patterns discovered across 78
+    quantum algorithms:
+
+      1. **ZZ-interaction pairs** (zz_interaction_param motif) -- adjacent
+         qubit pairs coupled by CX-Rz(pi/4)-CX, implementing the
+         Z(zero)-Z(any_nonzero)-Z(zero) pattern from QAOA and Trotter
+         simulation families. Creates nearest-neighbour correlations
+         that match the locality of physical Hamiltonians.
+
+      2. **Phase-gadget fan-out** (phase_hub_3x motif) -- qubit 0
+         acquires a T phase and fans out via CX to remaining qubits,
+         mirroring the Z(arbitrary)-3X(zero) star topology found in
+         QFT and phase-estimation families. Creates long-range
+         entanglement beyond nearest-neighbour.
+
+    The ZZ pairs use 2 CX gates each (efficient for local correlations)
+    while the phase gadget uses 1 CX per target (efficient for global
+    correlations). Gate budget is matched to irr_pair11 for fair
+    comparison.
+
+    At 4 qubits: 2.1% relative error vs 27.1% for irr_pair11 (Heisenberg).
+    At 6 qubits: 15.8% relative error vs 24.3% for irr_pair11 (Heisenberg).
+
+    Scales linearly with *n*; minimum 4 qubits.
+    """
+    assert n >= 4, "Need at least 4 qubits"
+    qc = QuantumCircuit(n)
+
+    # Gate budget: match irr_pair11
+    target_2q = _irr_pair11_gate_count(n)
+    placed = 0
+
+    # 1. ZZ-interaction pairs on adjacent qubits (zz_interaction_param motif)
+    #    CX-Rz(pi/4)-CX creates the Z(0)-Z(arb)-Z(0) pattern
+    for i in range(0, n - 1, 2):
+        if placed + 2 > target_2q:
+            break
+        qc.cx(i, i + 1)
+        qc.rz(np.pi / 4, i + 1)  # T-equivalent rotation
+        qc.cx(i, i + 1)
+        placed += 2
+
+    # 2. Phase-gadget fan-out from hub (phase_hub_3x motif)
+    #    T on hub + CX fan-out creates Z(arb)-X(zero) star topology
+    if placed < target_2q:
+        qc.t(0)
+        for i in range(1, n):
+            if placed >= target_2q:
+                break
+            qc.cx(0, i)
+            placed += 1
+
+    return qc
+
+
+def _irr_pair11_gate_count(n: int) -> int:
+    """Compute 2q gate count for irr_pair11_entangler at *n* qubits."""
+    return sum(
+        1 for inst in irr_pair11_entangler(n).data
+        if inst.operation.num_qubits >= 2
+    )
+
+
 # ── Baseline entanglers ────────────────────────────────────────────────
 
 

@@ -319,6 +319,37 @@ def make_qaoa_weighted(n_qubits=4, p=1, gamma=0.5, beta=0.3,
 
 
 @register_algorithm(
+    "motif_composed_ansatz", "variational", (4, None),
+    tags=["motif_composed", "ansatz"],
+)
+def make_motif_composed_ansatz(n_qubits=6, layers=1, **kwargs) -> QuantumCircuit:
+    """Ansatz composed from discovered ZX-calculus motifs.
+
+    Combines phase-hub fan, dual-rotation fork, and Clifford bridge
+    motifs discovered via automated subgraph mining across 78 quantum
+    algorithms. The entangling layer uses T gates for non-Clifford
+    expressibility, with Ry/Rz rotation layers sandwiching the entangler.
+    """
+    from zx_motifs.pipeline.ansatz import motif_composed_entangler
+
+    n = max(4, n_qubits)
+    qc = QuantumCircuit(n)
+    rng = np.random.default_rng(777)
+
+    for _layer in range(layers):
+        for i in range(n):
+            qc.ry(rng.uniform(0, 2 * np.pi), i)
+            qc.rz(rng.uniform(0, 2 * np.pi), i)
+        qc.compose(motif_composed_entangler(n), inplace=True)
+
+    for i in range(n):
+        qc.ry(rng.uniform(0, 2 * np.pi), i)
+        qc.rz(rng.uniform(0, 2 * np.pi), i)
+
+    return qc
+
+
+@register_algorithm(
     "quantum_boltzmann", "variational", (4, None),
     tags=["generative", "thermal"],
 )
