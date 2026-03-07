@@ -70,6 +70,11 @@ def _json_to_motif(data: dict) -> MotifPattern:
     # Preserve tags in metadata for filtering via list_motifs()
     if "tags" in data:
         metadata["tags"] = data["tags"]
+    # Preserve MAGIC schema extensions
+    if "symmetry_tags" in data:
+        metadata["symmetry_tags"] = data["symmetry_tags"]
+    if "polynomial_signature" in data:
+        metadata["polynomial_signature"] = data["polynomial_signature"]
 
     return MotifPattern(
         motif_id=data["motif_id"],

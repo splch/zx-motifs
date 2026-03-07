@@ -43,3 +43,6 @@ notebooks/*.png
 motif_library/
 src/zx_motifs/motifs/library/auto_*.json
 .claude/
+
+# Worktrees
+.worktrees/

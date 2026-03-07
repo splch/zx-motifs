@@ -87,6 +87,55 @@
         }
       }
     },
+    "symmetry_tags": {
+      "type": "object",
+      "description": "Symmetry properties auto-computed from phase polynomial signature.",
+      "properties": {
+        "particle_number_preserving": {
+          "type": "boolean",
+          "description": "All gadgets commute with total Z operator."
+        },
+        "z2_parity_preserving": {
+          "type": "boolean",
+          "description": "All gadgets have even Pauli weight."
+        },
+        "real_valued": {
+          "type": "boolean",
+          "description": "No gadget contains an odd number of Y Paulis."
+        }
+      },
+      "additionalProperties": false
+    },
+    "polynomial_signature": {
+      "type": "object",
+      "description": "Phase polynomial representation of the motif's non-Clifford content.",
+      "properties": {
+        "n_qubits": {
+          "type": "integer",
+          "description": "Number of qubits in the polynomial."
+        },
+        "gadgets": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["support", "phase"],
+            "additionalProperties": false,
+            "properties": {
+              "support": {
+                "type": "array",
+                "items": { "type": "integer" },
+                "description": "Qubit indices where this gadget acts non-trivially."
+              },
+              "phase": {
+                "type": "string",
+                "description": "Phase as a fraction of pi (e.g. '1/4')."
+              }
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
     "metadata": {
       "type": "object",
       "description": "Optional freeform metadata."
