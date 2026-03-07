@@ -1,0 +1,48 @@
+{
+  "motif_id": "iqp_triangle_1t",
+  "description": "Complete triangle of Z-spiders (one T-like, two phaseless) via Hadamard edges (IQP single-rotation clique)",
+  "source": "bottom_up",
+  "tags": [
+    "irreducible",
+    "auto_discovered"
+  ],
+  "graph": {
+    "nodes": [
+      {
+        "id": 0,
+        "vertex_type": "Z",
+        "phase_class": "zero",
+        "is_boundary": false
+      },
+      {
+        "id": 1,
+        "vertex_type": "Z",
+        "phase_class": "zero",
+        "is_boundary": false
+      },
+      {
+        "id": 2,
+        "vertex_type": "Z",
+        "phase_class": "t_like",
+        "is_boundary": false
+      }
+    ],
+    "links": [
+      {
+        "source": 1,
+        "target": 0,
+        "edge_type": "HADAMARD"
+      },
+      {
+        "source": 1,
+        "target": 2,
+        "edge_type": "HADAMARD"
+      },
+      {
+        "source": 2,
+        "target": 0,
+        "edge_type": "HADAMARD"
+      }
+    ]
+  }
+}
