@@ -1,0 +1,40 @@
+{
+  "motif_id": "auto_fd176f494abf4b8d64c63295f092b91b",
+  "description": "Auto-discovered 3-node motif, found in 44 algorithms: amplitude_estimation_q4, amplitude_estimation_q5, bit_flip_code_q5, grover_q3, grover_q7, grover_q8, phase_flip_code_q5, quantum_comparator_q10, quantum_comparator_q5, quantum_comparator_q6, quantum_comparator_q7, quantum_comparator_q8, quantum_comparator_q9, quantum_fingerprinting_q10, quantum_fingerprinting_q4, quantum_fingerprinting_q5, quantum_fingerprinting_q6, quantum_fingerprinting_q7, quantum_fingerprinting_q8, quantum_fingerprinting_q9, quantum_multiplier_q10, quantum_multiplier_q8, quantum_multiplier_q9, ripple_carry_adder_q10, ripple_carry_adder_q5, ripple_carry_adder_q6, ripple_carry_adder_q7, ripple_carry_adder_q8, ripple_carry_adder_q9, swap_test_q10, swap_test_q3, swap_test_q4, swap_test_q5, swap_test_q6, swap_test_q7, swap_test_q8, swap_test_q9, vqd_q10, vqd_q4, vqd_q5, vqd_q6, vqd_q7, vqd_q8, vqd_q9",
+  "source": "bottom_up",
+  "tags": [],
+  "graph": {
+    "nodes": [
+      {
+        "id": 0,
+        "vertex_type": "X",
+        "phase_class": "zero",
+        "is_boundary": false
+      },
+      {
+        "id": 1,
+        "vertex_type": "Z",
+        "phase_class": "t_like",
+        "is_boundary": false
+      },
+      {
+        "id": 2,
+        "vertex_type": "Z",
+        "phase_class": "t_like",
+        "is_boundary": false
+      }
+    ],
+    "links": [
+      {
+        "source": 1,
+        "target": 0,
+        "edge_type": "SIMPLE"
+      },
+      {
+        "source": 2,
+        "target": 0,
+        "edge_type": "SIMPLE"
+      }
+    ]
+  }
+}

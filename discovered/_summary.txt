@@ -1,0 +1,220 @@
+Novel motifs discovered: 20
+
+auto_0ca20755a855b01e4fd4ae848c2fbf66:
+  nodes=3, edges=2
+  matches=177, algos=37
+  node 0: vertex_type=X, phase_class=zero
+  node 1: vertex_type=Z, phase_class=zero
+  node 2: vertex_type=Z, phase_class=arbitrary
+  edge 0-1: edge_type=SIMPLE
+  edge 0-2: edge_type=SIMPLE
+
+auto_e6f788f36bca2b43309cccea1713d508:
+  nodes=3, edges=2
+  matches=322, algos=67
+  node 0: vertex_type=X, phase_class=zero
+  node 1: vertex_type=Z, phase_class=zero
+  node 2: vertex_type=Z, phase_class=zero
+  edge 1-0: edge_type=SIMPLE
+  edge 2-0: edge_type=SIMPLE
+
+auto_404a1083ce742d80c7e014eaad7db875:
+  nodes=3, edges=2
+  matches=153, algos=35
+  node 0: vertex_type=Z, phase_class=zero
+  node 1: vertex_type=X, phase_class=zero
+  node 2: vertex_type=Z, phase_class=zero
+  edge 0-2: edge_type=HADAMARD
+  edge 1-0: edge_type=SIMPLE
+
+auto_b3584662d9850da99a34b5be2f864484:
+  nodes=3, edges=2
+  matches=42, algos=9
+  node 0: vertex_type=Z, phase_class=zero
+  node 1: vertex_type=X, phase_class=zero
+  node 2: vertex_type=X, phase_class=arbitrary
+  edge 0-1: edge_type=SIMPLE
+  edge 0-2: edge_type=SIMPLE
+
+nbr_3660ff7c311ad431ab4825f3f9df877b:
+  nodes=3, edges=2
+  matches=39, algos=8
+  node 0: vertex_type=Z, phase_class=clifford
+  node 1: vertex_type=X, phase_class=arbitrary
+  node 2: vertex_type=Z, phase_class=clifford
+  edge 0-1: edge_type=SIMPLE
+  edge 1-2: edge_type=SIMPLE
+
+auto_91d4674adae9a55e1397977512c89818:
+  nodes=4, edges=3
+  matches=235, algos=47
+  node 0: vertex_type=Z, phase_class=zero
+  node 1: vertex_type=X, phase_class=zero
+  node 2: vertex_type=X, phase_class=zero
+  node 3: vertex_type=X, phase_class=zero
+  edge 0-1: edge_type=SIMPLE
+  edge 2-0: edge_type=SIMPLE
+  edge 3-0: edge_type=SIMPLE
+
+nbr_e4bc3b8d23159b92e66d5194a1585386:
+  nodes=4, edges=3
+  matches=38, algos=8
+  node 0: vertex_type=Z, phase_class=clifford
+  node 1: vertex_type=X, phase_class=arbitrary
+  node 2: vertex_type=Z, phase_class=clifford
+  node 3: vertex_type=X, phase_class=zero
+  edge 0-1: edge_type=SIMPLE
+  edge 1-2: edge_type=SIMPLE
+  edge 2-3: edge_type=SIMPLE
+
+auto_9e22a2a296a17ee1f8bb857afaececd4:
+  nodes=3, edges=2
+  matches=85, algos=18
+  node 0: vertex_type=X, phase_class=zero
+  node 1: vertex_type=Z, phase_class=clifford
+  node 2: vertex_type=Z, phase_class=clifford
+  edge 0-1: edge_type=SIMPLE
+  edge 2-0: edge_type=SIMPLE
+
+nbr_2e753dbb2866f75e065a9a345bff7726:
+  nodes=6, edges=5
+  matches=36, algos=8
+  node 0: vertex_type=Z, phase_class=clifford
+  node 1: vertex_type=X, phase_class=arbitrary
+  node 2: vertex_type=Z, phase_class=clifford
+  node 3: vertex_type=X, phase_class=zero
+  node 4: vertex_type=Z, phase_class=zero
+  node 5: vertex_type=Z, phase_class=clifford
+  edge 0-1: edge_type=SIMPLE
+  edge 1-2: edge_type=SIMPLE
+  edge 2-3: edge_type=SIMPLE
+  edge 3-4: edge_type=SIMPLE
+  edge 3-5: edge_type=SIMPLE
+
+auto_d4c2b89a05faed5e38a8dbf3a69bcef4:
+  nodes=4, edges=3
+  matches=65, algos=13
+  node 0: vertex_type=Z, phase_class=arbitrary
+  node 1: vertex_type=X, phase_class=zero
+  node 2: vertex_type=X, phase_class=zero
+  node 3: vertex_type=X, phase_class=zero
+  edge 0-1: edge_type=SIMPLE
+  edge 0-2: edge_type=SIMPLE
+  edge 0-3: edge_type=SIMPLE
+
+auto_14e9e466cd2944b8a1d3c19198c94c4e:
+  nodes=3, edges=2
+  matches=45, algos=9
+  node 0: vertex_type=Z, phase_class=zero
+  node 1: vertex_type=X, phase_class=arbitrary
+  node 2: vertex_type=X, phase_class=arbitrary
+  edge 0-1: edge_type=SIMPLE
+  edge 0-2: edge_type=SIMPLE
+
+nbr_45db3509caa3019a27b609ed1e240ea9:
+  nodes=6, edges=6
+  matches=52, algos=11
+  node 0: vertex_type=Z, phase_class=arbitrary
+  node 1: vertex_type=Z, phase_class=arbitrary
+  node 2: vertex_type=X, phase_class=zero
+  node 3: vertex_type=Z, phase_class=arbitrary
+  node 4: vertex_type=X, phase_class=zero
+  node 5: vertex_type=Z, phase_class=arbitrary
+  edge 0-2: edge_type=SIMPLE
+  edge 1-2: edge_type=SIMPLE
+  edge 1-4: edge_type=SIMPLE
+  edge 2-3: edge_type=SIMPLE
+  edge 3-4: edge_type=SIMPLE
+  edge 4-5: edge_type=SIMPLE
+
+auto_7d495f0205427371fcb334bb4d0d0513:
+  nodes=4, edges=3
+  matches=45, algos=10
+  node 0: vertex_type=Z, phase_class=zero
+  node 1: vertex_type=X, phase_class=zero
+  node 2: vertex_type=X, phase_class=zero
+  node 3: vertex_type=Z, phase_class=zero
+  edge 1-0: edge_type=SIMPLE
+  edge 2-0: edge_type=SIMPLE
+  edge 3-0: edge_type=HADAMARD
+
+nbr_8b1a537a383de2d8f1e8e08d5141ed5d:
+  nodes=6, edges=6
+  matches=30, algos=8
+  node 0: vertex_type=X, phase_class=zero
+  node 1: vertex_type=X, phase_class=zero
+  node 2: vertex_type=Z, phase_class=zero
+  node 3: vertex_type=Z, phase_class=arbitrary
+  node 4: vertex_type=X, phase_class=arbitrary
+  node 5: vertex_type=X, phase_class=arbitrary
+  edge 0-2: edge_type=SIMPLE
+  edge 1-2: edge_type=SIMPLE
+  edge 1-3: edge_type=SIMPLE
+  edge 2-4: edge_type=SIMPLE
+  edge 2-5: edge_type=SIMPLE
+  edge 3-4: edge_type=SIMPLE
+
+nbr_8461cd4f0fcbd81442df2acad843103f:
+  nodes=5, edges=4
+  matches=36, algos=8
+  node 0: vertex_type=X, phase_class=zero
+  node 1: vertex_type=Z, phase_class=clifford
+  node 2: vertex_type=X, phase_class=arbitrary
+  node 3: vertex_type=Z, phase_class=clifford
+  node 4: vertex_type=X, phase_class=zero
+  edge 0-1: edge_type=SIMPLE
+  edge 1-2: edge_type=SIMPLE
+  edge 2-3: edge_type=SIMPLE
+  edge 3-4: edge_type=SIMPLE
+
+nbr_5947656fcc96afddbcc107dcfbc63805:
+  nodes=6, edges=5
+  matches=27, algos=9
+  node 0: vertex_type=Z, phase_class=arbitrary
+  node 1: vertex_type=Z, phase_class=clifford
+  node 2: vertex_type=X, phase_class=arbitrary
+  node 3: vertex_type=Z, phase_class=arbitrary
+  node 4: vertex_type=X, phase_class=zero
+  node 5: vertex_type=Z, phase_class=clifford
+  edge 0-4: edge_type=SIMPLE
+  edge 1-2: edge_type=SIMPLE
+  edge 2-3: edge_type=SIMPLE
+  edge 3-4: edge_type=SIMPLE
+  edge 4-5: edge_type=SIMPLE
+
+auto_fd176f494abf4b8d64c63295f092b91b:
+  nodes=3, edges=2
+  matches=80, algos=16
+  node 0: vertex_type=X, phase_class=zero
+  node 1: vertex_type=Z, phase_class=t_like
+  node 2: vertex_type=Z, phase_class=t_like
+  edge 1-0: edge_type=SIMPLE
+  edge 2-0: edge_type=SIMPLE
+
+auto_023e28ea210a4863c99eed8536997854:
+  nodes=3, edges=2
+  matches=80, algos=18
+  node 0: vertex_type=Z, phase_class=arbitrary
+  node 1: vertex_type=X, phase_class=zero
+  node 2: vertex_type=X, phase_class=arbitrary
+  edge 1-0: edge_type=SIMPLE
+  edge 2-0: edge_type=SIMPLE
+
+nbr_3ab24c8298c04db5be237d20fc96755f:
+  nodes=3, edges=2
+  matches=35, algos=7
+  node 0: vertex_type=Z, phase_class=zero
+  node 1: vertex_type=X, phase_class=pauli
+  node 2: vertex_type=Z, phase_class=zero
+  edge 1-0: edge_type=SIMPLE
+  edge 1-2: edge_type=HADAMARD
+
+nbr_7681a438fec399149e59a7bde69aadb8:
+  nodes=3, edges=2
+  matches=44, algos=9
+  node 0: vertex_type=Z, phase_class=clifford
+  node 1: vertex_type=X, phase_class=arbitrary
+  node 2: vertex_type=Z, phase_class=arbitrary
+  edge 0-1: edge_type=SIMPLE
+  edge 1-2: edge_type=SIMPLE
+

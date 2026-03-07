@@ -1,0 +1,73 @@
+{
+  "motif_id": "nbr_2e753dbb2866f75e065a9a345bff7726",
+  "description": "Neighborhood-extracted 6-node motif, found in 55 algorithms: dicke_state_q10, dicke_state_q3, dicke_state_q4, dicke_state_q5, dicke_state_q6, dicke_state_q7, dicke_state_q8, dicke_state_q9, hhl_q10, hhl_q4, hhl_q5, hhl_q6, hhl_q7, hhl_q8, hhl_q9, poisson_solver_q10, poisson_solver_q4, poisson_solver_q5, poisson_solver_q6, poisson_solver_q7, poisson_solver_q8, poisson_solver_q9, qcnn_q10, qcnn_q4, qcnn_q5, qcnn_q6, qcnn_q7, qcnn_q8, qcnn_q9, quantum_autoencoder_q10, quantum_autoencoder_q4, quantum_autoencoder_q5, quantum_autoencoder_q6, quantum_autoencoder_q7, quantum_autoencoder_q8, quantum_autoencoder_q9, quantum_boltzmann_q4, quantum_boltzmann_q5, quantum_fisher_info_q10, quantum_fisher_info_q2, quantum_fisher_info_q3, quantum_fisher_info_q4, quantum_fisher_info_q5, quantum_fisher_info_q6, quantum_fisher_info_q7, quantum_fisher_info_q8, quantum_fisher_info_q9, w_state_q10, w_state_q3, w_state_q4, w_state_q5, w_state_q6, w_state_q7, w_state_q8, w_state_q9",
+  "source": "neighborhood",
+  "tags": [],
+  "graph": {
+    "nodes": [
+      {
+        "id": 0,
+        "vertex_type": "Z",
+        "phase_class": "clifford",
+        "is_boundary": false
+      },
+      {
+        "id": 1,
+        "vertex_type": "X",
+        "phase_class": "arbitrary",
+        "is_boundary": false
+      },
+      {
+        "id": 2,
+        "vertex_type": "Z",
+        "phase_class": "clifford",
+        "is_boundary": false
+      },
+      {
+        "id": 3,
+        "vertex_type": "X",
+        "phase_class": "zero",
+        "is_boundary": false
+      },
+      {
+        "id": 4,
+        "vertex_type": "Z",
+        "phase_class": "zero",
+        "is_boundary": false
+      },
+      {
+        "id": 5,
+        "vertex_type": "Z",
+        "phase_class": "clifford",
+        "is_boundary": false
+      }
+    ],
+    "links": [
+      {
+        "source": 0,
+        "target": 1,
+        "edge_type": "SIMPLE"
+      },
+      {
+        "source": 1,
+        "target": 2,
+        "edge_type": "SIMPLE"
+      },
+      {
+        "source": 2,
+        "target": 3,
+        "edge_type": "SIMPLE"
+      },
+      {
+        "source": 3,
+        "target": 4,
+        "edge_type": "SIMPLE"
+      },
+      {
+        "source": 3,
+        "target": 5,
+        "edge_type": "SIMPLE"
+      }
+    ]
+  }
+}

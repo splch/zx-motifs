@@ -1,0 +1,40 @@
+{
+  "motif_id": "nbr_3ab24c8298c04db5be237d20fc96755f",
+  "description": "Neighborhood-extracted 3-node motif, found in 42 algorithms: amplitude_estimation_q10, amplitude_estimation_q4, amplitude_estimation_q5, amplitude_estimation_q6, amplitude_estimation_q7, amplitude_estimation_q8, amplitude_estimation_q9, element_distinctness_q10, element_distinctness_q5, element_distinctness_q6, element_distinctness_q7, element_distinctness_q8, element_distinctness_q9, grover_q10, grover_q3, grover_q4, grover_q5, grover_q6, grover_q7, grover_q8, grover_q9, hidden_shift_q10, hidden_shift_q4, hidden_shift_q5, hidden_shift_q6, hidden_shift_q7, hidden_shift_q8, hidden_shift_q9, quantum_counting_q10, quantum_counting_q5, quantum_counting_q6, quantum_counting_q7, quantum_counting_q8, quantum_counting_q9, quantum_walk_search_q10, quantum_walk_search_q3, quantum_walk_search_q4, quantum_walk_search_q5, quantum_walk_search_q6, quantum_walk_search_q7, quantum_walk_search_q8, quantum_walk_search_q9",
+  "source": "neighborhood",
+  "tags": [],
+  "graph": {
+    "nodes": [
+      {
+        "id": 0,
+        "vertex_type": "Z",
+        "phase_class": "zero",
+        "is_boundary": false
+      },
+      {
+        "id": 1,
+        "vertex_type": "X",
+        "phase_class": "pauli",
+        "is_boundary": false
+      },
+      {
+        "id": 2,
+        "vertex_type": "Z",
+        "phase_class": "zero",
+        "is_boundary": false
+      }
+    ],
+    "links": [
+      {
+        "source": 1,
+        "target": 0,
+        "edge_type": "SIMPLE"
+      },
+      {
+        "source": 1,
+        "target": 2,
+        "edge_type": "HADAMARD"
+      }
+    ]
+  }
+}

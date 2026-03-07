@@ -1,0 +1,51 @@
+{
+  "motif_id": "auto_7d495f0205427371fcb334bb4d0d0513",
+  "description": "Auto-discovered 4-node motif, found in 48 algorithms: amplitude_estimation_q10, amplitude_estimation_q4, amplitude_estimation_q5, amplitude_estimation_q6, amplitude_estimation_q7, amplitude_estimation_q8, amplitude_estimation_q9, color_code_q7, grover_q10, grover_q7, grover_q8, grover_q9, hhl_q4, hhl_q5, phase_flip_code_q5, poisson_solver_q4, poisson_solver_q5, quantum_fingerprinting_q10, quantum_fingerprinting_q4, quantum_fingerprinting_q5, quantum_fingerprinting_q6, quantum_fingerprinting_q7, quantum_fingerprinting_q8, quantum_fingerprinting_q9, quantum_walk_search_q10, quantum_walk_search_q3, quantum_walk_search_q4, quantum_walk_search_q5, quantum_walk_search_q6, quantum_walk_search_q7, quantum_walk_search_q8, quantum_walk_search_q9, ripple_carry_adder_q10, ripple_carry_adder_q5, ripple_carry_adder_q6, ripple_carry_adder_q7, ripple_carry_adder_q8, ripple_carry_adder_q9, surface_code_patch_q9, toric_code_syndrome_q8, zne_folding_q10, zne_folding_q3, zne_folding_q4, zne_folding_q5, zne_folding_q6, zne_folding_q7, zne_folding_q8, zne_folding_q9",
+  "source": "bottom_up",
+  "tags": [],
+  "graph": {
+    "nodes": [
+      {
+        "id": 0,
+        "vertex_type": "Z",
+        "phase_class": "zero",
+        "is_boundary": false
+      },
+      {
+        "id": 1,
+        "vertex_type": "X",
+        "phase_class": "zero",
+        "is_boundary": false
+      },
+      {
+        "id": 2,
+        "vertex_type": "X",
+        "phase_class": "zero",
+        "is_boundary": false
+      },
+      {
+        "id": 3,
+        "vertex_type": "Z",
+        "phase_class": "zero",
+        "is_boundary": false
+      }
+    ],
+    "links": [
+      {
+        "source": 1,
+        "target": 0,
+        "edge_type": "SIMPLE"
+      },
+      {
+        "source": 2,
+        "target": 0,
+        "edge_type": "SIMPLE"
+      },
+      {
+        "source": 3,
+        "target": 0,
+        "edge_type": "HADAMARD"
+      }
+    ]
+  }
+}

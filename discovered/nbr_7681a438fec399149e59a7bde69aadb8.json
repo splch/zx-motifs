@@ -1,0 +1,40 @@
+{
+  "motif_id": "nbr_7681a438fec399149e59a7bde69aadb8",
+  "description": "Neighborhood-extracted 3-node motif, found in 42 algorithms: data_reuploading_q10, data_reuploading_q2, data_reuploading_q3, data_reuploading_q4, data_reuploading_q5, data_reuploading_q6, data_reuploading_q7, data_reuploading_q8, data_reuploading_q9, qgan_generator_q10, qgan_generator_q2, qgan_generator_q3, qgan_generator_q4, qgan_generator_q5, qgan_generator_q6, qgan_generator_q7, qgan_generator_q8, qgan_generator_q9, varqite_q10, varqite_q3, varqite_q4, varqite_q5, varqite_q6, varqite_q7, varqite_q8, varqite_q9, vqd_q10, vqd_q4, vqd_q5, vqd_q6, vqd_q7, vqd_q8, vqd_q9, vqls_q10, vqls_q2, vqls_q3, vqls_q4, vqls_q5, vqls_q6, vqls_q7, vqls_q8, vqls_q9",
+  "source": "neighborhood",
+  "tags": [],
+  "graph": {
+    "nodes": [
+      {
+        "id": 0,
+        "vertex_type": "Z",
+        "phase_class": "clifford",
+        "is_boundary": false
+      },
+      {
+        "id": 1,
+        "vertex_type": "X",
+        "phase_class": "arbitrary",
+        "is_boundary": false
+      },
+      {
+        "id": 2,
+        "vertex_type": "Z",
+        "phase_class": "arbitrary",
+        "is_boundary": false
+      }
+    ],
+    "links": [
+      {
+        "source": 0,
+        "target": 1,
+        "edge_type": "SIMPLE"
+      },
+      {
+        "source": 1,
+        "target": 2,
+        "edge_type": "SIMPLE"
+      }
+    ]
+  }
+}

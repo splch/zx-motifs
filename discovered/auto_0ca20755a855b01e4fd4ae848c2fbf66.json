@@ -1,0 +1,40 @@
+{
+  "motif_id": "auto_0ca20755a855b01e4fd4ae848c2fbf66",
+  "description": "Auto-discovered 3-node motif, found in 117 algorithms: adapt_vqe_q10, adapt_vqe_q4, adapt_vqe_q5, adapt_vqe_q6, adapt_vqe_q7, adapt_vqe_q8, adapt_vqe_q9, amplitude_estimation_q6, amplitude_estimation_q7, betti_number_q10, betti_number_q3, betti_number_q4, betti_number_q5, betti_number_q6, betti_number_q7, betti_number_q8, betti_number_q9, ctqw_q10, ctqw_q2, ctqw_q3, ctqw_q4, ctqw_q5, ctqw_q6, ctqw_q7, ctqw_q8, ctqw_q9, grover_q10, grover_q4, grover_q7, grover_q8, grover_q9, hhl_q5, higher_order_trotter_q10, higher_order_trotter_q2, higher_order_trotter_q3, higher_order_trotter_q4, higher_order_trotter_q5, higher_order_trotter_q6, higher_order_trotter_q7, higher_order_trotter_q8, higher_order_trotter_q9, hubbard_trotter_q10, hubbard_trotter_q2, hubbard_trotter_q3, hubbard_trotter_q4, hubbard_trotter_q5, hubbard_trotter_q6, hubbard_trotter_q7, hubbard_trotter_q8, hubbard_trotter_q9, phase_estimation_q4, poisson_solver_q4, poisson_solver_q5, qaoa_maxcut_q10, qaoa_maxcut_q3, qaoa_maxcut_q4, qaoa_maxcut_q5, qaoa_maxcut_q6, qaoa_maxcut_q7, qaoa_maxcut_q8, qaoa_maxcut_q9, qaoa_weighted_q10, qaoa_weighted_q3, qaoa_weighted_q4, qaoa_weighted_q5, qaoa_weighted_q6, qaoa_weighted_q7, qaoa_weighted_q8, qaoa_weighted_q9, qdrift_q10, qdrift_q5, qdrift_q6, qdrift_q7, qdrift_q8, qdrift_q9, qsvm_q10, qsvm_q3, qsvm_q4, qsvm_q5, qsvm_q6, qsvm_q7, qsvm_q8, qsvm_q9, quantum_kernel_q10, quantum_kernel_q3, quantum_kernel_q4, quantum_kernel_q5, quantum_kernel_q6, quantum_kernel_q7, quantum_kernel_q8, quantum_kernel_q9, recursive_qaoa_q10, recursive_qaoa_q4, recursive_qaoa_q5, recursive_qaoa_q6, recursive_qaoa_q7, recursive_qaoa_q8, recursive_qaoa_q9, trotter_heisenberg_q10, trotter_heisenberg_q2, trotter_heisenberg_q3, trotter_heisenberg_q4, trotter_heisenberg_q5, trotter_heisenberg_q6, trotter_heisenberg_q7, trotter_heisenberg_q8, trotter_heisenberg_q9, trotter_ising_q10, trotter_ising_q2, trotter_ising_q3, trotter_ising_q4, trotter_ising_q5, trotter_ising_q6, trotter_ising_q7, trotter_ising_q8, trotter_ising_q9, vqe_uccsd_q4",
+  "source": "bottom_up",
+  "tags": [],
+  "graph": {
+    "nodes": [
+      {
+        "id": 0,
+        "vertex_type": "X",
+        "phase_class": "zero",
+        "is_boundary": false
+      },
+      {
+        "id": 1,
+        "vertex_type": "Z",
+        "phase_class": "zero",
+        "is_boundary": false
+      },
+      {
+        "id": 2,
+        "vertex_type": "Z",
+        "phase_class": "arbitrary",
+        "is_boundary": false
+      }
+    ],
+    "links": [
+      {
+        "source": 0,
+        "target": 1,
+        "edge_type": "SIMPLE"
+      },
+      {
+        "source": 0,
+        "target": 2,
+        "edge_type": "SIMPLE"
+      }
+    ]
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "motif_id": "auto_b3584662d9850da99a34b5be2f864484",
+  "description": "Auto-discovered 3-node motif, found in 89 algorithms: ctqw_q10, ctqw_q3, ctqw_q4, ctqw_q5, ctqw_q6, ctqw_q7, ctqw_q8, ctqw_q9, higher_order_trotter_q10, higher_order_trotter_q3, higher_order_trotter_q4, higher_order_trotter_q5, higher_order_trotter_q6, higher_order_trotter_q7, higher_order_trotter_q8, higher_order_trotter_q9, hubbard_trotter_q10, hubbard_trotter_q2, hubbard_trotter_q3, hubbard_trotter_q4, hubbard_trotter_q5, hubbard_trotter_q6, hubbard_trotter_q7, hubbard_trotter_q8, hubbard_trotter_q9, qaoa_maxcut_q10, qaoa_maxcut_q3, qaoa_maxcut_q4, qaoa_maxcut_q5, qaoa_maxcut_q6, qaoa_maxcut_q7, qaoa_maxcut_q8, qaoa_maxcut_q9, qaoa_weighted_q10, qaoa_weighted_q3, qaoa_weighted_q4, qaoa_weighted_q5, qaoa_weighted_q6, qaoa_weighted_q7, qaoa_weighted_q8, qaoa_weighted_q9, qcnn_q10, qcnn_q4, qcnn_q5, qcnn_q6, qcnn_q7, qcnn_q8, qcnn_q9, qdrift_q5, qdrift_q6, qdrift_q7, quantum_autoencoder_q10, quantum_autoencoder_q4, quantum_autoencoder_q5, quantum_autoencoder_q6, quantum_autoencoder_q7, quantum_autoencoder_q8, quantum_autoencoder_q9, quantum_boltzmann_q10, quantum_boltzmann_q4, quantum_boltzmann_q5, quantum_boltzmann_q6, quantum_boltzmann_q7, quantum_boltzmann_q8, quantum_boltzmann_q9, quantum_fisher_info_q10, quantum_fisher_info_q2, quantum_fisher_info_q3, quantum_fisher_info_q4, quantum_fisher_info_q5, quantum_fisher_info_q6, quantum_fisher_info_q7, quantum_fisher_info_q8, quantum_fisher_info_q9, recursive_qaoa_q10, recursive_qaoa_q4, recursive_qaoa_q5, recursive_qaoa_q6, recursive_qaoa_q7, recursive_qaoa_q8, recursive_qaoa_q9, trotter_ising_q10, trotter_ising_q3, trotter_ising_q4, trotter_ising_q5, trotter_ising_q6, trotter_ising_q7, trotter_ising_q8, trotter_ising_q9",
+  "source": "bottom_up",
+  "tags": [],
+  "graph": {
+    "nodes": [
+      {
+        "id": 0,
+        "vertex_type": "Z",
+        "phase_class": "zero",
+        "is_boundary": false
+      },
+      {
+        "id": 1,
+        "vertex_type": "X",
+        "phase_class": "zero",
+        "is_boundary": false
+      },
+      {
+        "id": 2,
+        "vertex_type": "X",
+        "phase_class": "arbitrary",
+        "is_boundary": false
+      }
+    ],
+    "links": [
+      {
+        "source": 0,
+        "target": 1,
+        "edge_type": "SIMPLE"
+      },
+      {
+        "source": 0,
+        "target": 2,
+        "edge_type": "SIMPLE"
+      }
+    ]
+  }
+}

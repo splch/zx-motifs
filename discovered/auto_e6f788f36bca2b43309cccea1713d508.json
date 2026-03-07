@@ -1,0 +1,40 @@
+{
+  "motif_id": "auto_e6f788f36bca2b43309cccea1713d508",
+  "description": "Auto-discovered 3-node motif, found in 105 algorithms: adapt_vqe_q10, adapt_vqe_q4, adapt_vqe_q5, adapt_vqe_q6, adapt_vqe_q7, adapt_vqe_q8, adapt_vqe_q9, amplitude_estimation_q4, amplitude_estimation_q5, amplitude_estimation_q6, amplitude_estimation_q7, bacon_shor_q9, betti_number_q10, betti_number_q3, betti_number_q4, betti_number_q5, betti_number_q6, betti_number_q7, betti_number_q8, betti_number_q9, bit_flip_code_q5, data_reuploading_q10, data_reuploading_q4, data_reuploading_q5, data_reuploading_q6, data_reuploading_q7, data_reuploading_q8, data_reuploading_q9, ghz_state_q10, ghz_state_q4, ghz_state_q5, ghz_state_q6, ghz_state_q7, ghz_state_q8, ghz_state_q9, hhl_q4, hhl_q5, phase_estimation_q4, poisson_solver_q4, poisson_solver_q5, qft_q2, qft_q3, qft_q4, qft_q5, qft_q6, qft_q7, qft_q8, quantum_autoencoder_q10, quantum_autoencoder_q7, quantum_autoencoder_q8, quantum_autoencoder_q9, quantum_boltzmann_q10, quantum_boltzmann_q5, quantum_boltzmann_q6, quantum_boltzmann_q7, quantum_boltzmann_q8, quantum_boltzmann_q9, quantum_fingerprinting_q10, quantum_fingerprinting_q7, quantum_fingerprinting_q8, quantum_fingerprinting_q9, quantum_fisher_info_q10, quantum_fisher_info_q4, quantum_fisher_info_q5, quantum_fisher_info_q6, quantum_fisher_info_q7, quantum_fisher_info_q8, quantum_fisher_info_q9, quantum_multiplier_q10, quantum_multiplier_q8, quantum_multiplier_q9, quantum_walk_q10, quantum_walk_q3, quantum_walk_q4, quantum_walk_q5, quantum_walk_q6, quantum_walk_q7, quantum_walk_q8, quantum_walk_q9, surface_code_patch_q9, toric_code_syndrome_q8, varqite_q10, varqite_q3, varqite_q4, varqite_q5, varqite_q6, varqite_q7, varqite_q8, varqite_q9, vqe_uccsd_q4, vqs_real_time_q10, vqs_real_time_q4, vqs_real_time_q5, vqs_real_time_q6, vqs_real_time_q7, vqs_real_time_q8, vqs_real_time_q9, zne_folding_q10, zne_folding_q3, zne_folding_q4, zne_folding_q5, zne_folding_q6, zne_folding_q7, zne_folding_q8, zne_folding_q9",
+  "source": "bottom_up",
+  "tags": [],
+  "graph": {
+    "nodes": [
+      {
+        "id": 0,
+        "vertex_type": "X",
+        "phase_class": "zero",
+        "is_boundary": false
+      },
+      {
+        "id": 1,
+        "vertex_type": "Z",
+        "phase_class": "zero",
+        "is_boundary": false
+      },
+      {
+        "id": 2,
+        "vertex_type": "Z",
+        "phase_class": "zero",
+        "is_boundary": false
+      }
+    ],
+    "links": [
+      {
+        "source": 1,
+        "target": 0,
+        "edge_type": "SIMPLE"
+      },
+      {
+        "source": 2,
+        "target": 0,
+        "edge_type": "SIMPLE"
+      }
+    ]
+  }
+}

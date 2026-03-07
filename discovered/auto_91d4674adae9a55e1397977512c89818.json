@@ -1,0 +1,51 @@
+{
+  "motif_id": "auto_91d4674adae9a55e1397977512c89818",
+  "description": "Auto-discovered 4-node motif, found in 72 algorithms: adapt_vqe_q4, adapt_vqe_q5, bell_state_q10, bell_state_q4, bell_state_q5, bell_state_q6, bell_state_q7, bell_state_q8, bell_state_q9, color_code_q7, element_distinctness_q10, element_distinctness_q7, element_distinctness_q8, element_distinctness_q9, grover_q10, grover_q4, grover_q5, grover_q7, grover_q8, grover_q9, hhl_q4, hhl_q5, poisson_solver_q4, poisson_solver_q5, poisson_solver_q9, pumping_distillation_q6, qaoa_maxcut_q10, qaoa_maxcut_q3, qaoa_maxcut_q4, qaoa_maxcut_q5, qaoa_maxcut_q6, qaoa_maxcut_q7, qaoa_maxcut_q8, qaoa_maxcut_q9, qaoa_weighted_q10, qaoa_weighted_q3, qaoa_weighted_q4, qaoa_weighted_q5, qaoa_weighted_q6, qaoa_weighted_q7, qaoa_weighted_q8, qaoa_weighted_q9, quantum_counting_q10, quantum_counting_q5, quantum_counting_q6, quantum_counting_q7, quantum_counting_q8, quantum_counting_q9, quantum_walk_q10, quantum_walk_q5, quantum_walk_q6, quantum_walk_q7, quantum_walk_q8, quantum_walk_q9, quantum_walk_search_q10, quantum_walk_search_q4, quantum_walk_search_q5, quantum_walk_search_q6, quantum_walk_search_q7, quantum_walk_search_q8, quantum_walk_search_q9, random_circuit_sampling_q3, recurrence_distillation_q8, recursive_qaoa_q10, recursive_qaoa_q4, recursive_qaoa_q5, recursive_qaoa_q6, recursive_qaoa_q7, recursive_qaoa_q8, recursive_qaoa_q9, steane_code_q7, surface_code_patch_q9",
+  "source": "bottom_up",
+  "tags": [],
+  "graph": {
+    "nodes": [
+      {
+        "id": 0,
+        "vertex_type": "Z",
+        "phase_class": "zero",
+        "is_boundary": false
+      },
+      {
+        "id": 1,
+        "vertex_type": "X",
+        "phase_class": "zero",
+        "is_boundary": false
+      },
+      {
+        "id": 2,
+        "vertex_type": "X",
+        "phase_class": "zero",
+        "is_boundary": false
+      },
+      {
+        "id": 3,
+        "vertex_type": "X",
+        "phase_class": "zero",
+        "is_boundary": false
+      }
+    ],
+    "links": [
+      {
+        "source": 0,
+        "target": 1,
+        "edge_type": "SIMPLE"
+      },
+      {
+        "source": 2,
+        "target": 0,
+        "edge_type": "SIMPLE"
+      },
+      {
+        "source": 3,
+        "target": 0,
+        "edge_type": "SIMPLE"
+      }
+    ]
+  }
+}

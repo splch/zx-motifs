@@ -1,0 +1,51 @@
+{
+  "motif_id": "auto_d4c2b89a05faed5e38a8dbf3a69bcef4",
+  "description": "Auto-discovered 4-node motif, found in 52 algorithms: amplitude_estimation_q6, amplitude_estimation_q7, betti_number_q10, betti_number_q3, betti_number_q4, betti_number_q5, betti_number_q6, betti_number_q7, betti_number_q8, betti_number_q9, grover_q10, grover_q4, grover_q5, grover_q6, grover_q7, grover_q8, grover_q9, jones_polynomial_q10, jones_polynomial_q3, jones_polynomial_q4, jones_polynomial_q5, jones_polynomial_q6, jones_polynomial_q7, jones_polynomial_q8, jones_polynomial_q9, phase_estimation_q10, phase_estimation_q4, phase_estimation_q5, phase_estimation_q6, phase_estimation_q7, phase_estimation_q8, phase_estimation_q9, poisson_solver_q10, poisson_solver_q4, poisson_solver_q5, poisson_solver_q6, poisson_solver_q7, poisson_solver_q8, poisson_solver_q9, qft_adder_q10, qft_adder_q6, qft_adder_q7, qft_adder_q8, qft_adder_q9, qft_q10, qft_q3, qft_q4, qft_q5, qft_q6, qft_q7, qft_q8, qft_q9",
+  "source": "bottom_up",
+  "tags": [],
+  "graph": {
+    "nodes": [
+      {
+        "id": 0,
+        "vertex_type": "Z",
+        "phase_class": "arbitrary",
+        "is_boundary": false
+      },
+      {
+        "id": 1,
+        "vertex_type": "X",
+        "phase_class": "zero",
+        "is_boundary": false
+      },
+      {
+        "id": 2,
+        "vertex_type": "X",
+        "phase_class": "zero",
+        "is_boundary": false
+      },
+      {
+        "id": 3,
+        "vertex_type": "X",
+        "phase_class": "zero",
+        "is_boundary": false
+      }
+    ],
+    "links": [
+      {
+        "source": 0,
+        "target": 1,
+        "edge_type": "SIMPLE"
+      },
+      {
+        "source": 0,
+        "target": 2,
+        "edge_type": "SIMPLE"
+      },
+      {
+        "source": 0,
+        "target": 3,
+        "edge_type": "SIMPLE"
+      }
+    ]
+  }
+}
