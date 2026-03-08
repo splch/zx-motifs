@@ -10,36 +10,38 @@ ZX-Web Discovery Pipeline: a Python framework for discovering novel quantum algo
 
 ```bash
 # Full pipeline with defaults
-python run_pipeline.py
+uv run python run_pipeline.py
 
 # With custom parameters
-python run_pipeline.py --max-subgraph-size 5 --min-frequency 2 --max-candidates 500 --seed 42 --max-qubits 8
+uv run python run_pipeline.py --max-subgraph-size 5 --min-frequency 2 --max-candidates 500 --seed 42 --max-qubits 8
 
 # Quiet mode with JSON output
-python run_pipeline.py --quiet --output-json results.json
+uv run python run_pipeline.py --quiet --output-json results.json
 ```
 
 Output is saved to `pipeline_report.json` by default.
 
 ## Dependencies
 
+Dependencies are declared in `pyproject.toml` and managed by `uv`:
+
 ```bash
-pip install qiskit pyzx networkx numpy
+uv sync
 ```
 
 Tested with: Qiskit 2.3.0, PyZX 0.9.0, NetworkX 3.6, Python 3.11+
 
 ## Architecture
 
-The pipeline has 7 sequential steps, each in its own module. Data flows linearly through them, orchestrated by `pipeline.py`:
+The pipeline has 7 sequential steps, each in its own module under `zx_discovery/`. Data flows linearly through them, orchestrated by `pipeline.py`:
 
 1. **`corpus.py`** — Builds 22 quantum algorithms as Qiskit circuits, exports to OpenQASM 2.0. All circuits are unitary-only (no measurements). New algorithms go in `ALGORITHM_BUILDERS` dict.
 2. **`zx_convert.py`** — QASM → PyZX Graph → two simplification levels (Clifford-simplified and fully-reduced). Produces `ZXEntry` dataclass with both snapshots.
 3. **`zx_webs.py`** — Core mining step. Converts PyZX graphs to NetworkX, enumerates connected induced subgraphs via BFS, canonicalizes via WL-style hash, and filters by cross-algorithm frequency. Produces `ZXWeb` dataclass.
 4. **`composer.py`** — Glues 2-4 ZXWebs together via spider fusion on compatible ports (same-color vertices). Produces `CandidateAlgorithm` with a PyZX Graph.
 5. **`extractor.py`** — Attempts `pyzx.extract_circuit()` with fallback strategies. Filters out identity circuits, too-small, and too-wide circuits. ~10-20% survival rate.
-6. **`benchmark.py`** — Evaluates on gates/qubit, entanglement entropy, expressibility, depth, and unitary novelty. Uses Qiskit statevector simulation (limited to ≤8-10 qubits).
-7. **`reporter.py`** — Identifies Pareto-dominant novel candidates. Outputs text summary and structured JSON with QASM for outperformers.
+6. **`benchmark.py`** — Evaluates on gates/qubit, entanglement entropy, expressibility, depth, and unitary novelty. Expressibility is estimated by evolving random product states and comparing the fidelity distribution to Haar-random. Uses Qiskit statevector simulation (limited to ≤8-10 qubits).
+7. **`reporter.py`** — Identifies Pareto-dominant novel candidates (same qubit width, strictly better on ≥1 metric, not worse on any; invalid metrics excluded). Outputs text summary and structured JSON with QASM for outperformers.
 
 `run_pipeline.py` is the CLI entry point with argparse; `pipeline.py` is the programmatic orchestrator.
 
@@ -50,6 +52,6 @@ The pipeline has 7 sequential steps, each in its own module. Data flows linearly
 - **Spider fusion** (`composer.py`): Port compatibility requires matching spider color (Z-Z or X-X); boundary vertices are universally compatible.
 - **Gate palette** (`corpus.py`): Only gates supported by both Qiskit QASM export and PyZX QASM import: `h, x, z, s, t, sdg, tdg, cx, cz, ccx, rz, rx, ry, swap`.
 
-## Structural Note
+## Project Structure
 
-The modules use relative imports (`from . import corpus`) indicating they should live in a `zx_discovery/` package with an `__init__.py`, but currently all `.py` files sit at the repository root. The `run_pipeline.py` entry point does `from zx_discovery.pipeline import run_pipeline` — this requires the package directory to exist.
+All pipeline modules live in the `zx_discovery/` package with relative imports. `run_pipeline.py` at the repo root is the CLI entry point. Dependencies are declared in `pyproject.toml` and managed by `uv`.

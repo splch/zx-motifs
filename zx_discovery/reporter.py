@@ -77,14 +77,15 @@ def _pareto_dominates(
         expressibility_score  – higher is better
         depth                 – lower is better
     """
-    metrics = [
-        (-cand.gates_per_qubit,       -baseline.gates_per_qubit),
-        ( cand.entanglement_entropy,   baseline.entanglement_entropy),
-        ( cand.expressibility_score,   baseline.expressibility_score),
-        (-cand.depth,                  -baseline.depth),
+    # (candidate, baseline, sign): sign flips so higher = better for all
+    pairs = [
+        (cand.gates_per_qubit,      baseline.gates_per_qubit,      -1),
+        (cand.entanglement_entropy, baseline.entanglement_entropy,  1),
+        (cand.expressibility_score, baseline.expressibility_score,  1),
+        (cand.depth,                baseline.depth,                 -1),
     ]
-    # Filter out invalid measurements (-1)
-    valid = [(c, b) for c, b in metrics if c != 1.0 and b != 1.0]
+    # Filter out invalid measurements (sentinel value -1.0)
+    valid = [(s * c, s * b) for c, b, s in pairs if c >= 0 and b >= 0]
     if not valid:
         return False
     at_least_one_better = False

@@ -136,8 +136,14 @@ def _expressibility(qc: QuantumCircuit, n_samples: int = 50) -> float:
     from qiskit.quantum_info import Statevector, random_statevector
     outputs = []
     for _ in range(n_samples):
-        # Random product state
-        init_sv = Statevector(np.ones(2**n) / np.sqrt(2**n))
+        # Random product state: tensor product of n random 1-qubit states
+        angles = np.random.uniform([0, 0], [np.pi, 2 * np.pi], (n, 2))
+        init_vec = np.array([1.0 + 0j])
+        for theta, phi in angles:
+            qubit = np.array([np.cos(theta / 2),
+                              np.exp(1j * phi) * np.sin(theta / 2)])
+            init_vec = np.kron(init_vec, qubit)
+        init_sv = Statevector(init_vec)
         try:
             out = init_sv.evolve(qc)
             outputs.append(out.data)

@@ -25,8 +25,10 @@ This pipeline implements a 7-step process that starts from known quantum algorit
 
 ## Requirements
 
-```
-pip install qiskit pyzx networkx numpy
+Dependencies are declared in `pyproject.toml`. Install with [uv](https://docs.astral.sh/uv/):
+
+```bash
+uv sync
 ```
 
 Tested with: Qiskit 2.3.0, PyZX 0.9.0, NetworkX 3.6, Python 3.11+
@@ -34,12 +36,12 @@ Tested with: Qiskit 2.3.0, PyZX 0.9.0, NetworkX 3.6, Python 3.11+
 ## Quick Start
 
 ```bash
-python run_pipeline.py
+uv run python run_pipeline.py
 ```
 
 With custom parameters:
 ```bash
-python run_pipeline.py \
+uv run python run_pipeline.py \
   --max-subgraph-size 5 \
   --min-frequency 2 \
   --max-candidates 500 \
@@ -126,7 +128,7 @@ Evaluates every surviving candidate and every corpus algorithm on:
 |---|---|---|
 | Gates per qubit | Lower ↓ | Gate count / qubit width |
 | Entanglement entropy | Higher ↑ | Average bipartite von Neumann entropy of output state |
-| Expressibility | Higher ↑ | Fidelity distribution vs Haar random |
+| Expressibility | Higher ↑ | Fidelity distribution of random product-state inputs vs Haar random |
 | Circuit depth | Lower ↓ | Total and 2-qubit critical path |
 | Novelty | Boolean | Unitary not equivalent (up to global phase) to any corpus circuit |
 
@@ -166,22 +168,22 @@ run_pipeline.py          # CLI entry point
 
 ## Interpreting Results
 
-Finding 0 outperformers is the *expected baseline*. Novel quantum algorithms are rare. The framework provides:
+With sufficient candidates and web combo size (e.g. `--max-candidates 1000 --web-combo-size 4 --max-subgraph-size 6`), the pipeline can discover novel circuits that Pareto-dominate known algorithms. The framework provides:
 
 - **Infrastructure** for systematic exploration
 - **Quantitative comparison** between candidates and known algorithms
 - **Reproducible** runs via seed control
 - **Scalable** to larger corpora and more candidates
 
-For production use, consider running with `max_candidates=5000+`, multiple seeds, and `max_subgraph_size=6`.
+For broader exploration, try `max_candidates=5000+`, multiple seeds, and `max_subgraph_size=6`.
 
 ## Key Dependencies
 
 | Package | Role |
 |---|---|
-| **Qiskit** (≥1.0) | Circuit construction, QASM export, statevector simulation |
-| **PyZX** (≥0.8) | ZX-calculus: diagram conversion, simplification, circuit extraction |
-| **NetworkX** (≥3.0) | Subgraph enumeration, canonical hashing, graph composition |
+| **Qiskit** (≥2.3) | Circuit construction, QASM export, statevector simulation |
+| **PyZX** (≥0.9) | ZX-calculus: diagram conversion, simplification, circuit extraction |
+| **NetworkX** (≥3.6) | Subgraph enumeration, canonical hashing, graph composition |
 | **NumPy** | Linear algebra for entanglement entropy, unitary comparison |
 
 ## References
