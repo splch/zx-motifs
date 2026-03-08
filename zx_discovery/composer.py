@@ -1,5 +1,5 @@
 """
-Step 4 – Compose New Candidate Algorithms from ZX-Webs
+Step 4 - Compose New Candidate Algorithms from ZX-Webs
 ========================================================
 Given a library of ZX-Web motifs, this module constructs new
 ZX-diagrams by *gluing* compatible webs together.
@@ -13,7 +13,7 @@ ports into a single spider, fusing their phases (addition mod 2π),
 in accordance with the ZX-calculus spider fusion rule.
 
 The composer:
-    1. Selects 2–4 webs from the library (combinatorial sampling).
+    1. Selects 2-4 webs from the library (combinatorial sampling).
     2. For each pair of adjacent webs in the sequence, finds compatible
        port pairs and fuses them.
     3. Adds fresh boundary (input/output) vertices to any remaining
@@ -234,7 +234,7 @@ def compose_candidates(
     max_candidates : int
         Maximum number of candidates to generate.
     web_combo_size : int
-        Number of webs to combine per candidate (2–4).
+        Number of webs to combine per candidate (2-4).
     max_web_reuse : int
         Max times a single web can appear in one candidate.
     require_distinct_sources : bool

@@ -1,5 +1,5 @@
 """
-Step 3 – ZX-Web Mining: Identify Common Sub-Diagram Motifs
+Step 3 - ZX-Web Mining: Identify Common Sub-Diagram Motifs
 ============================================================
 A **ZX-Web** is a small, recurring sub-diagram motif found within and
 across the simplified ZX-diagrams of the algorithm corpus.  Concretely
@@ -14,7 +14,7 @@ Mining Pipeline
    phase-classified nodes and typed edges.
 2. Enumerate all *connected induced subgraphs* of size 2..k
    (default k = 6) via bounded-depth BFS from every vertex.
-3. Canonicalise each subgraph using a Weisfeiler–Leman-style hash that
+3. Canonicalise each subgraph using a Weisfeiler-Leman-style hash that
    respects node/edge labels so that isomorphic motifs share a key.
 4. Count motif frequencies across the corpus.
 5. Return motifs whose frequency exceeds a threshold as ``ZXWeb``
@@ -50,10 +50,10 @@ def _classify_phase(phase) -> str:
 
     Phase in PyZX is stored as a ``Fraction`` representing multiples of π.
     Categories:
-        "zero"     – phase == 0
-        "clifford" – phase ∈ {0, 1/2, 1, 3/2}  (multiples of π/2)
-        "t_like"   – phase ∈ {1/4, 3/4, 5/4, 7/4} (multiples of π/4)
-        "arb"      – everything else
+        "zero"     - phase == 0
+        "clifford" - phase ∈ {0, 1/2, 1, 3/2}  (multiples of π/2)
+        "t_like"   - phase ∈ {1/4, 3/4, 5/4, 7/4} (multiples of π/4)
+        "arb"      - everything else
     """
     from fractions import Fraction
     p = Fraction(phase) % 2  # normalise to [0, 2)

@@ -1,5 +1,5 @@
 """
-Step 7 – Report Novel Algorithms that Outperform Existing Solutions
+Step 7 - Report Novel Algorithms that Outperform Existing Solutions
 =====================================================================
 Compares candidate benchmark results against the corpus baselines and
 flags any candidate that is Pareto-dominant on at least one meaningful
@@ -72,10 +72,10 @@ def _pareto_dominates(
     """Check if *cand* Pareto-dominates *baseline*.
 
     Metrics (direction):
-        gates_per_qubit       – lower is better
-        entanglement_entropy  – higher is better
-        expressibility_score  – higher is better
-        depth                 – lower is better
+        gates_per_qubit       - lower is better
+        entanglement_entropy  - higher is better
+        expressibility_score  - higher is better
+        depth                 - lower is better
     """
     # (candidate, baseline, sign): sign flips so higher = better for all
     pairs = [
@@ -176,7 +176,7 @@ def report_to_text(report: PipelineReport) -> str:
     """Render the report as human-readable text."""
     lines = []
     lines.append("=" * 72)
-    lines.append("  ZX-Web Discovery Pipeline – Run Report")
+    lines.append("  ZX-Web Discovery Pipeline - Run Report")
     lines.append("=" * 72)
     lines.append(f"  Timestamp:            {report.timestamp}")
     lines.append(f"  Corpus algorithms:    {report.corpus_size}")

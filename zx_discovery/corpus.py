@@ -1,5 +1,5 @@
 """
-Step 1 – Quantum Algorithm Corpus
+Step 1 - Quantum Algorithm Corpus
 ==================================
 Implements a diverse set of well-known quantum algorithms in Qiskit,
 then exports each as an OpenQASM 2.0 string for downstream conversion

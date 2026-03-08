@@ -1,5 +1,5 @@
 """
-Step 5 – Filter Candidates to Extractable Quantum Circuits
+Step 5 - Filter Candidates to Extractable Quantum Circuits
 ============================================================
 Not every ZX-diagram composed in Step 4 can be turned back into a
 quantum circuit.  Circuit extraction from a general ZX-diagram is
@@ -14,9 +14,9 @@ equivalent to the identity (which would be uninteresting).
 
 Additional filters
 ------------------
-* **Gate-count floor** – discard circuits with fewer than ``min_gates``
+* **Gate-count floor** - discard circuits with fewer than ``min_gates``
   total gates (too trivial).
-* **Qubit ceiling** – discard circuits wider than ``max_qubits`` (too
+* **Qubit ceiling** - discard circuits wider than ``max_qubits`` (too
   expensive to simulate for benchmarking).
 """
 
@@ -103,7 +103,7 @@ def _is_trivial_identity(c: zx.Circuit) -> bool:
     """
     n = c.qubits
     if n > 8:
-        return False  # can't check – assume non-trivial
+        return False  # can't check - assume non-trivial
     try:
         mat = c.to_matrix()
         identity = np.eye(2**n)

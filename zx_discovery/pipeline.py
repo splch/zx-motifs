@@ -51,7 +51,7 @@ def run_pipeline(
     max_candidates : int
         Number of candidate algorithms to compose.
     web_combo_size : int
-        Number of webs to glue per candidate (2–4).
+        Number of webs to glue per candidate (2-4).
     seed : int
         Random seed for composition.
     min_gates : int

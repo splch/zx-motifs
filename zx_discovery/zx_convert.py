@@ -1,17 +1,17 @@
 """
-Step 2 – Convert Quantum Circuits to Simplified ZX-Diagrams
+Step 2 - Convert Quantum Circuits to Simplified ZX-Diagrams
 ============================================================
 Uses PyZX to parse OpenQASM 2.0 strings into ZX-diagrams, then applies
 a cascade of simplification strategies:
 
-    1. ``interior_clifford_simp`` – fuse adjacent Clifford spiders.
-    2. ``clifford_simp``          – full Clifford simplification.
-    3. ``full_reduce``            – strongest built-in reduction (may
+    1. ``interior_clifford_simp`` - fuse adjacent Clifford spiders.
+    2. ``clifford_simp``          - full Clifford simplification.
+    3. ``full_reduce``            - strongest built-in reduction (may
        destroy circuit structure but minimises spider count).
 
 Each algorithm receives *two* diagram snapshots:
-    • **clifford** – after ``clifford_simp`` (circuit-like structure preserved).
-    • **reduced**  – after ``full_reduce`` (maximally compressed).
+    • **clifford** - after ``clifford_simp`` (circuit-like structure preserved).
+    • **reduced**  - after ``full_reduce`` (maximally compressed).
 
 The reduced diagrams are the primary input for sub-diagram mining
 because they expose the core computational "skeleton" of each algorithm.
@@ -102,7 +102,7 @@ def convert_corpus(qasm_corpus: Dict[str, str]) -> Dict[str, ZXEntry]:
     for name, qasm_str in qasm_corpus.items():
         g = qasm_to_zx(qasm_str)
         if g is None:
-            print(f"  [skip] '{name}' – QASM parse failed")
+            print(f"  [skip] '{name}' - QASM parse failed")
             continue
 
         gc = simplify_clifford(g)

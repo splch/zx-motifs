@@ -1,5 +1,5 @@
 """
-Step 6 – Benchmark Candidates Against an Application Suite
+Step 6 - Benchmark Candidates Against an Application Suite
 ============================================================
 Each surviving candidate circuit is evaluated on a suite of
 application-level tasks.  Because the candidates are *new* circuits
@@ -9,16 +9,16 @@ task-specific.
 
 Benchmark Metrics
 -----------------
-1. **Gate efficiency** – total gate count, 2-qubit gate count, T-count
+1. **Gate efficiency** - total gate count, 2-qubit gate count, T-count
    normalised by qubit width.
-2. **Entanglement capacity** – average bipartite entanglement entropy
+2. **Entanglement capacity** - average bipartite entanglement entropy
    across all cuts of the output state (computed via statevector
    simulation for small circuits).
-3. **Expressibility** – how uniformly the circuit's output states
+3. **Expressibility** - how uniformly the circuit's output states
    cover the Hilbert space when its free parameters are varied
    (approximated by sampling random input states).
-4. **Circuit depth** – total depth and critical-path 2-qubit depth.
-5. **Equivalence novelty** – check that the unitary is *not* equivalent
+4. **Circuit depth** - total depth and critical-path 2-qubit depth.
+5. **Equivalence novelty** - check that the unitary is *not* equivalent
    (up to global phase) to any circuit already in the corpus.
 
 Comparison Baselines

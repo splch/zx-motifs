@@ -85,7 +85,7 @@ Converts each QASM circuit to a PyZX `Graph` (ZX-diagram) and applies two levels
 - **Clifford simplification** — fuses adjacent Clifford spiders, preserving circuit-like structure
 - **Full reduction** — applies `full_reduce()` for maximum compression using local complementation and pivoting rules
 
-The fully-reduced diagrams (typically 3–5× smaller) are the primary input for motif mining.
+The fully-reduced diagrams (typically 3-5× smaller) are the primary input for motif mining.
 
 ### Step 3 — ZX-Web Mining (`zx_webs.py`)
 
@@ -93,7 +93,7 @@ The fully-reduced diagrams (typically 3–5× smaller) are the primary input for
 
 The mining process:
 1. Convert each PyZX graph to a NetworkX graph with typed nodes (Z/X/Boundary + phase class) and typed edges (Simple/Hadamard)
-2. Enumerate all connected induced subgraphs of size 2–k via bounded BFS
+2. Enumerate all connected induced subgraphs of size 2-k via bounded BFS
 3. Canonicalise each subgraph using a colour-aware Weisfeiler-Leman hash
 4. Count how many distinct source algorithms contain each motif
 5. Keep motifs appearing in ≥ `min_frequency` algorithms
@@ -102,7 +102,7 @@ Phase classes: `zero`, `clifford` (multiples of π/2), `t_like` (multiples of π
 
 ### Step 4 — Candidate Composition (`composer.py`)
 
-Constructs new ZX-diagrams by gluing 2–4 ZX-Webs together:
+Constructs new ZX-diagrams by gluing 2-4 ZX-Webs together:
 
 - **Port identification** — vertices on the boundary of a subgraph with external neighbours
 - **Spider fusion** — compatible ports (same spider colour, or boundary) are merged per the ZX-calculus spider fusion rule, adding their phases
@@ -118,7 +118,7 @@ Not every composed ZX-diagram yields a valid quantum circuit. This step:
 3. Filters out trivial circuits (identity, too few gates, too many qubits)
 4. Exports survivors to QASM
 
-Typical survival rate: ~10–20% of candidates.
+Typical survival rate: ~10-20% of candidates.
 
 ### Step 6 — Benchmarking (`benchmark.py`)
 
@@ -152,7 +152,7 @@ zx_discovery/
 ├── extractor.py         # Step 5: circuit extraction filter
 ├── benchmark.py         # Step 6: application-suite benchmarks
 ├── reporter.py          # Step 7: outperformer detection + reporting
-└── pipeline.py          # Orchestrator (runs Steps 1–7)
+└── pipeline.py          # Orchestrator (runs Steps 1-7)
 run_pipeline.py          # CLI entry point
 ```
 
