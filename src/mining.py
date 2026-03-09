@@ -574,8 +574,6 @@ def mine_webs(
             if not embedding_found or pyzx_subgraph is None:
                 continue
 
-            # Build Boundary objects
-            # Classify boundaries as input/output based on row position
             source_graph = per_graph_meta[first_source_gid]["graph"]
             matched_pyzx_verts_list = list(
                 v
@@ -593,9 +591,6 @@ def mine_webs(
             else:
                 avg_row = 0
 
-            # Map boundary verts in the subgraph back to original
-            # boundary_verts are IDs in the subgraph
-            boundaries: list[Boundary] = []
             input_boundaries: list[Boundary] = []
             output_boundaries: list[Boundary] = []
 

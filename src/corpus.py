@@ -595,23 +595,6 @@ def circuit_to_qasm(circuit: QuantumCircuit) -> str:
     return qasm2_dumps(circuit)
 
 
-def _export_single(
-    builder: Callable,
-    n: int,
-    gate_set: list[str],
-    output_path: str,
-) -> str | None:
-    """Worker: build, transpile, and export one algorithm at one qubit size."""
-    try:
-        qc = builder(n)
-        qc_transpiled = transpile_to_gate_set(qc, gate_set)
-        qasm_str = circuit_to_qasm(qc_transpiled)
-        Path(output_path).write_text(qasm_str)
-        return output_path
-    except Exception:
-        return None
-
-
 def export_corpus(
     registry: AlgorithmRegistry,
     output_dir: str | Path,
@@ -619,25 +602,54 @@ def export_corpus(
     qubit_sizes: dict[str, list[int]],
     workers: int | None = None,
 ) -> list[Path]:
-    """Build and export every algorithm at every requested size."""
-    from src.parallel import parallel_map
+    """Build and export every algorithm at every requested size.
+
+    Uses Qiskit's native parallel transpilation (``num_processes``) to
+    batch-transpile all circuits in one call, avoiding per-process
+    import overhead.
+    """
+    from src.parallel import resolve_workers
 
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
 
     all_sizes = sorted({n for sizes in qubit_sizes.values() for n in sizes})
 
-    items = []
+    # Build all circuits first (lightweight)
+    circuits: list[QuantumCircuit] = []
+    paths: list[Path] = []
     for key in registry.all_keys():
         entry = registry.get(key)
         for n in all_sizes:
             if n < entry.min_qubits or n > entry.max_qubits:
                 continue
-            path = str(output_dir / f"{key}_{n}q.qasm")
-            items.append((entry.builder, n, gate_set, path))
+            try:
+                qc = entry.builder(n)
+                circuits.append(qc)
+                paths.append(output_dir / f"{key}_{n}q.qasm")
+            except Exception:
+                logger.warning("Failed to build %s at %d qubits", key, n, exc_info=True)
 
-    results = parallel_map(_export_single, items, workers, desc="corpus export")
-    written = [Path(r) for r in results if r is not None]
+    if not circuits:
+        return []
+
+    # Batch transpile using Qiskit's native parallelism
+    n_workers = resolve_workers(workers)
+    transpiled = qiskit_transpile(
+        circuits,
+        basis_gates=gate_set,
+        optimization_level=2,
+        num_processes=n_workers,
+    )
+
+    # Export to QASM files
+    written: list[Path] = []
+    for qc_t, path in zip(transpiled, paths):
+        try:
+            path.write_text(circuit_to_qasm(qc_t))
+            written.append(path)
+        except Exception:
+            logger.warning("Failed to export %s", path.stem, exc_info=True)
 
     for p in written:
         logger.info("Exported %s", p.stem)
