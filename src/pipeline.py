@@ -59,7 +59,10 @@ class PipelineConfig:
     @classmethod
     def from_yaml(cls, path: str | Path) -> "PipelineConfig":
         """Load configuration from a YAML file."""
-        raise NotImplementedError
+        path = Path(path)
+        with open(path) as f:
+            raw = yaml.safe_load(f)
+        return cls(raw=raw or {})
 
 
 # ── Stage runners ────────────────────────────────────────────────────
@@ -72,7 +75,62 @@ def run_stage_1(cfg: PipelineConfig) -> None:
 
 def run_stage_2(cfg: PipelineConfig) -> None:
     """Convert QASM files to ZX-diagrams at multiple simplification levels."""
-    raise NotImplementedError
+    from src.zx import (
+        load_qasm_file,
+        pyzx_circuit_to_graph,
+        qasm_to_pyzx_circuit,
+        save_diagram,
+        simplify_graph,
+    )
+
+    corpus_dir = Path(cfg.corpus.get("output_dir", "data/corpus"))
+    output_dir = Path(cfg.zx_conversion.get("output_dir", "data/diagrams"))
+    levels = cfg.zx_conversion.get("simplification_levels", ["raw", "clifford", "full"])
+
+    qasm_files = sorted(corpus_dir.glob("*.qasm"))
+    if not qasm_files:
+        logger.warning("No QASM files found in %s", corpus_dir)
+        return
+
+    logger.info("Converting %d QASM files to ZX-diagrams", len(qasm_files))
+
+    for qasm_path in qasm_files:
+        stem = qasm_path.stem  # e.g. "ghz_3q"
+        # Parse algo name and qubit count from filename convention {key}_{n}q
+        parts = stem.rsplit("_", 1)
+        algo_name = parts[0] if len(parts) == 2 else stem
+        try:
+            n_qubits = int(parts[1].rstrip("q")) if len(parts) == 2 else 0
+        except ValueError:
+            n_qubits = 0
+
+        try:
+            qasm_text = load_qasm_file(qasm_path)
+            circuit = qasm_to_pyzx_circuit(qasm_text)
+            graph = pyzx_circuit_to_graph(circuit)
+            result = simplify_graph(graph)
+
+            level_graphs = {
+                "raw": result.raw,
+                "clifford": result.clifford,
+                "full": result.full,
+            }
+
+            for level_name in levels:
+                g = level_graphs.get(level_name)
+                if g is None:
+                    continue
+                diagram_id = f"{stem}_{level_name}"
+                metadata = {
+                    "source_algorithm": algo_name,
+                    "n_qubits": n_qubits,
+                    "level": level_name,
+                }
+                save_diagram(g, diagram_id, output_dir, metadata)
+
+            logger.info("Converted %s (%d spiders raw)", stem, result.spider_counts["raw"])
+        except Exception:
+            logger.warning("Failed to convert %s", stem, exc_info=True)
 
 
 def run_stage_3(cfg: PipelineConfig) -> None:
@@ -115,7 +173,17 @@ STAGES = {
 
 def run_pipeline(cfg: PipelineConfig, stage: int | None = None) -> None:
     """Execute the pipeline — all stages or a single stage."""
-    raise NotImplementedError
+    if stage is not None:
+        if stage not in STAGES:
+            raise ValueError(f"Unknown stage: {stage}")
+        name, runner = STAGES[stage]
+        logger.info("Running Stage %d: %s", stage, name)
+        runner(cfg)
+        return
+
+    for stage_num, (name, runner) in STAGES.items():
+        logger.info("Running Stage %d: %s", stage_num, name)
+        runner(cfg)
 
 
 # ── CLI ──────────────────────────────────────────────────────────────

@@ -12,11 +12,21 @@ from src.corpus import (
     AlgorithmEntry,
     AlgorithmRegistry,
     build_default_registry,
+    build_ghz,
     build_grover,
     build_qft,
     circuit_to_qasm,
     transpile_to_gate_set,
 )
+from src.zx import (
+    SimplificationResult,
+    load_diagram,
+    pyzx_circuit_to_graph,
+    qasm_to_pyzx_circuit,
+    save_diagram,
+    simplify_graph,
+)
+from pyzx.utils import VertexType
 
 
 # ── Corpus ──────────────────────────────────────────────────────────
@@ -107,23 +117,62 @@ class TestZX:
 
     def test_qasm_roundtrip(self):
         """A simple circuit should survive QASM export → PyZX import."""
-        pytest.skip("Not yet implemented")
+        qc = build_ghz(3)
+        qc_t = transpile_to_gate_set(qc, ["cx", "rz", "h"])
+        qasm = circuit_to_qasm(qc_t)
+        circuit = qasm_to_pyzx_circuit(qasm)
+        assert circuit.qubits == 3
+        graph = pyzx_circuit_to_graph(circuit)
+        assert graph.num_vertices() > 0
+        # Should have 3 inputs and 3 outputs (boundary vertices)
+        inputs = [v for v in graph.vertices() if graph.type(v) == VertexType.BOUNDARY]
+        assert len(inputs) == 6  # 3 inputs + 3 outputs
 
     def test_unsupported_gate_raises(self):
         """QASM with unsupported gates should raise ValueError."""
-        pytest.skip("Not yet implemented")
+        bad_qasm = (
+            "OPENQASM 2.0;\n"
+            "include \"qelib1.inc\";\n"
+            "qreg q[2];\n"
+            "foobar q[0],q[1];\n"
+        )
+        with pytest.raises(ValueError):
+            qasm_to_pyzx_circuit(bad_qasm)
 
     def test_simplification_reduces_spider_count(self):
         """Full reduction should produce fewer spiders than raw."""
-        pytest.skip("Not yet implemented")
+        qc = build_ghz(5)
+        qc_t = transpile_to_gate_set(qc, ["cx", "rz", "h"])
+        qasm = circuit_to_qasm(qc_t)
+        circuit = qasm_to_pyzx_circuit(qasm)
+        graph = pyzx_circuit_to_graph(circuit)
+        result = simplify_graph(graph)
+        assert result.spider_counts["full"] <= result.spider_counts["raw"]
 
     def test_all_three_levels_populated(self):
         """SimplificationResult should have non-None graphs at all levels."""
-        pytest.skip("Not yet implemented")
+        qc = build_ghz(3)
+        qc_t = transpile_to_gate_set(qc, ["cx", "rz", "h"])
+        qasm = circuit_to_qasm(qc_t)
+        circuit = qasm_to_pyzx_circuit(qasm)
+        graph = pyzx_circuit_to_graph(circuit)
+        result = simplify_graph(graph)
+        assert result.raw is not None and result.raw.num_vertices() > 0
+        assert result.clifford is not None and result.clifford.num_vertices() > 0
+        assert result.full is not None and result.full.num_vertices() > 0
 
     def test_save_and_load_roundtrip(self, tmp_path):
         """save_diagram → load_diagram should reconstruct an equivalent graph."""
-        pytest.skip("Not yet implemented")
+        qc = build_ghz(3)
+        qc_t = transpile_to_gate_set(qc, ["cx", "rz", "h"])
+        qasm = circuit_to_qasm(qc_t)
+        circuit = qasm_to_pyzx_circuit(qasm)
+        graph = pyzx_circuit_to_graph(circuit)
+        metadata = {"source_algorithm": "ghz", "n_qubits": 3, "level": "raw"}
+        record = save_diagram(graph, "ghz_3q_raw", tmp_path, metadata)
+        loaded = load_diagram(record.json_path)
+        assert loaded.num_vertices() == graph.num_vertices()
+        assert loaded.num_edges() == graph.num_edges()
 
 
 # ── Mining ──────────────────────────────────────────────────────────
