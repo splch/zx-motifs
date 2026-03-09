@@ -1,5 +1,5 @@
 """
-compose.py — Template-based candidate algorithm composition.
+Template-based candidate algorithm composition.
 """
 
 from __future__ import annotations

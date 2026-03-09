@@ -1,5 +1,5 @@
 """
-zx.py — ZX-diagram conversion, simplification, storage, and graph helpers.
+ZX-diagram conversion, simplification, storage, and graph helpers.
 """
 
 from __future__ import annotations

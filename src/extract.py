@@ -1,5 +1,5 @@
 """
-extract.py — Flow detection, circuit extraction, and filtering.
+Flow detection, circuit extraction, and filtering.
 """
 
 from __future__ import annotations

@@ -1,5 +1,5 @@
 """
-test_pipeline.py — Tests for all pipeline modules.
+Tests for all pipeline modules.
 
 One test class per module plus integration tests.
 
@@ -53,10 +53,13 @@ class TestCorpus:
         """build_default_registry should return a populated registry."""
         reg = build_default_registry()
         keys = reg.all_keys()
-        assert len(keys) == 11
+        assert len(keys) == 29
         assert "qft" in keys
         assert "grover" in keys
         assert "steane_encoder" in keys
+        assert "deutsch_jozsa" in keys
+        assert "ghz" in keys
+        assert "quantum_volume" in keys
 
     def test_grover_returns_unitary_circuit(self):
         """build_grover should return a circuit with no measurements."""

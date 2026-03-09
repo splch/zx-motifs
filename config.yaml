@@ -11,14 +11,19 @@ corpus:
   qubit_sizes:
     small: [3, 4, 5]
     medium: [8, 10, 12]
-    fixed: [7]
+    fixed: [7, 9]
   categories:
     - search
     - fourier
+    - oracular
     - variational
     - simulation
     - error_correction
     - arithmetic
+    - state_preparation
+    - data_encoding
+    - benchmarking
+    - structural
 
 # ── Stage 2: ZX Conversion ───────────────────
 zx_conversion:

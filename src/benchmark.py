@@ -1,5 +1,5 @@
 """
-benchmark.py — Metrics, simulation, and baseline comparison.
+Metrics, simulation, and baseline comparison.
 """
 
 from __future__ import annotations

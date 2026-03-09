@@ -1,5 +1,5 @@
 """
-pipeline.py — End-to-end orchestrator for the seven-stage discovery pipeline.
+End-to-end orchestrator for the seven-stage discovery pipeline.
 
 Usage:
     python -m src.pipeline --config config.yaml           # full run

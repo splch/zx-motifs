@@ -1,5 +1,5 @@
 """
-report.py — Novelty assessment, provenance tracking, and artifact export.
+Novelty assessment, provenance tracking, and artifact export.
 """
 
 from __future__ import annotations

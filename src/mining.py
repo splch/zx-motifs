@@ -1,5 +1,5 @@
 """
-mining.py — Sub-diagram discovery: webs, fingerprinting, mining, and library.
+Sub-diagram discovery: webs, fingerprinting, mining, and library.
 """
 
 from __future__ import annotations
