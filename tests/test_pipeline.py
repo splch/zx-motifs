@@ -575,15 +575,99 @@ class TestReport:
 
     def test_above_threshold_is_novel(self):
         """Candidate improving by more than threshold should be novel."""
-        pytest.skip("Not yet implemented")
+        from src.benchmark import CircuitMetrics, ComparisonResult
+        from src.report import assess_novelty
+
+        comp = ComparisonResult(
+            candidate_id="cand_001",
+            baseline_id="baseline_ghz",
+            candidate_metrics=CircuitMetrics(
+                n_qubits=3, gate_count=5, two_qubit_count=2, t_count=1, depth=3,
+            ),
+            baseline_metrics=CircuitMetrics(
+                n_qubits=3, gate_count=10, two_qubit_count=4, t_count=2, depth=6,
+            ),
+            improvements={
+                "gate_count": 0.50,
+                "two_qubit_count": 0.50,
+                "t_count": 0.50,
+                "depth": 0.50,
+            },
+            overall_better=True,
+        )
+
+        verdict = assess_novelty([comp], threshold=0.05)
+        assert verdict.is_novel is True
+        assert verdict.reasons is not None and len(verdict.reasons) > 0
+        assert verdict.best_improvement_value > 0.05
+        assert verdict.candidate_id == "cand_001"
 
     def test_below_threshold_is_not_novel(self):
         """Candidate improving by less than threshold should not be novel."""
-        pytest.skip("Not yet implemented")
+        from src.benchmark import CircuitMetrics, ComparisonResult
+        from src.report import assess_novelty
+
+        comp = ComparisonResult(
+            candidate_id="cand_002",
+            baseline_id="baseline_qft",
+            candidate_metrics=CircuitMetrics(
+                n_qubits=3, gate_count=9, two_qubit_count=4, t_count=2, depth=6,
+            ),
+            baseline_metrics=CircuitMetrics(
+                n_qubits=3, gate_count=10, two_qubit_count=4, t_count=2, depth=6,
+            ),
+            improvements={
+                "gate_count": 0.01,
+                "two_qubit_count": 0.0,
+                "t_count": 0.0,
+                "depth": 0.0,
+            },
+            overall_better=False,
+        )
+
+        verdict = assess_novelty([comp], threshold=0.05)
+        assert verdict.is_novel is False
 
     def test_provenance_to_markdown_format(self):
         """provenance_to_markdown should produce valid Markdown."""
-        pytest.skip("Not yet implemented")
+        from src.compose import CompositionRecipe
+        from src.report import CandidateProvenance, provenance_to_markdown
+
+        recipe = CompositionRecipe(
+            candidate_id="cand_001",
+            template_name="search",
+            web_sequence=["web_0001", "web_0002"],
+        )
+        prov = CandidateProvenance(
+            candidate_id="cand_001",
+            recipe=recipe,
+            web_details=[
+                {
+                    "web_id": "web_0001",
+                    "source_algorithms": ["ghz", "qft"],
+                    "role_in_composition": "state_prep",
+                    "spider_count": 5,
+                },
+                {
+                    "web_id": "web_0002",
+                    "source_algorithms": ["grover"],
+                    "role_in_composition": "oracle",
+                    "spider_count": 8,
+                },
+            ],
+            all_source_algorithms=["ghz", "grover", "qft"],
+        )
+
+        md = provenance_to_markdown(prov)
+        assert "cand_001" in md
+        assert "search" in md
+        assert "web_0001" in md
+        assert "web_0002" in md
+        assert "ghz" in md
+        assert "grover" in md
+        assert "qft" in md
+        assert "|" in md
+        assert "---" in md
 
 
 # ── Pipeline integration ────────────────────────────────────────────
@@ -594,8 +678,45 @@ class TestPipeline:
 
     def test_config_loading(self, tmp_path):
         """PipelineConfig.from_yaml should load all sections."""
-        pytest.skip("Not yet implemented")
+        import yaml
+        from src.pipeline import PipelineConfig
+
+        cfg_data = {
+            "corpus": {"output_dir": "data/corpus", "gate_set": ["cx", "rz", "h"]},
+            "zx_conversion": {"output_dir": "data/diagrams"},
+            "mining": {"min_support": 3},
+            "composition": {"max_candidates": 500},
+            "extraction": {"post_optimize": True},
+            "benchmark": {"output_dir": "data/results"},
+            "reporting": {"improvement_threshold": 0.1},
+        }
+        cfg_path = tmp_path / "test_config.yaml"
+        cfg_path.write_text(yaml.dump(cfg_data))
+
+        cfg = PipelineConfig.from_yaml(cfg_path)
+
+        assert cfg.corpus["output_dir"] == "data/corpus"
+        assert cfg.corpus["gate_set"] == ["cx", "rz", "h"]
+        assert cfg.zx_conversion["output_dir"] == "data/diagrams"
+        assert cfg.mining["min_support"] == 3
+        assert cfg.composition["max_candidates"] == 500
+        assert cfg.extraction["post_optimize"] is True
+        assert cfg.benchmark["output_dir"] == "data/results"
+        assert cfg.reporting["improvement_threshold"] == 0.1
 
     def test_single_stage_execution(self):
         """run_pipeline with a stage argument should only run that stage."""
-        pytest.skip("Not yet implemented")
+        from unittest.mock import MagicMock, patch
+        from src.pipeline import PipelineConfig, run_pipeline
+
+        cfg = PipelineConfig(raw={})
+        mock_runners = {i: MagicMock() for i in range(1, 8)}
+
+        with patch.dict("src.pipeline.STAGES", {
+            i: (f"Stage {i}", mock_runners[i]) for i in range(1, 8)
+        }):
+            run_pipeline(cfg, stage=3)
+
+        mock_runners[3].assert_called_once_with(cfg)
+        for i in [1, 2, 4, 5, 6, 7]:
+            mock_runners[i].assert_not_called()

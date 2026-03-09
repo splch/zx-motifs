@@ -70,7 +70,24 @@ class PipelineConfig:
 
 def run_stage_1(cfg: PipelineConfig) -> None:
     """Build the Qiskit algorithm corpus and export QASM files."""
-    raise NotImplementedError
+    from src.corpus import AlgorithmRegistry, build_default_registry, export_corpus
+
+    output_dir = Path(cfg.corpus.get("output_dir", "data/corpus"))
+    gate_set = cfg.corpus.get("gate_set", ["cx", "rz", "h"])
+    qubit_sizes = cfg.corpus.get("qubit_sizes", {"default": [3, 4, 5]})
+    categories = cfg.corpus.get("categories", [])
+
+    registry = build_default_registry()
+
+    if categories:
+        filtered = AlgorithmRegistry()
+        for cat in categories:
+            for entry in registry.by_category(cat):
+                filtered.register(entry)
+        registry = filtered
+
+    written = export_corpus(registry, output_dir, gate_set, qubit_sizes)
+    logger.info("Stage 1: exported %d QASM files to %s", len(written), output_dir)
 
 
 def run_stage_2(cfg: PipelineConfig) -> None:
@@ -347,7 +364,138 @@ def run_stage_6(cfg: PipelineConfig) -> None:
 
 def run_stage_7(cfg: PipelineConfig) -> None:
     """Report any algorithm that outperforms existing solutions."""
-    raise NotImplementedError
+    import json
+
+    from src.benchmark import CircuitMetrics, ComparisonResult
+    from src.extract import ExtractionResult, FlowType
+    from src.compose import CompositionRecipe
+    from src.mining import WebLibrary
+    from src.report import (
+        assess_novelty,
+        build_provenance,
+        export_novel_algorithm,
+        generate_summary_report,
+    )
+
+    output_dir = Path(cfg.reporting.get("output_dir", "data/results"))
+    threshold = cfg.reporting.get("improvement_threshold", 0.05)
+    export_formats = cfg.reporting.get("export_formats", ["json", "markdown", "qasm"])
+    candidate_dir = Path(cfg.extraction.get("output_dir", "data/candidates"))
+    webs_dir = Path(cfg.mining.get("output_dir", "data/webs"))
+
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    # Load benchmark results
+    results_path = output_dir / "benchmark_results.json"
+    if not results_path.exists():
+        logger.warning("No benchmark_results.json found in %s", output_dir)
+        return
+
+    raw_comparisons = json.loads(results_path.read_text())
+    if not raw_comparisons:
+        logger.info("Stage 7: no benchmark comparisons to assess")
+        return
+
+    # Group comparisons by candidate_id
+    comparisons_by_id: dict[str, list[ComparisonResult]] = {}
+    for entry in raw_comparisons:
+        cid = entry["candidate_id"]
+
+        def _build_metrics(d: dict) -> CircuitMetrics:
+            return CircuitMetrics(
+                n_qubits=d.get("n_qubits", 0),
+                gate_count=d.get("gate_count", 0),
+                two_qubit_count=d.get("two_qubit_count", 0),
+                t_count=d.get("t_count", 0),
+                depth=d.get("depth", 0),
+                gate_density=d.get("gate_density", 0.0),
+                entanglement_ratio=d.get("entanglement_ratio", 0.0),
+            )
+
+        comp = ComparisonResult(
+            candidate_id=cid,
+            baseline_id=entry["baseline_id"],
+            candidate_metrics=_build_metrics(entry["candidate_metrics"]),
+            baseline_metrics=_build_metrics(entry["baseline_metrics"]),
+            improvements=entry.get("improvements", {}),
+            overall_better=entry.get("overall_better", False),
+        )
+        comparisons_by_id.setdefault(cid, []).append(comp)
+
+    # Load extraction summary for survivor data
+    summary_path = candidate_dir / "extraction_summary.json"
+    survivors_by_id: dict[str, dict] = {}
+    if summary_path.exists():
+        summary = json.loads(summary_path.read_text())
+        for s in summary.get("survivors", []):
+            survivors_by_id[s["candidate_id"]] = s
+
+    # Load web library
+    library = WebLibrary(webs_dir)
+    library.load_index()
+
+    all_verdicts = []
+    novel_count = 0
+
+    for cid, comps in comparisons_by_id.items():
+        verdict = assess_novelty(comps, threshold)
+        verdict.candidate_id = cid
+        all_verdicts.append(verdict)
+
+        if not verdict.is_novel:
+            continue
+        novel_count += 1
+
+        # Build extraction result from survivor data
+        survivor = survivors_by_id.get(cid, {})
+        extraction = ExtractionResult(
+            success=True,
+            qasm=survivor.get("qasm"),
+            gate_count=survivor.get("gate_count", 0),
+            two_qubit_count=survivor.get("two_qubit_count", 0),
+            t_count=survivor.get("t_count", 0),
+            depth=survivor.get("depth", 0),
+            flow_used=FlowType(survivor.get("flow_used", "none")),
+            candidate_id=cid,
+        )
+
+        # Load candidate JSON for recipe
+        candidate_path = candidate_dir / f"{cid}.json"
+        if candidate_path.exists():
+            cand_data = json.loads(candidate_path.read_text())
+            recipe = CompositionRecipe(
+                candidate_id=cid,
+                template_name=cand_data.get("template_name"),
+                web_sequence=cand_data.get("web_sequence", []),
+                connections=cand_data.get("connections", []),
+            )
+            provenance = build_provenance(recipe, library)
+        else:
+            recipe = CompositionRecipe(
+                candidate_id=cid, template_name=None, web_sequence=[]
+            )
+            provenance = build_provenance(recipe, library)
+
+        export_novel_algorithm(
+            candidate_id=cid,
+            verdict=verdict,
+            extraction=extraction,
+            comparisons=comps,
+            provenance=provenance,
+            diagram_graph=None,
+            output_dir=output_dir,
+            formats=export_formats,
+        )
+
+    # Summary report
+    report_path = generate_summary_report(all_verdicts, output_dir)
+
+    logger.info(
+        "Stage 7: %d/%d candidates are novel, report at %s",
+        novel_count,
+        len(all_verdicts),
+        report_path,
+    )
 
 
 # ── Orchestration ────────────────────────────────────────────────────
