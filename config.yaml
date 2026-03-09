@@ -40,9 +40,9 @@ zx_conversion:
 # ── Stage 3: Sub-Diagram Mining ───────────────
 mining:
   output_dir: data/webs
-  min_support: 2
+  min_support: 5
   min_spiders: 3
-  max_spiders: 30
+  max_spiders: 18
   phase_abstraction: class
 
 # ── Stage 4: Composition ─────────────────────
