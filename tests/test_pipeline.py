@@ -453,19 +453,72 @@ class TestExtract:
 
     def test_circuit_derived_diagram_has_gflow(self):
         """A diagram from a circuit should always have gFlow."""
-        pytest.skip("Not yet implemented")
+        from src.extract import FlowType, check_gflow
+
+        qc = build_ghz(3)
+        qc_t = transpile_to_gate_set(qc, ["cx", "rz", "h"])
+        qasm = circuit_to_qasm(qc_t)
+        circuit = qasm_to_pyzx_circuit(qasm)
+        graph = pyzx_circuit_to_graph(circuit)
+
+        result = check_gflow(graph)
+        assert result.exists is True
+        assert result.flow_type == FlowType.GFLOW
 
     def test_flow_result_fields(self):
         """FlowResult should correctly report exists=True and flow type."""
-        pytest.skip("Not yet implemented")
+        from src.extract import FlowType, check_gflow
+
+        qc = build_qft(3)
+        qc_t = transpile_to_gate_set(qc, ["cx", "rz", "h"])
+        qasm = circuit_to_qasm(qc_t)
+        circuit = qasm_to_pyzx_circuit(qasm)
+        graph = pyzx_circuit_to_graph(circuit)
+
+        result = check_gflow(graph)
+        assert result.exists is True
+        assert result.flow_type == FlowType.GFLOW
+        assert result.flow_data is not None
+        assert result.check_time_ms >= 0
 
     def test_extract_from_simple_circuit(self):
         """Extracting from a small circuit diagram should succeed."""
-        pytest.skip("Not yet implemented")
+        import pyzx
+
+        from src.extract import extract_circuit_pyzx
+
+        qc = build_ghz(3)
+        qc_t = transpile_to_gate_set(qc, ["cx", "rz", "h"])
+        qasm = circuit_to_qasm(qc_t)
+        circuit = qasm_to_pyzx_circuit(qasm)
+        graph = pyzx_circuit_to_graph(circuit)
+
+        pyzx.simplify.full_reduce(graph)
+
+        result = extract_circuit_pyzx(graph)
+        assert result.success is True
+        assert result.circuit is not None
+        assert result.qasm is not None
+        assert result.gate_count > 0
 
     def test_extracted_circuit_is_equivalent(self):
         """The extracted circuit should be unitarily equivalent."""
-        pytest.skip("Not yet implemented")
+        import pyzx
+
+        from src.extract import extract_circuit_pyzx
+
+        qc = build_ghz(3)
+        qc_t = transpile_to_gate_set(qc, ["cx", "rz", "h"])
+        qasm = circuit_to_qasm(qc_t)
+        circuit = qasm_to_pyzx_circuit(qasm)
+        graph = pyzx_circuit_to_graph(circuit)
+        original_graph = graph.copy()
+
+        pyzx.simplify.full_reduce(graph)
+
+        result = extract_circuit_pyzx(graph)
+        assert result.success is True
+        assert pyzx.compare_tensors(original_graph, result.circuit, preserve_scalar=False) is True
 
 
 # ── Benchmark ───────────────────────────────────────────────────────

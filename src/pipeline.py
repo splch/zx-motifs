@@ -234,7 +234,45 @@ def run_stage_4(cfg: PipelineConfig) -> None:
 
 def run_stage_5(cfg: PipelineConfig) -> None:
     """Filter candidates to those with extractable circuits."""
-    raise NotImplementedError
+    import json
+
+    from src.extract import run_extraction_filter
+
+    candidate_dir = Path(cfg.extraction.get("output_dir", "data/candidates"))
+    post_optimize = cfg.extraction.get("post_optimize", True)
+    cnot_ratio_threshold = cfg.extraction.get("discard_if_cnot_ratio", 5.0)
+
+    survivors, stats = run_extraction_filter(candidate_dir, post_optimize, cnot_ratio_threshold)
+
+    summary = {
+        "stats": {
+            "total_candidates": stats.total_candidates,
+            "passed_flow_check": stats.passed_flow_check,
+            "passed_extraction": stats.passed_extraction,
+            "passed_size_filter": stats.passed_size_filter,
+            "final_survivors": stats.final_survivors,
+        },
+        "survivors": [
+            {
+                "gate_count": s.gate_count,
+                "two_qubit_count": s.two_qubit_count,
+                "t_count": s.t_count,
+                "depth": s.depth,
+                "flow_used": s.flow_used.value,
+            }
+            for s in survivors
+        ],
+    }
+
+    summary_path = candidate_dir / "extraction_summary.json"
+    summary_path.parent.mkdir(parents=True, exist_ok=True)
+    summary_path.write_text(json.dumps(summary, indent=2))
+
+    logger.info(
+        "Stage 5: %d/%d candidates survived extraction filter",
+        stats.final_survivors,
+        stats.total_candidates,
+    )
 
 
 def run_stage_6(cfg: PipelineConfig) -> None:
