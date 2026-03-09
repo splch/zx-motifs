@@ -13,7 +13,6 @@ dependencies = [
     "networkx>=3.0",
     "numpy>=1.24",
     "pyyaml>=6.0",
-    "gspan-mining>=0.2",
     "pandas>=1.5",
 ]
 

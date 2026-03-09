@@ -428,15 +428,6 @@ wheels = [
 ]
 
 [[package]]
-name = "gspan-mining"
-version = "0.2.3"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/54/b8/de0f5bcca31efcf658390e4711a8247a2050611dcd7de7d746114c9b6fd6/gspan_mining-0.2.3.tar.gz", hash = "sha256:917257f9aaf6703cda275f366f290fe4c094469f290bd3b6e77db21201abe56a", size = 9049, upload-time = "2020-07-12T03:46:52.36Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/f1/9a/eacb5074229108a4161f4d446ce70468816278f5ee215bdc46de60ca74eb/gspan_mining-0.2.3-py3-none-any.whl", hash = "sha256:bc9609f3c78fa5946d0d0320ae4067fa90a22fdf99ee45d3ea6fe1ee17b155f3", size = 10647, upload-time = "2020-07-12T03:46:50.97Z" },
-]
-
-[[package]]
 name = "iniconfig"
 version = "2.3.0"
 source = { registry = "https://pypi.org/simple" }
@@ -1849,7 +1840,6 @@ name = "zx-webs"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
-    { name = "gspan-mining" },
     { name = "networkx", version = "3.4.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
     { name = "networkx", version = "3.6.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
     { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
@@ -1873,7 +1863,6 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "gspan-mining", specifier = ">=0.2" },
     { name = "matplotlib", marker = "extra == 'dev'" },
     { name = "networkx", specifier = ">=3.0" },
     { name = "numpy", specifier = ">=1.24" },

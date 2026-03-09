@@ -6,8 +6,6 @@ from __future__ import annotations
 
 import json
 import logging
-import os
-import tempfile
 from collections import Counter
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -22,7 +20,7 @@ from src.zx import _VERTEX_TYPE_LABELS, classify_phase, extract_subgraph
 logger = logging.getLogger(__name__)
 
 
-# ── Label encoding ─────────────────────────────────────────────────
+# ── Role mapping ───────────────────────────────────────────────────
 
 _CATEGORY_TO_ROLE = {
     "search": "oracle",
@@ -37,37 +35,6 @@ _CATEGORY_TO_ROLE = {
     "structural": "entangle",
     "benchmarking": "entangle",
 }
-
-
-def _build_label_encoder(phase_abstraction: str = "class"):
-    """Build vertex/edge label encoding dicts for gSpan.
-
-    Returns (vlabel_encode, vlabel_decode, elabel_encode, elabel_decode).
-    """
-    type_keys = ["Z", "X", "H"]
-    phase_keys = ["pauli", "clifford", "t", "arbitrary"]
-
-    vlabel_encode: dict[str, str] = {}
-    vlabel_decode: dict[str, str] = {}
-    code = 0
-    for tk in type_keys:
-        if phase_abstraction == "class":
-            for pk in phase_keys:
-                label = f"{tk}_{pk}"
-                encoded = f"{code:02d}"
-                vlabel_encode[label] = encoded
-                vlabel_decode[encoded] = label
-                code += 1
-        else:
-            encoded = f"{code:02d}"
-            vlabel_encode[tk] = encoded
-            vlabel_decode[encoded] = tk
-            code += 1
-
-    elabel_encode = {"simple": "0", "hadamard": "1"}
-    elabel_decode = {"0": "simple", "1": "hadamard"}
-
-    return vlabel_encode, vlabel_decode, elabel_encode, elabel_decode
 
 
 # ── ZXWeb ───────────────────────────────────────────────────────────
@@ -250,118 +217,7 @@ def fingerprints_compatible(
     return True
 
 
-# ── gSpan helpers ──────────────────────────────────────────────────
-
-
-def _pyzx_to_gspan_lines(
-    graph: Any,
-    graph_id: int,
-    vlabel_encode: dict[str, str],
-    elabel_encode: dict[str, str],
-    phase_abstraction: str,
-) -> tuple[list[str], dict[int, int]]:
-    """Convert a pyzx graph to gSpan text lines.
-
-    Returns (lines, id_remap) where id_remap maps new contiguous IDs
-    to original pyzx vertex IDs.
-    """
-    # Filter out BOUNDARY vertices
-    internal_verts = [
-        v for v in graph.vertices() if graph.type(v) != VertexType.BOUNDARY
-    ]
-
-    if not internal_verts:
-        return [], {}
-
-    # Remap to contiguous 0-based IDs
-    old_to_new: dict[int, int] = {}
-    new_to_old: dict[int, int] = {}
-    for i, v in enumerate(sorted(internal_verts)):
-        old_to_new[v] = i
-        new_to_old[i] = v
-
-    lines = [f"t # {graph_id}"]
-
-    for v in sorted(internal_verts):
-        vtype = graph.type(v)
-        type_label = _VERTEX_TYPE_LABELS.get(vtype, "?")
-        if phase_abstraction == "class":
-            pc = classify_phase(graph.phase(v))
-            key = f"{type_label}_{pc}"
-        else:
-            key = type_label
-        vlabel = vlabel_encode.get(key, "99")
-        lines.append(f"v {old_to_new[v]} {vlabel}")
-
-    for e in graph.edges():
-        src, tgt = graph.edge_st(e)
-        if src not in old_to_new or tgt not in old_to_new:
-            continue
-        etype = graph.edge_type(e)
-        elabel_key = "hadamard" if etype == EdgeType.HADAMARD else "simple"
-        elabel = elabel_encode.get(elabel_key, "0")
-        lines.append(f"e {old_to_new[src]} {old_to_new[tgt]} {elabel}")
-
-    return lines, new_to_old
-
-
-def _write_gspan_database(
-    diagrams: list[tuple[str, Any]],
-    phase_abstraction: str,
-) -> tuple[str, list[dict], dict[str, str], dict[str, str]]:
-    """Write all diagrams to a gSpan database file.
-
-    Returns (file_path, per_graph_metadata, vlabel_decode, elabel_decode).
-    per_graph_metadata[i] = {"algo_key": ..., "id_remap": ...}
-    """
-    vlabel_encode, vlabel_decode, elabel_encode, elabel_decode = _build_label_encoder(
-        phase_abstraction
-    )
-
-    all_lines: list[str] = []
-    per_graph_meta: list[dict] = []
-
-    for gid, (algo_key, graph) in enumerate(diagrams):
-        lines, id_remap = _pyzx_to_gspan_lines(
-            graph, gid, vlabel_encode, elabel_encode, phase_abstraction
-        )
-        if not lines:
-            per_graph_meta.append(
-                {"algo_key": algo_key, "id_remap": {}, "diagram_index": gid}
-            )
-            continue
-        all_lines.extend(lines)
-        per_graph_meta.append(
-            {"algo_key": algo_key, "id_remap": id_remap, "diagram_index": gid}
-        )
-
-    all_lines.append("t # -1")
-
-    tmp = tempfile.NamedTemporaryFile(
-        mode="w", suffix=".gspan", delete=False
-    )
-    tmp.write("\n".join(all_lines))
-    tmp.close()
-
-    return tmp.name, per_graph_meta, vlabel_decode, elabel_decode
-
-
-def _gspan_graph_to_networkx(
-    gspan_graph: Any,
-    vlabel_decode: dict[str, str],
-    elabel_decode: dict[str, str],
-) -> nx.Graph:
-    """Convert a gspan Graph object to a NetworkX graph with decoded labels."""
-    G = nx.Graph()
-    for vid, vertex in gspan_graph.vertices.items():
-        decoded = vlabel_decode.get(str(vertex.vlb), str(vertex.vlb))
-        G.add_node(vid, label=decoded)
-    for vid, vertex in gspan_graph.vertices.items():
-        for to_vid, edge in vertex.edges.items():
-            if not G.has_edge(vid, to_vid):
-                decoded = elabel_decode.get(str(edge.elb), str(edge.elb))
-                G.add_edge(vid, to_vid, label=decoded)
-    return G
+# ── NetworkX conversion ─────────────────────────────────────────────
 
 
 def _pyzx_to_nx_internal(graph: Any, phase_abstraction: str) -> nx.Graph:
@@ -386,94 +242,6 @@ def _pyzx_to_nx_internal(graph: Any, phase_abstraction: str) -> nx.Graph:
         elabel = "hadamard" if etype == EdgeType.HADAMARD else "simple"
         G.add_edge(src, tgt, label=elabel)
     return G
-
-
-def _get_current_rss_bytes() -> int:
-    """Get current RSS in bytes by reading /proc/self/statm (Linux)."""
-    try:
-        with open("/proc/self/statm", "r") as f:
-            # Fields: size resident shared text lib data dt (all in pages)
-            resident_pages = int(f.read().split()[1])
-            return resident_pages * os.sysconf("SC_PAGE_SIZE")
-    except (OSError, IndexError, ValueError):
-        return 0
-
-
-class _MemoryAwareGSpan:
-    """gSpan wrapper with memory monitoring, pattern caps, and compact storage."""
-
-    def __init__(
-        self,
-        database_file_name: str,
-        min_support: int = 2,
-        min_num_vertices: int = 1,
-        max_num_vertices: int = float("inf"),
-        is_undirected: bool = True,
-        memory_limit_bytes: int | None = None,
-        max_patterns: int = 50_000,
-    ):
-        from gspan_mining.gspan import gSpan as _GSpan
-
-        self._gs = _GSpan(
-            database_file_name=database_file_name,
-            min_support=min_support,
-            min_num_vertices=min_num_vertices,
-            max_num_vertices=max_num_vertices,
-            is_undirected=is_undirected,
-            verbose=False,
-            visualize=False,
-            where=False,
-        )
-        self._memory_limit_bytes = memory_limit_bytes
-        self._max_patterns = max_patterns
-        self._min_report_vertices = min_num_vertices
-        self._max_report_vertices = max_num_vertices
-        # Compact storage: list of (edges_tuple, support_count, frozenset_of_gids)
-        self._collected: list[tuple] = []
-        self._check_counter = 0
-        self.memory_exceeded = False
-
-        # Override _report to store compact tuples with early filtering
-        def patched_report(projected):
-            num_v = self._gs._DFScode.get_num_vertices()
-            if num_v < self._min_report_vertices or num_v > self._max_report_vertices:
-                return
-            if len(self._collected) >= self._max_patterns:
-                return
-            edges_tuple = tuple(
-                (e.frm, e.to, e.vevlb) for e in self._gs._DFScode
-            )
-            gids = frozenset(p.gid for p in projected)
-            self._collected.append((edges_tuple, len(gids), gids))
-
-        self._gs._report = patched_report
-
-        # Override _subgraph_mining to check memory and pattern cap
-        original_subgraph_mining = self._gs._subgraph_mining
-
-        def guarded_subgraph_mining(projected):
-            if self.memory_exceeded or len(self._collected) >= self._max_patterns:
-                return
-            self._check_counter += 1
-            if self._check_counter % 1000 == 0 and self._memory_limit_bytes:
-                rss_bytes = _get_current_rss_bytes()
-                if rss_bytes > self._memory_limit_bytes:
-                    self.memory_exceeded = True
-                    logger.warning(
-                        "Memory limit reached (%.1f GB RSS), stopping mining early",
-                        rss_bytes / (1024**3),
-                    )
-                    return
-            return original_subgraph_mining(projected)
-
-        self._gs._subgraph_mining = guarded_subgraph_mining
-
-    def run(self):
-        self._gs.run()
-
-    @property
-    def graphs(self):
-        return self._gs.graphs
 
 
 # ── Mining ──────────────────────────────────────────────────────────
@@ -511,47 +279,6 @@ def _determine_phase_class(graph: Any) -> str:
     return "mixed"
 
 
-def _run_gspan_mining(
-    diagrams: list[tuple[str, Any]],
-    min_support: int,
-    min_spiders: int,
-    max_spiders: int,
-    phase_abstraction: str,
-    memory_limit_bytes: int | None,
-    max_patterns: int,
-) -> tuple[list[tuple], list[dict], dict[str, str], dict[str, str], bool]:
-    """Run gSpan and return (collected_patterns, per_graph_meta, vlabel_decode, elabel_decode, memory_exceeded)."""
-    import os
-
-    db_path, per_graph_meta, vlabel_decode, elabel_decode = _write_gspan_database(
-        diagrams, phase_abstraction
-    )
-
-    try:
-        gs = _MemoryAwareGSpan(
-            database_file_name=db_path,
-            min_support=min_support,
-            min_num_vertices=min_spiders,
-            max_num_vertices=max_spiders,
-            is_undirected=True,
-            memory_limit_bytes=memory_limit_bytes,
-            max_patterns=max_patterns,
-        )
-        gs.run()
-        return (
-            gs._collected,
-            per_graph_meta,
-            vlabel_decode,
-            elabel_decode,
-            gs.memory_exceeded,
-        )
-    finally:
-        try:
-            os.unlink(db_path)
-        except OSError:
-            pass
-
-
 def mine_webs(
     diagrams: list[tuple[str, Any]],  # (algorithm_key, pyzx.Graph)
     min_support: int,
@@ -559,16 +286,17 @@ def mine_webs(
     max_spiders: int,
     phase_abstraction: str,
     max_diagram_vertices: int | None = 800,
-    memory_limit_gb: float | None = 64,
-    max_patterns: int = 50_000,
+    wl_iterations: int = 4,
 ) -> list[ZXWeb]:
-    """Discover frequent sub-diagrams using gSpan.
+    """Discover frequent sub-diagrams using Weisfeiler-Lehman neighborhood hashing.
 
-    Converts ZX-diagrams to gSpan's input format, runs gSpan, and
-    converts results back to ZXWebs with boundaries.
+    For each diagram, computes WL subgraph hashes at each vertex and depth.
+    Hashes appearing in >= min_support diagrams identify frequent local patterns.
+    The ego graph around an exemplar vertex is extracted as a ZXWeb.
+
+    Runs in O(V * k * d) time per graph (linear), where V = vertices,
+    k = wl_iterations, d = average degree.
     """
-    from gspan_mining.gspan import DFScode, DFSedge
-
     if not diagrams:
         return []
 
@@ -601,142 +329,102 @@ def mine_webs(
         logger.warning("No diagrams remain after filtering")
         return []
 
-    memory_limit_bytes = int(memory_limit_gb * 1024**3) if memory_limit_gb else None
+    # Step 2: Convert all diagrams to NetworkX
+    nx_graphs: list[nx.Graph] = []
+    for _algo_key, graph in diagrams:
+        nx_graphs.append(_pyzx_to_nx_internal(graph, phase_abstraction))
 
-    # Step 2: Run gSpan with adaptive retry
-    attempts = [
-        (max_spiders, phase_abstraction),
-        (min(12, max_spiders), phase_abstraction),
-        (min(8, max_spiders), "type"),
-    ]
+    # Step 3: Compute WL subgraph hashes and collect support info
+    # Key: (hash_str, depth_index) -> info dict
+    pattern_info: dict[tuple[str, int], dict] = {}
 
-    collected = []
-    per_graph_meta = []
-    vlabel_decode: dict[str, str] = {}
-    elabel_decode: dict[str, str] = {}
+    for diag_idx, (algo_key, _graph) in enumerate(diagrams):
+        nx_g = nx_graphs[diag_idx]
+        if nx_g.number_of_nodes() == 0:
+            continue
 
-    for attempt_idx, (attempt_max_spiders, attempt_phase) in enumerate(attempts):
-        if attempt_idx > 0:
-            logger.info(
-                "Retry %d: max_spiders=%d, phase_abstraction=%s",
-                attempt_idx,
-                attempt_max_spiders,
-                attempt_phase,
-            )
-
-        collected, per_graph_meta, vlabel_decode, elabel_decode, mem_exceeded = (
-            _run_gspan_mining(
-                diagrams,
-                min_support,
-                min_spiders,
-                attempt_max_spiders,
-                attempt_phase,
-                memory_limit_bytes,
-                max_patterns,
-            )
+        subgraph_hashes = nx.weisfeiler_lehman_subgraph_hashes(
+            nx_g,
+            iterations=wl_iterations,
+            node_attr="label",
+            edge_attr="label",
         )
 
-        if not mem_exceeded:
-            break
+        # Deduplicate per diagram: only count each (hash, depth) once
+        seen_in_diagram: set[tuple[str, int]] = set()
 
-        if attempt_idx < len(attempts) - 1:
-            logger.warning(
-                "Memory limit hit with max_spiders=%d, retrying with relaxed params",
-                attempt_max_spiders,
-            )
-        else:
-            logger.warning(
-                "Memory limit hit on final attempt, returning %d partial patterns",
-                len(collected),
-            )
+        for vertex, hash_list in subgraph_hashes.items():
+            for depth_idx, h in enumerate(hash_list):
+                key = (h, depth_idx)
+                if key in seen_in_diagram:
+                    continue
+                seen_in_diagram.add(key)
 
-    logger.info("gSpan found %d patterns", len(collected))
+                if key not in pattern_info:
+                    pattern_info[key] = {
+                        "diagram_indices": set(),
+                        "algo_keys": set(),
+                        "exemplar": (diag_idx, vertex),
+                    }
+                pattern_info[key]["diagram_indices"].add(diag_idx)
+                pattern_info[key]["algo_keys"].add(algo_key)
 
-    # Step 3: Build nx_cache lazily — only for graphs in discovered patterns
-    needed_gids: set[int] = set()
-    for _, _, gids in collected:
-        needed_gids.update(gids)
+    # Step 4: Filter by minimum support
+    frequent = {
+        key: info
+        for key, info in pattern_info.items()
+        if len(info["diagram_indices"]) >= min_support
+    }
 
-    nx_cache: dict[int, nx.Graph] = {}
-    for gid in needed_gids:
-        if gid >= len(per_graph_meta):
-            continue
-        meta = per_graph_meta[gid]
-        if meta["id_remap"]:
-            nx_cache[gid] = _pyzx_to_nx_internal(
-                diagrams[meta["diagram_index"]][1], phase_abstraction
-            )
+    # Sort by (support descending, depth descending) to prioritize robust, larger patterns
+    sorted_patterns = sorted(
+        frequent.items(),
+        key=lambda item: (len(item[1]["diagram_indices"]), item[0][1]),
+        reverse=True,
+    )
 
+    logger.info(
+        "WL hashing found %d frequent patterns (from %d total hashes)",
+        len(sorted_patterns),
+        len(pattern_info),
+    )
+
+    # Step 5: Build ZXWeb objects from frequent patterns
     webs: list[ZXWeb] = []
 
-    for i, (edges_tuple, support_count, source_gids) in enumerate(collected):
-        # Reconstruct DFScode from compact tuple
-        dfscode = DFScode()
-        for frm, to, vevlb in edges_tuple:
-            dfscode.append(DFSedge(frm, to, vevlb))
-
-        # Convert pattern to NetworkX for VF2 matching
-        pattern_gspan_graph = dfscode.to_graph(gid=0, is_undirected=True)
-        pattern_nx = _gspan_graph_to_networkx(
-            pattern_gspan_graph, vlabel_decode, elabel_decode
-        )
-
-        # Find one embedding in a source graph
-        embedding_found = False
-        pyzx_subgraph = None
-        boundary_verts = None
-        first_source_gid = None
-        mapping = None
-
-        for gid in sorted(source_gids):
-            if gid not in nx_cache:
-                continue
-            target_nx = nx_cache[gid]
-
-            def node_match(n1, n2):
-                return n1.get("label") == n2.get("label")
-
-            def edge_match(e1, e2):
-                return e1.get("label") == e2.get("label")
-
-            matcher = nx.algorithms.isomorphism.GraphMatcher(
-                target_nx,
-                pattern_nx,
-                node_match=node_match,
-                edge_match=edge_match,
-            )
-
-            for m in matcher.subgraph_isomorphisms_iter():
-                mapping = m
-                break
-
-            if mapping is not None:
-                matched_pyzx_verts = set(mapping.keys())
-                source_graph = diagrams[per_graph_meta[gid]["diagram_index"]][1]
-                pyzx_subgraph, boundary_verts = extract_subgraph(
-                    source_graph, matched_pyzx_verts
-                )
-                first_source_gid = gid
-                embedding_found = True
-                break
-
-        if not embedding_found or pyzx_subgraph is None:
+    for (hash_str, depth_idx), info in sorted_patterns:
+        # Skip depth 0 — just the node's own label, too trivial
+        if depth_idx == 0:
             continue
 
-        source_graph = diagrams[per_graph_meta[first_source_gid]["diagram_index"]][1]
-        matched_pyzx_verts_list = list(
+        diag_idx, vertex = info["exemplar"]
+        nx_g = nx_graphs[diag_idx]
+
+        # Extract ego graph at the WL depth radius
+        ego = nx.ego_graph(nx_g, vertex, radius=depth_idx)
+        ego_vertices = set(ego.nodes())
+        n_ego = len(ego_vertices)
+
+        if n_ego < min_spiders or n_ego > max_spiders:
+            continue
+
+        # Extract pyzx subgraph (ego vertex IDs are original pyzx vertex IDs)
+        pyzx_graph = diagrams[diag_idx][1]
+        pyzx_subgraph, boundary_verts = extract_subgraph(pyzx_graph, ego_vertices)
+
+        if pyzx_subgraph.num_vertices() == 0:
+            continue
+
+        # Compute average row for input/output boundary classification
+        internal_verts = [
             v
-            for v in source_graph.vertices()
-            if source_graph.type(v) != VertexType.BOUNDARY
-            and v
-            in set(
-                mapping.keys()  # type: ignore[union-attr]
+            for v in pyzx_subgraph.vertices()
+            if pyzx_subgraph.type(v) != VertexType.BOUNDARY
+        ]
+        if internal_verts:
+            avg_row = sum(pyzx_subgraph.row(v) for v in internal_verts) / len(
+                internal_verts
             )
-        )
-        if matched_pyzx_verts_list:
-            avg_row = sum(
-                source_graph.row(v) for v in matched_pyzx_verts_list
-            ) / len(matched_pyzx_verts_list)
         else:
             avg_row = 0
 
@@ -744,9 +432,7 @@ def mine_webs(
         output_boundaries: list[Boundary] = []
 
         for idx, bv in enumerate(boundary_verts):
-            sp_type = _VERTEX_TYPE_LABELS.get(
-                pyzx_subgraph.type(bv), "?"
-            )
+            sp_type = _VERTEX_TYPE_LABELS.get(pyzx_subgraph.type(bv), "?")
             phase_val = float(pyzx_subgraph.phase(bv))
 
             # Determine edge type at boundary (use simple as default)
@@ -779,19 +465,17 @@ def mine_webs(
             b.index = idx
 
         # Collect sources
-        source_algos = list(
-            {per_graph_meta[gid]["algo_key"] for gid in source_gids}
-        )
-
+        source_algos = sorted(info["algo_keys"])
+        support_count = len(info["diagram_indices"])
         # Determine phase class and role
         pc = _determine_phase_class(pyzx_subgraph)
 
         web = ZXWeb(
-            web_id=f"web_{i:04d}",
+            web_id=f"web_{len(webs):04d}",
             graph=pyzx_subgraph,
             boundaries=all_boundaries,
             spider_count=pyzx_subgraph.num_vertices(),
-            sources=sorted(source_algos),
+            sources=source_algos,
             support=support_count,
             role=None,
             phase_class=pc,
