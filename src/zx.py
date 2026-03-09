@@ -18,6 +18,18 @@ from pyzx.utils import EdgeType, VertexType
 logger = logging.getLogger(__name__)
 
 
+def _sanitize_phase_tildes(json_str: str) -> str:
+    """Strip leading '~' from phase values in a PyZX JSON string.
+
+    PyZX serializes approximate phases as e.g. ``"~263π/240"`` but its own
+    parser cannot read the ``~`` back.  Removing it keeps the rational
+    approximation, which is the best we can do for a floating-point phase.
+    """
+    import re
+
+    return re.sub(r'"~([^"]*)"', r'"\1"', json_str)
+
+
 # ── Conversion ──────────────────────────────────────────────────────
 
 
@@ -187,7 +199,7 @@ def save_diagram(
         "graph": graph.to_dict(),
     }
 
-    record.json_path.write_text(json.dumps(envelope, default=str))
+    record.json_path.write_text(_sanitize_phase_tildes(json.dumps(envelope, default=str)))
     return record
 
 
@@ -199,7 +211,7 @@ def load_diagram(json_path: str | Path) -> Any:
     # Graph.from_json accepts either a JSON string or a dict
     if isinstance(graph_data, dict):
         graph_data = json.dumps(graph_data)
-    return zx.Graph.from_json(graph_data)
+    return zx.Graph.from_json(_sanitize_phase_tildes(graph_data))
 
 
 def load_all_diagrams(
@@ -228,7 +240,7 @@ def load_all_diagrams(
             graph_data = data["graph"]
             if isinstance(graph_data, dict):
                 graph_data = json.dumps(graph_data)
-            graph = zx.Graph.from_json(graph_data)
+            graph = zx.Graph.from_json(_sanitize_phase_tildes(graph_data))
             results.append((record, graph))
         except Exception:
             logger.warning("Failed to load diagram from %s", json_path, exc_info=True)

@@ -146,7 +146,9 @@ class ZXWeb:
         graph_data = data["graph"]
         if isinstance(graph_data, dict):
             graph_data = json.dumps(graph_data)
-        graph = zx.Graph.from_json(graph_data)
+        from src.zx import _sanitize_phase_tildes
+
+        graph = zx.Graph.from_json(_sanitize_phase_tildes(graph_data))
 
         boundaries = [
             Boundary(
@@ -672,7 +674,9 @@ class WebLibrary:
         """Add a ZXWeb to the library."""
         self._dir.mkdir(parents=True, exist_ok=True)
         web_path = self._dir / f"{web.web_id}.json"
-        web_path.write_text(json.dumps(web.to_dict(), default=str))
+        from src.zx import _sanitize_phase_tildes
+
+        web_path.write_text(_sanitize_phase_tildes(json.dumps(web.to_dict(), default=str)))
         self._index[web.web_id] = {
             "web_id": web.web_id,
             "spider_count": web.spider_count,

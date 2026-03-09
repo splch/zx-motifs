@@ -141,7 +141,9 @@ def _filter_single_candidate(
             graph_json = json.dumps(graph_data)
         else:
             graph_json = graph_data
-        graph = zx.Graph.from_json(graph_json)
+        from src.zx import _sanitize_phase_tildes
+
+        graph = zx.Graph.from_json(_sanitize_phase_tildes(graph_json))
 
         if isinstance(graph_data, dict):
             inputs = graph_data.get("inputs", [])
