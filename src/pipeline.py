@@ -209,7 +209,9 @@ def run_stage_4(cfg: PipelineConfig) -> None:
             }
 
             out_path = output_dir / f"{recipe.candidate_id}.json"
-            out_path.write_text(json.dumps(candidate_data, default=str))
+            from src.zx import _sanitize_phase_tildes
+
+            out_path.write_text(_sanitize_phase_tildes(json.dumps(candidate_data, default=str)))
             total_saved += 1
 
     logger.info(
