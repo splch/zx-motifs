@@ -81,6 +81,7 @@ class Boundary:
     spider_type: str
     phase: float | None
     edge_type: str
+    vertex_id: int | None = None
 
 
 @dataclass
@@ -127,6 +128,7 @@ class ZXWeb:
                     "spider_type": b.spider_type,
                     "phase": b.phase,
                     "edge_type": b.edge_type,
+                    "vertex_id": b.vertex_id,
                 }
                 for b in self.boundaries
             ],
@@ -152,6 +154,7 @@ class ZXWeb:
                 spider_type=b["spider_type"],
                 phase=b["phase"],
                 edge_type=b["edge_type"],
+                vertex_id=b.get("vertex_id"),
             )
             for b in data["boundaries"]
         ]
@@ -616,6 +619,7 @@ def mine_webs(
                     spider_type=sp_type,
                     phase=phase_val,
                     edge_type=b_edge_type,
+                    vertex_id=bv,
                 )
 
                 # Classify as input (low row) or output (high row)

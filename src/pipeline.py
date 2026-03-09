@@ -172,7 +172,64 @@ def run_stage_3(cfg: PipelineConfig) -> None:
 
 def run_stage_4(cfg: PipelineConfig) -> None:
     """Compose candidate algorithms by combining ZX-Webs."""
-    raise NotImplementedError
+    import json
+
+    from src.compose import (
+        BUILTIN_TEMPLATES,
+        compose_from_template,
+        load_templates_from_config,
+    )
+    from src.mining import WebLibrary
+
+    webs_dir = Path(cfg.mining.get("output_dir", "data/webs"))
+    output_dir = Path(cfg.composition.get("output_dir", "data/candidates"))
+    max_candidates = cfg.composition.get("max_candidates", 1000)
+    max_qubits = cfg.composition.get("max_qubits", 20)
+    enforce_flow = cfg.composition.get("enforce_flow", True)
+    template_specs = cfg.composition.get("templates", [])
+
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    # Load web library
+    library = WebLibrary(webs_dir)
+    library.load_index()
+
+    # Combine built-in and config templates
+    templates = list(BUILTIN_TEMPLATES)
+    if template_specs:
+        templates.extend(load_templates_from_config(template_specs))
+
+    total_saved = 0
+    for template in templates:
+        if total_saved >= max_candidates:
+            break
+
+        candidates = compose_from_template(
+            template, library, max_qubits, enforce_flow=enforce_flow
+        )
+
+        for graph, recipe in candidates:
+            if total_saved >= max_candidates:
+                break
+
+            candidate_data = {
+                "candidate_id": recipe.candidate_id,
+                "template_name": recipe.template_name,
+                "web_sequence": recipe.web_sequence,
+                "connections": recipe.connections,
+                "graph": graph.to_dict(),
+            }
+
+            out_path = output_dir / f"{recipe.candidate_id}.json"
+            out_path.write_text(json.dumps(candidate_data, default=str))
+            total_saved += 1
+
+    logger.info(
+        "Stage 4: composed %d candidates from %d templates, saved to %s",
+        total_saved,
+        len(templates),
+        output_dir,
+    )
 
 
 def run_stage_5(cfg: PipelineConfig) -> None:

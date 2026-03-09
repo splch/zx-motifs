@@ -369,19 +369,80 @@ class TestCompose:
 
     def test_load_from_config_format(self):
         """load_templates_from_config should parse the config format."""
-        pytest.skip("Not yet implemented")
+        from src.compose import load_templates_from_config
+
+        templates = load_templates_from_config([["state_prep", "oracle"]])
+        assert len(templates) == 1
+        assert len(templates[0].slots) == 2
+        assert templates[0].slots[0].role == "state_prep"
+        assert templates[0].slots[1].role == "oracle"
+        assert templates[0].name == "custom_0"
 
     def test_builtin_templates_have_slots(self):
         """Built-in templates should have at least 2 slots."""
-        pytest.skip("Not yet implemented")
+        from src.compose import BUILTIN_TEMPLATES
+
+        assert len(BUILTIN_TEMPLATES) >= 1
+        for t in BUILTIN_TEMPLATES:
+            assert len(t.slots) >= 2
+            assert all(s.role for s in t.slots)
 
     def test_connect_webs_produces_valid_graph(self):
         """Connecting two compatible webs should produce a valid graph."""
-        pytest.skip("Not yet implemented")
+        from src.compose import connect_webs
+        from src.mining import Boundary, ZXWeb
+        import pyzx as zx
+
+        # Create web_a: one Z spider with 1 input boundary, 1 output boundary
+        g1 = zx.Graph()
+        v1 = g1.add_vertex(ty=VertexType.Z, row=0, qubit=0, phase=0)
+        web_a = ZXWeb(
+            web_id="a",
+            graph=g1,
+            boundaries=[
+                Boundary(index=0, spider_type="Z", phase=0.0, edge_type="simple", vertex_id=v1),
+                Boundary(index=1, spider_type="Z", phase=0.0, edge_type="simple", vertex_id=v1),
+            ],
+            spider_count=1,
+            n_input_boundaries=1,
+        )
+
+        # Create web_b: one Z spider with 1 input boundary, 1 output boundary
+        g2 = zx.Graph()
+        v2 = g2.add_vertex(ty=VertexType.Z, row=0, qubit=0, phase=0)
+        web_b = ZXWeb(
+            web_id="b",
+            graph=g2,
+            boundaries=[
+                Boundary(index=0, spider_type="Z", phase=0.0, edge_type="simple", vertex_id=v2),
+                Boundary(index=1, spider_type="Z", phase=0.0, edge_type="simple", vertex_id=v2),
+            ],
+            spider_count=1,
+            n_input_boundaries=1,
+        )
+
+        result = connect_webs(web_a, web_b, [(0, 0)])
+        assert result.num_vertices() > 0
+        assert result.num_edges() >= 0
 
     def test_validate_candidate_rejects_unbalanced(self):
         """A graph with mismatched inputs/outputs should fail validation."""
-        pytest.skip("Not yet implemented")
+        from src.compose import validate_candidate
+        import pyzx as zx
+
+        g = zx.Graph()
+        v0 = g.add_vertex(ty=VertexType.BOUNDARY, row=0, qubit=0)
+        v1 = g.add_vertex(ty=VertexType.Z, row=1, qubit=0)
+        v2 = g.add_vertex(ty=VertexType.BOUNDARY, row=2, qubit=0)
+        v3 = g.add_vertex(ty=VertexType.BOUNDARY, row=2, qubit=1)
+        g.add_edge((v0, v1))
+        g.add_edge((v1, v2))
+        g.add_edge((v1, v3))
+        g.set_inputs((v0,))
+        g.set_outputs((v2, v3))
+
+        # 1 input, 2 outputs → unbalanced
+        assert validate_candidate(g, expected_qubits=0) is False
 
 
 # ── Extract ─────────────────────────────────────────────────────────
