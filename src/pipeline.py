@@ -133,6 +133,9 @@ def run_stage_3(cfg: PipelineConfig) -> None:
     max_spiders = cfg.mining.get("max_spiders", 30)
     phase_abstraction = cfg.mining.get("phase_abstraction", "class")
     reduction_level = cfg.mining.get("reduction_level", "full")
+    max_diagram_vertices = cfg.mining.get("max_diagram_vertices", 500)
+    memory_limit_gb = cfg.mining.get("memory_limit_gb", 16)
+    max_patterns = cfg.mining.get("max_patterns", 50_000)
 
     records = load_all_diagrams(diagrams_dir, level=reduction_level)
     if not records:
@@ -148,6 +151,9 @@ def run_stage_3(cfg: PipelineConfig) -> None:
         min_spiders=min_spiders,
         max_spiders=max_spiders,
         phase_abstraction=phase_abstraction,
+        max_diagram_vertices=max_diagram_vertices,
+        memory_limit_gb=memory_limit_gb,
+        max_patterns=max_patterns,
     )
 
     library = WebLibrary(output_dir)

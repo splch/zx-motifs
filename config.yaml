@@ -44,6 +44,9 @@ mining:
   min_spiders: 3
   max_spiders: 18
   phase_abstraction: class
+  max_diagram_vertices: 800   # skip diagrams larger than this
+  memory_limit_gb: 64          # abort mining if RSS exceeds this
+  max_patterns: 50000          # cap on stored patterns
 
 # ── Stage 4: Composition ─────────────────────
 composition:
