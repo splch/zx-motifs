@@ -1,8 +1,5 @@
 """
 extract.py — Flow detection, circuit extraction, and filtering.
-
-Merges stage5_extract/{flow,extract,filter}.py. Only gFlow and PyZX
-extraction are kept.
 """
 
 from __future__ import annotations

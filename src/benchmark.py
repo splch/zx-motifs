@@ -1,8 +1,5 @@
 """
 benchmark.py — Metrics, simulation, and baseline comparison.
-
-Merges stage6_benchmark/{metrics,simulate,compare}.py. Only statevector
-simulation and QASM-based metrics are kept.
 """
 
 from __future__ import annotations

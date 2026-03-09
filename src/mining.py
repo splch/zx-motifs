@@ -1,7 +1,5 @@
 """
 mining.py — Sub-diagram discovery: webs, fingerprinting, mining, and library.
-
-Merges stage3_mining/{web,mining,fingerprint,library}.py.
 """
 
 from __future__ import annotations

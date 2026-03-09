@@ -1,7 +1,5 @@
 """
 zx.py — ZX-diagram conversion, simplification, storage, and graph helpers.
-
-Merges stage2_zx/{convert,simplify,storage}.py and utils/{io,graph}.py.
 """
 
 from __future__ import annotations

@@ -1,8 +1,5 @@
 """
 report.py — Novelty assessment, provenance tracking, and artifact export.
-
-Merges stage7_report/{novelty,provenance,export}.py. WebProvenance replaced
-with plain dicts inside CandidateProvenance.
 """
 
 from __future__ import annotations

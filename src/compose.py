@@ -1,8 +1,5 @@
 """
 compose.py — Template-based candidate algorithm composition.
-
-Merges stage4_compose/{templates,composer}.py. Evolutionary/random-walk
-strategies removed.
 """
 
 from __future__ import annotations

@@ -1,7 +1,5 @@
 """
 corpus.py — Algorithm corpus: builders, registry, and QASM export.
-
-Merges stage1_corpus/{algorithms,registry,export}.py into a single module.
 """
 
 from __future__ import annotations
