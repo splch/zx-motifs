@@ -183,27 +183,182 @@ class TestMining:
 
     def test_fingerprint_deterministic(self):
         """Same graph should always produce the same fingerprint."""
-        pytest.skip("Not yet implemented")
+        from src.mining import compute_fingerprint
+
+        qc = build_ghz(3)
+        qc_t = transpile_to_gate_set(qc, ["cx", "rz", "h"])
+        qasm = circuit_to_qasm(qc_t)
+        circuit = qasm_to_pyzx_circuit(qasm)
+        graph = pyzx_circuit_to_graph(circuit)
+
+        fp1 = compute_fingerprint(graph)
+        fp2 = compute_fingerprint(graph)
+
+        assert fp1.n_z_spiders == fp2.n_z_spiders
+        assert fp1.n_x_spiders == fp2.n_x_spiders
+        assert fp1.n_hadamard_edges == fp2.n_hadamard_edges
+        assert fp1.n_simple_edges == fp2.n_simple_edges
+        assert fp1.degree_histogram == fp2.degree_histogram
+        assert fp1.phase_histogram == fp2.phase_histogram
 
     def test_compatibility_necessary_condition(self):
         """A sub-diagram's fingerprint should be compatible with its parent."""
-        pytest.skip("Not yet implemented")
+        from src.mining import compute_fingerprint, fingerprints_compatible
+        from src.zx import extract_subgraph
+
+        qc = build_ghz(4)
+        qc_t = transpile_to_gate_set(qc, ["cx", "rz", "h"])
+        qasm = circuit_to_qasm(qc_t)
+        circuit = qasm_to_pyzx_circuit(qasm)
+        graph = pyzx_circuit_to_graph(circuit)
+
+        # Pick a subset of non-boundary vertices
+        internal = [v for v in graph.vertices() if graph.type(v) != VertexType.BOUNDARY]
+        subset = set(internal[: max(2, len(internal) // 2)])
+        sub_graph, _ = extract_subgraph(graph, subset)
+
+        parent_fp = compute_fingerprint(graph)
+        sub_fp = compute_fingerprint(sub_graph)
+
+        assert fingerprints_compatible(parent_fp, sub_fp)
 
     def test_web_serialization_roundtrip(self):
         """to_dict → from_dict should reconstruct an equivalent web."""
-        pytest.skip("Not yet implemented")
+        from src.mining import Boundary, ZXWeb
+
+        qc = build_ghz(3)
+        qc_t = transpile_to_gate_set(qc, ["cx", "rz", "h"])
+        qasm = circuit_to_qasm(qc_t)
+        circuit = qasm_to_pyzx_circuit(qasm)
+        graph = pyzx_circuit_to_graph(circuit)
+
+        boundaries = [
+            Boundary(index=0, spider_type="Z", phase=0.0, edge_type="simple"),
+            Boundary(index=1, spider_type="X", phase=0.5, edge_type="hadamard"),
+        ]
+        web = ZXWeb(
+            web_id="test_web",
+            graph=graph,
+            boundaries=boundaries,
+            spider_count=graph.num_vertices(),
+            sources=["ghz"],
+            support=3,
+            role="entangle",
+            phase_class="pauli",
+            n_input_boundaries=1,
+        )
+
+        data = web.to_dict()
+        restored = ZXWeb.from_dict(data)
+
+        assert restored.web_id == web.web_id
+        assert restored.spider_count == web.spider_count
+        assert restored.support == web.support
+        assert restored.role == web.role
+        assert restored.phase_class == web.phase_class
+        assert restored.n_input_boundaries == web.n_input_boundaries
+        assert len(restored.boundaries) == len(web.boundaries)
+        assert restored.graph.num_vertices() == web.graph.num_vertices()
+        assert restored.graph.num_edges() == web.graph.num_edges()
 
     def test_web_compatibility_check(self):
         """Webs with matching boundaries should be compatible."""
-        pytest.skip("Not yet implemented")
+        from src.mining import Boundary, ZXWeb
+        import pyzx as zx
+
+        g1 = zx.Graph()
+        g1.add_vertex(ty=VertexType.Z)
+        g2 = zx.Graph()
+        g2.add_vertex(ty=VertexType.Z)
+
+        web1 = ZXWeb(
+            web_id="w1",
+            graph=g1,
+            boundaries=[
+                Boundary(index=0, spider_type="Z", phase=0.0, edge_type="simple"),
+                Boundary(index=1, spider_type="Z", phase=0.0, edge_type="simple"),
+            ],
+            spider_count=1,
+            n_input_boundaries=1,  # 1 input, 1 output
+        )
+        web2 = ZXWeb(
+            web_id="w2",
+            graph=g2,
+            boundaries=[
+                Boundary(index=0, spider_type="Z", phase=0.0, edge_type="simple"),
+                Boundary(index=1, spider_type="Z", phase=0.0, edge_type="simple"),
+            ],
+            spider_count=1,
+            n_input_boundaries=1,  # 1 input, 1 output
+        )
+
+        assert web1.is_compatible(web2)
+        assert web1.n_inputs() == 1
+        assert web1.n_outputs() == 1
 
     def test_library_add_and_get(self, tmp_path):
         """Adding a web and retrieving it by ID should work."""
-        pytest.skip("Not yet implemented")
+        from src.mining import Boundary, WebLibrary, ZXWeb
+        import pyzx as zx
+
+        g = zx.Graph()
+        g.add_vertex(ty=VertexType.Z)
+
+        web = ZXWeb(
+            web_id="test_lib_web",
+            graph=g,
+            boundaries=[
+                Boundary(index=0, spider_type="Z", phase=0.0, edge_type="simple"),
+            ],
+            spider_count=1,
+            sources=["ghz"],
+            support=2,
+            role="entangle",
+            phase_class="pauli",
+            n_input_boundaries=1,
+        )
+
+        lib = WebLibrary(tmp_path / "webs")
+        lib.add(web)
+        lib.save_index()
+
+        lib2 = WebLibrary(tmp_path / "webs")
+        lib2.load_index()
+        loaded = lib2.get("test_lib_web")
+
+        assert loaded.web_id == web.web_id
+        assert loaded.spider_count == web.spider_count
+        assert loaded.support == web.support
+        assert loaded.role == web.role
 
     def test_library_search_by_role(self, tmp_path):
         """search(role='oracle') should only return matching webs."""
-        pytest.skip("Not yet implemented")
+        from src.mining import Boundary, WebLibrary, ZXWeb
+        import pyzx as zx
+
+        lib = WebLibrary(tmp_path / "webs")
+        roles = ["oracle", "phase", "oracle"]
+
+        for i, role in enumerate(roles):
+            g = zx.Graph()
+            g.add_vertex(ty=VertexType.Z)
+            web = ZXWeb(
+                web_id=f"web_{i:04d}",
+                graph=g,
+                boundaries=[
+                    Boundary(index=0, spider_type="Z", phase=0.0, edge_type="simple"),
+                ],
+                spider_count=1,
+                role=role,
+                n_input_boundaries=0,
+            )
+            lib.add(web)
+
+        lib.save_index()
+
+        results = lib.search(role="oracle")
+        assert len(results) == 2
+        assert all(w.role == "oracle" for w in results)
 
 
 # ── Compose ─────────────────────────────────────────────────────────

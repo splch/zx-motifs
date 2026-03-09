@@ -1,4 +1,4 @@
-**Programmatic Quantum Algorithm Discovery**
+**ZX-Webs: Programmatic Quantum Algorithm Discovery**
 
 via ZX-Calculus Sub-Diagram Mining and Composition
 

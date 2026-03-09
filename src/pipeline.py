@@ -135,7 +135,39 @@ def run_stage_2(cfg: PipelineConfig) -> None:
 
 def run_stage_3(cfg: PipelineConfig) -> None:
     """Mine common sub-diagrams (ZX-Webs) from the diagram corpus."""
-    raise NotImplementedError
+    from src.mining import WebLibrary, mine_webs
+    from src.zx import load_all_diagrams
+
+    diagrams_dir = Path(cfg.zx_conversion.get("output_dir", "data/diagrams"))
+    output_dir = Path(cfg.mining.get("output_dir", "data/webs"))
+    min_support = cfg.mining.get("min_support", 2)
+    min_spiders = cfg.mining.get("min_spiders", 3)
+    max_spiders = cfg.mining.get("max_spiders", 30)
+    phase_abstraction = cfg.mining.get("phase_abstraction", "class")
+    reduction_level = cfg.mining.get("reduction_level", "full")
+
+    records = load_all_diagrams(diagrams_dir, level=reduction_level)
+    if not records:
+        logger.warning("No diagrams found in %s at level '%s'", diagrams_dir, reduction_level)
+        return
+
+    diagram_tuples = [(rec.source_algorithm, graph) for rec, graph in records]
+    logger.info("Mining webs from %d diagrams (min_support=%d)", len(diagram_tuples), min_support)
+
+    webs = mine_webs(
+        diagrams=diagram_tuples,
+        min_support=min_support,
+        min_spiders=min_spiders,
+        max_spiders=max_spiders,
+        phase_abstraction=phase_abstraction,
+    )
+
+    library = WebLibrary(output_dir)
+    for web in webs:
+        library.add(web)
+    library.save_index()
+
+    logger.info("Mined %d webs, saved to %s", len(webs), output_dir)
 
 
 def run_stage_4(cfg: PipelineConfig) -> None:
