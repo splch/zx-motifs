@@ -11,6 +11,7 @@ corpus:
   qubit_sizes:
     small: [3, 4, 5]
     medium: [8, 10, 12]
+    fixed: [7]
   categories:
     - search
     - fourier

@@ -8,6 +8,16 @@ Run with: pytest tests/
 
 import pytest
 
+from src.corpus import (
+    AlgorithmEntry,
+    AlgorithmRegistry,
+    build_default_registry,
+    build_grover,
+    build_qft,
+    circuit_to_qasm,
+    transpile_to_gate_set,
+)
+
 
 # ── Corpus ──────────────────────────────────────────────────────────
 
@@ -17,39 +27,73 @@ class TestCorpus:
 
     def test_register_and_retrieve(self):
         """Registering an entry and retrieving it by key."""
-        pytest.skip("Not yet implemented")
+        reg = AlgorithmRegistry()
+        entry = AlgorithmEntry("test", "cat", build_qft, "desc")
+        reg.register(entry)
+        assert reg.get("test") is entry
 
     def test_duplicate_key_raises(self):
         """Registering two entries with the same key should raise ValueError."""
-        pytest.skip("Not yet implemented")
+        reg = AlgorithmRegistry()
+        entry = AlgorithmEntry("dup", "cat", build_qft)
+        reg.register(entry)
+        with pytest.raises(ValueError, match="Duplicate key"):
+            reg.register(entry)
 
     def test_by_category_filters_correctly(self):
         """by_category should return only entries in that category."""
-        pytest.skip("Not yet implemented")
+        reg = AlgorithmRegistry()
+        reg.register(AlgorithmEntry("a", "foo", build_qft))
+        reg.register(AlgorithmEntry("b", "bar", build_qft))
+        reg.register(AlgorithmEntry("c", "foo", build_qft))
+        assert [e.key for e in reg.by_category("foo")] == ["a", "c"]
+        assert len(reg.by_category("bar")) == 1
 
     def test_default_registry_is_populated(self):
         """build_default_registry should return a populated registry."""
-        pytest.skip("Not yet implemented")
+        reg = build_default_registry()
+        keys = reg.all_keys()
+        assert len(keys) == 11
+        assert "qft" in keys
+        assert "grover" in keys
+        assert "steane_encoder" in keys
 
     def test_grover_returns_unitary_circuit(self):
         """build_grover should return a circuit with no measurements."""
-        pytest.skip("Not yet implemented")
+        qc = build_grover(3)
+        assert qc.num_qubits == 3
+        op_names = [inst.operation.name for inst in qc]
+        assert "measure" not in op_names
 
     def test_qft_qubit_scaling(self):
         """build_qft(n) should produce a circuit on exactly n qubits."""
-        pytest.skip("Not yet implemented")
+        for n in [2, 4, 8]:
+            qc = build_qft(n)
+            assert qc.num_qubits == n
 
     def test_all_builders_accept_min_qubits(self):
         """Every builder should work at its declared min_qubits."""
-        pytest.skip("Not yet implemented")
+        reg = build_default_registry()
+        for key in reg.all_keys():
+            entry = reg.get(key)
+            qc = entry.builder(entry.min_qubits)
+            assert qc.num_qubits >= entry.min_qubits
 
     def test_circuit_to_qasm_produces_valid_openqasm(self):
         """Exported QASM should start with 'OPENQASM 2.0'."""
-        pytest.skip("Not yet implemented")
+        qc = build_qft(3)
+        qc_t = transpile_to_gate_set(qc, ["cx", "rz", "h"])
+        qasm = circuit_to_qasm(qc_t)
+        assert qasm.startswith("OPENQASM 2.0")
 
     def test_transpile_to_gate_set_restricts_gates(self):
         """After transpilation, only target gates should remain."""
-        pytest.skip("Not yet implemented")
+        qc = build_qft(4)
+        gate_set = ["cx", "rz", "h"]
+        qc_t = transpile_to_gate_set(qc, gate_set)
+        allowed = set(gate_set) | {"barrier", "measure"}
+        ops = {inst.operation.name for inst in qc_t}
+        assert ops <= allowed, f"Unexpected gates: {ops - allowed}"
 
 
 # ── ZX ──────────────────────────────────────────────────────────────
