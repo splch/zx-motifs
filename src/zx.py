@@ -82,15 +82,22 @@ def simplify_graph(graph: Any) -> SimplificationResult:
     )
 
 
+def _timeout_handler(signum, frame):
+    raise TimeoutError("Circuit conversion timed out")
+
+
 def convert_single_qasm(
     qasm_path_str: str,
     levels: list[str],
     output_dir_str: str,
+    timeout: int | None = None,
 ) -> tuple[str, int] | None:
     """Worker: convert one QASM file to ZX-diagrams at all simplification levels.
 
-    Returns (stem, raw_spider_count) on success, None on failure.
+    Returns (stem, raw_spider_count) on success, None on failure/timeout.
     """
+    import signal
+
     qasm_path = Path(qasm_path_str)
     output_dir = Path(output_dir_str)
     stem = qasm_path.stem
@@ -100,6 +107,10 @@ def convert_single_qasm(
         n_qubits = int(parts[1].rstrip("q")) if len(parts) == 2 else 0
     except ValueError:
         n_qubits = 0
+
+    if timeout is not None:
+        old_handler = signal.signal(signal.SIGALRM, _timeout_handler)
+        signal.alarm(timeout)
 
     try:
         qasm_text = load_qasm_file(qasm_path)
@@ -117,8 +128,15 @@ def convert_single_qasm(
             save_diagram(g, diagram_id, output_dir, metadata)
 
         return (stem, result.spider_counts["raw"])
+    except TimeoutError:
+        logging.getLogger(__name__).warning("Timed out converting %s (limit %ds)", stem, timeout)
+        return None
     except Exception:
         return None
+    finally:
+        if timeout is not None:
+            signal.alarm(0)
+            signal.signal(signal.SIGALRM, old_handler)
 
 
 # ── Storage ─────────────────────────────────────────────────────────

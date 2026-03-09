@@ -35,6 +35,7 @@ zx_conversion:
     - raw
     - clifford
     - full
+  timeout_per_circuit: 120  # seconds; null = no limit
 
 # ── Stage 3: Sub-Diagram Mining ───────────────
 mining:

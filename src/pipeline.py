@@ -108,9 +108,11 @@ def run_stage_2(cfg: PipelineConfig) -> None:
         logger.warning("No QASM files found in %s", corpus_dir)
         return
 
+    timeout = cfg.zx_conversion.get("timeout_per_circuit", None)
+
     logger.info("Converting %d QASM files to ZX-diagrams", len(qasm_files))
 
-    items = [(str(p), levels, str(output_dir)) for p in qasm_files]
+    items = [(str(p), levels, str(output_dir), timeout) for p in qasm_files]
     results = parallel_map(convert_single_qasm, items, cfg.workers, desc="ZX conversion")
 
     for r in results:
