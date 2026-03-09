@@ -529,11 +529,42 @@ class TestBenchmark:
 
     def test_metrics_from_known_circuit(self):
         """Metrics for a hand-crafted circuit should match expected values."""
-        pytest.skip("Not yet implemented")
+        from src.benchmark import compute_metrics_from_qasm
+
+        # GHZ-3: H q[0]; CX q[0],q[1]; CX q[0],q[2] → 3 gates, 2 two-qubit, 0 T, depth 3
+        ghz3_qasm = (
+            "OPENQASM 2.0;\n"
+            'include "qelib1.inc";\n'
+            "qreg q[3];\n"
+            "h q[0];\n"
+            "cx q[0],q[1];\n"
+            "cx q[0],q[2];\n"
+        )
+        m = compute_metrics_from_qasm(ghz3_qasm)
+        assert m.n_qubits == 3
+        assert m.gate_count == 3
+        assert m.two_qubit_count == 2
+        assert m.t_count == 0
+        assert m.depth == 3
+        assert m.gate_density == pytest.approx(3 / (3 * 3))
+        assert m.entanglement_ratio == pytest.approx(2 / 3)
 
     def test_improvement_positive_when_better(self):
         """compute_improvement should return positive values when better."""
-        pytest.skip("Not yet implemented")
+        from src.benchmark import CircuitMetrics, compute_improvement
+
+        candidate = CircuitMetrics(
+            n_qubits=3, gate_count=5, two_qubit_count=2, t_count=1, depth=3,
+        )
+        baseline = CircuitMetrics(
+            n_qubits=3, gate_count=10, two_qubit_count=4, t_count=2, depth=6,
+        )
+        imp = compute_improvement(candidate, baseline)
+        assert imp["gate_count"] == pytest.approx(0.5)
+        assert imp["two_qubit_count"] == pytest.approx(0.5)
+        assert imp["t_count"] == pytest.approx(0.5)
+        assert imp["depth"] == pytest.approx(0.5)
+        assert all(v > 0 for v in imp.values())
 
 
 # ── Report ──────────────────────────────────────────────────────────

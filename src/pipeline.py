@@ -254,6 +254,8 @@ def run_stage_5(cfg: PipelineConfig) -> None:
         },
         "survivors": [
             {
+                "candidate_id": s.candidate_id,
+                "qasm": s.qasm,
                 "gate_count": s.gate_count,
                 "two_qubit_count": s.two_qubit_count,
                 "t_count": s.t_count,
@@ -277,7 +279,70 @@ def run_stage_5(cfg: PipelineConfig) -> None:
 
 def run_stage_6(cfg: PipelineConfig) -> None:
     """Benchmark surviving candidates against application baselines."""
-    raise NotImplementedError
+    import json
+
+    from src.benchmark import compare_against_baselines
+
+    candidate_dir = Path(cfg.extraction.get("output_dir", "data/candidates"))
+    corpus_dir = Path(cfg.corpus.get("output_dir", "data/corpus"))
+    output_dir = Path(cfg.benchmark.get("output_dir", "data/results"))
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    summary_path = candidate_dir / "extraction_summary.json"
+    if not summary_path.exists():
+        logger.warning("No extraction_summary.json found in %s", candidate_dir)
+        return
+
+    summary = json.loads(summary_path.read_text())
+    survivors = summary.get("survivors", [])
+    if not survivors:
+        logger.info("Stage 6: no survivors to benchmark")
+        return
+
+    all_comparisons: list[dict] = []
+    for survivor in survivors:
+        candidate_id = survivor.get("candidate_id", "")
+        qasm = survivor.get("qasm")
+        if not qasm or not candidate_id:
+            continue
+
+        comparisons = compare_against_baselines(qasm, candidate_id, str(corpus_dir))
+        for comp in comparisons:
+            all_comparisons.append({
+                "candidate_id": comp.candidate_id,
+                "baseline_id": comp.baseline_id,
+                "candidate_metrics": {
+                    "n_qubits": comp.candidate_metrics.n_qubits,
+                    "gate_count": comp.candidate_metrics.gate_count,
+                    "two_qubit_count": comp.candidate_metrics.two_qubit_count,
+                    "t_count": comp.candidate_metrics.t_count,
+                    "depth": comp.candidate_metrics.depth,
+                    "gate_density": comp.candidate_metrics.gate_density,
+                    "entanglement_ratio": comp.candidate_metrics.entanglement_ratio,
+                },
+                "baseline_metrics": {
+                    "n_qubits": comp.baseline_metrics.n_qubits,
+                    "gate_count": comp.baseline_metrics.gate_count,
+                    "two_qubit_count": comp.baseline_metrics.two_qubit_count,
+                    "t_count": comp.baseline_metrics.t_count,
+                    "depth": comp.baseline_metrics.depth,
+                    "gate_density": comp.baseline_metrics.gate_density,
+                    "entanglement_ratio": comp.baseline_metrics.entanglement_ratio,
+                },
+                "improvements": comp.improvements,
+                "overall_better": comp.overall_better,
+            })
+
+    results_path = output_dir / "benchmark_results.json"
+    results_path.write_text(json.dumps(all_comparisons, indent=2))
+
+    n_better = sum(1 for c in all_comparisons if c["overall_better"])
+    logger.info(
+        "Stage 6: %d comparisons, %d show improvement, saved to %s",
+        len(all_comparisons),
+        n_better,
+        results_path,
+    )
 
 
 def run_stage_7(cfg: PipelineConfig) -> None:

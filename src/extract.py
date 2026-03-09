@@ -75,6 +75,7 @@ class ExtractionResult:
     t_count: int = 0
     depth: int = 0
     error: str | None = None
+    candidate_id: str = ""
 
 
 def extract_circuit_pyzx(graph: Any) -> ExtractionResult:
@@ -184,6 +185,7 @@ def run_extraction_filter(
                 continue
             stats.passed_size_filter += 1
 
+            result.candidate_id = json_path.stem
             survivors.append(result)
             stats.final_survivors += 1
 
