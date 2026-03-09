@@ -82,6 +82,45 @@ def simplify_graph(graph: Any) -> SimplificationResult:
     )
 
 
+def convert_single_qasm(
+    qasm_path_str: str,
+    levels: list[str],
+    output_dir_str: str,
+) -> tuple[str, int] | None:
+    """Worker: convert one QASM file to ZX-diagrams at all simplification levels.
+
+    Returns (stem, raw_spider_count) on success, None on failure.
+    """
+    qasm_path = Path(qasm_path_str)
+    output_dir = Path(output_dir_str)
+    stem = qasm_path.stem
+    parts = stem.rsplit("_", 1)
+    algo_name = parts[0] if len(parts) == 2 else stem
+    try:
+        n_qubits = int(parts[1].rstrip("q")) if len(parts) == 2 else 0
+    except ValueError:
+        n_qubits = 0
+
+    try:
+        qasm_text = load_qasm_file(qasm_path)
+        circuit = qasm_to_pyzx_circuit(qasm_text)
+        graph = pyzx_circuit_to_graph(circuit)
+        result = simplify_graph(graph)
+
+        level_graphs = {"raw": result.raw, "clifford": result.clifford, "full": result.full}
+        for level_name in levels:
+            g = level_graphs.get(level_name)
+            if g is None:
+                continue
+            diagram_id = f"{stem}_{level_name}"
+            metadata = {"source_algorithm": algo_name, "n_qubits": n_qubits, "level": level_name}
+            save_diagram(g, diagram_id, output_dir, metadata)
+
+        return (stem, result.spider_counts["raw"])
+    except Exception:
+        return None
+
+
 # ── Storage ─────────────────────────────────────────────────────────
 
 

@@ -116,80 +116,123 @@ class FilterStats:
     final_survivors: int = 0
 
 
+def _filter_single_candidate(
+    json_path_str: str,
+    post_optimize: bool,
+    cnot_ratio_threshold: float,
+) -> tuple[dict | None, dict]:
+    """Worker: process one candidate through the extraction filter.
+
+    Returns (result_dict | None, stats_increments).
+    Uses plain dicts to avoid pickling PyZX Circuit objects across processes.
+    """
+    stats_inc = {
+        "passed_flow_check": 0,
+        "passed_extraction": 0,
+        "passed_size_filter": 0,
+        "final_survivors": 0,
+    }
+    json_path = Path(json_path_str)
+
+    try:
+        data = json.loads(json_path.read_text())
+        graph_data = data["graph"]
+        if isinstance(graph_data, dict):
+            graph_json = json.dumps(graph_data)
+        else:
+            graph_json = graph_data
+        graph = zx.Graph.from_json(graph_json)
+
+        if isinstance(graph_data, dict):
+            inputs = graph_data.get("inputs", [])
+            outputs = graph_data.get("outputs", [])
+            if inputs:
+                graph.set_inputs(tuple(inputs))
+            if outputs:
+                graph.set_outputs(tuple(outputs))
+
+        flow_result = check_flow(graph)
+        if not flow_result.exists:
+            return (None, stats_inc)
+        stats_inc["passed_flow_check"] = 1
+
+        result = extract_circuit_pyzx(graph)
+        if not result.success:
+            return (None, stats_inc)
+        stats_inc["passed_extraction"] = 1
+
+        if post_optimize:
+            try:
+                result.circuit = zx.optimize.full_optimize(result.circuit, quiet=True)
+                new_stats = result.circuit.stats_dict(depth=True)
+                result.gate_count = new_stats.get("gates", 0)
+                result.two_qubit_count = new_stats.get("twoqubit", 0)
+                result.t_count = new_stats.get("tcount", 0)
+                result.depth = new_stats.get("depth", 0)
+                result.qasm = result.circuit.to_qasm()
+            except Exception:
+                pass
+
+        n_qubits = max(len(graph.inputs()), 1)
+        cnot_ratio = result.two_qubit_count / n_qubits
+        if cnot_ratio > cnot_ratio_threshold:
+            return (None, stats_inc)
+        stats_inc["passed_size_filter"] = 1
+        stats_inc["final_survivors"] = 1
+
+        result_dict = {
+            "candidate_id": json_path.stem,
+            "qasm": result.qasm,
+            "flow_used": result.flow_used.value,
+            "gate_count": result.gate_count,
+            "two_qubit_count": result.two_qubit_count,
+            "t_count": result.t_count,
+            "depth": result.depth,
+        }
+        return (result_dict, stats_inc)
+    except Exception:
+        return (None, stats_inc)
+
+
 def run_extraction_filter(
     candidate_dir: str | Path,
     post_optimize: bool,
     cnot_ratio_threshold: float,
+    workers: int | None = None,
 ) -> tuple[list[ExtractionResult], FilterStats]:
     """Run the full extraction pipeline on all candidates.
 
     For each candidate diagram: check gFlow, extract circuit,
     optimize, and filter by CNOT ratio.
     """
-    candidate_dir = Path(candidate_dir)
-    survivors: list[ExtractionResult] = []
-    stats = FilterStats()
+    from src.parallel import parallel_map
 
+    candidate_dir = Path(candidate_dir)
     json_files = sorted(candidate_dir.glob("*.json"))
     json_files = [f for f in json_files if f.name != "extraction_summary.json"]
-    stats.total_candidates = len(json_files)
 
-    for json_path in json_files:
-        try:
-            data = json.loads(json_path.read_text())
-            graph_data = data["graph"]
-            if isinstance(graph_data, dict):
-                graph_json = json.dumps(graph_data)
-            else:
-                graph_json = graph_data
-            graph = zx.Graph.from_json(graph_json)
+    stats = FilterStats(total_candidates=len(json_files))
 
-            # Restore inputs/outputs (from_json does not restore them)
-            if isinstance(graph_data, dict):
-                inputs = graph_data.get("inputs", [])
-                outputs = graph_data.get("outputs", [])
-                if inputs:
-                    graph.set_inputs(tuple(inputs))
-                if outputs:
-                    graph.set_outputs(tuple(outputs))
+    items = [(str(f), post_optimize, cnot_ratio_threshold) for f in json_files]
+    results = parallel_map(_filter_single_candidate, items, workers, desc="extraction filter")
 
-            # Check flow
-            flow_result = check_flow(graph)
-            if not flow_result.exists:
-                continue
-            stats.passed_flow_check += 1
+    survivors: list[ExtractionResult] = []
+    for result_dict, stats_inc in results:
+        stats.passed_flow_check += stats_inc["passed_flow_check"]
+        stats.passed_extraction += stats_inc["passed_extraction"]
+        stats.passed_size_filter += stats_inc["passed_size_filter"]
+        stats.final_survivors += stats_inc["final_survivors"]
 
-            # Extract circuit
-            result = extract_circuit_pyzx(graph)
-            if not result.success:
-                continue
-            stats.passed_extraction += 1
-
-            # Post-optimize
-            if post_optimize:
-                try:
-                    result.circuit = zx.optimize.full_optimize(result.circuit, quiet=True)
-                    new_stats = result.circuit.stats_dict(depth=True)
-                    result.gate_count = new_stats.get("gates", 0)
-                    result.two_qubit_count = new_stats.get("twoqubit", 0)
-                    result.t_count = new_stats.get("tcount", 0)
-                    result.depth = new_stats.get("depth", 0)
-                    result.qasm = result.circuit.to_qasm()
-                except Exception:
-                    logger.warning("Post-optimization failed for %s", json_path.stem, exc_info=True)
-
-            # Filter by CNOT ratio
-            n_qubits = max(len(graph.inputs()), 1)
-            cnot_ratio = result.two_qubit_count / n_qubits
-            if cnot_ratio > cnot_ratio_threshold:
-                continue
-            stats.passed_size_filter += 1
-
-            result.candidate_id = json_path.stem
-            survivors.append(result)
-            stats.final_survivors += 1
-
-        except Exception:
-            logger.warning("Failed to process %s", json_path.name, exc_info=True)
+        if result_dict is not None:
+            survivors.append(ExtractionResult(
+                success=True,
+                qasm=result_dict["qasm"],
+                flow_used=FlowType(result_dict["flow_used"]),
+                gate_count=result_dict["gate_count"],
+                two_qubit_count=result_dict["two_qubit_count"],
+                t_count=result_dict["t_count"],
+                depth=result_dict["depth"],
+                candidate_id=result_dict["candidate_id"],
+            ))
 
     return survivors, stats

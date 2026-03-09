@@ -51,7 +51,7 @@ zx-webs/
 ├── tests/
 │   └── test_pipeline.py # One test class per module + integration
 └── data/                # Pipeline artifacts (gitignored)
-    ├── corpus/          #   QASM files from Stage 1
+    ├── corpus/          #   QASM files
     ├── diagrams/        #   Serialized ZX-diagrams
     ├── webs/            #   Mined ZX-Web library
     ├── candidates/      #   Composed candidate diagrams

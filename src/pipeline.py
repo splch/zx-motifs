@@ -56,6 +56,10 @@ class PipelineConfig:
     def reporting(self) -> dict:
         return self.raw.get("reporting", {})
 
+    @property
+    def workers(self) -> int | None:
+        return self.raw.get("workers", None)
+
     @classmethod
     def from_yaml(cls, path: str | Path) -> "PipelineConfig":
         """Load configuration from a YAML file."""
@@ -86,19 +90,14 @@ def run_stage_1(cfg: PipelineConfig) -> None:
                 filtered.register(entry)
         registry = filtered
 
-    written = export_corpus(registry, output_dir, gate_set, qubit_sizes)
+    written = export_corpus(registry, output_dir, gate_set, qubit_sizes, workers=cfg.workers)
     logger.info("Stage 1: exported %d QASM files to %s", len(written), output_dir)
 
 
 def run_stage_2(cfg: PipelineConfig) -> None:
     """Convert QASM files to ZX-diagrams at multiple simplification levels."""
-    from src.zx import (
-        load_qasm_file,
-        pyzx_circuit_to_graph,
-        qasm_to_pyzx_circuit,
-        save_diagram,
-        simplify_graph,
-    )
+    from src.parallel import parallel_map
+    from src.zx import convert_single_qasm
 
     corpus_dir = Path(cfg.corpus.get("output_dir", "data/corpus"))
     output_dir = Path(cfg.zx_conversion.get("output_dir", "data/diagrams"))
@@ -111,43 +110,13 @@ def run_stage_2(cfg: PipelineConfig) -> None:
 
     logger.info("Converting %d QASM files to ZX-diagrams", len(qasm_files))
 
-    for qasm_path in qasm_files:
-        stem = qasm_path.stem  # e.g. "ghz_3q"
-        # Parse algo name and qubit count from filename convention {key}_{n}q
-        parts = stem.rsplit("_", 1)
-        algo_name = parts[0] if len(parts) == 2 else stem
-        try:
-            n_qubits = int(parts[1].rstrip("q")) if len(parts) == 2 else 0
-        except ValueError:
-            n_qubits = 0
+    items = [(str(p), levels, str(output_dir)) for p in qasm_files]
+    results = parallel_map(convert_single_qasm, items, cfg.workers, desc="ZX conversion")
 
-        try:
-            qasm_text = load_qasm_file(qasm_path)
-            circuit = qasm_to_pyzx_circuit(qasm_text)
-            graph = pyzx_circuit_to_graph(circuit)
-            result = simplify_graph(graph)
-
-            level_graphs = {
-                "raw": result.raw,
-                "clifford": result.clifford,
-                "full": result.full,
-            }
-
-            for level_name in levels:
-                g = level_graphs.get(level_name)
-                if g is None:
-                    continue
-                diagram_id = f"{stem}_{level_name}"
-                metadata = {
-                    "source_algorithm": algo_name,
-                    "n_qubits": n_qubits,
-                    "level": level_name,
-                }
-                save_diagram(g, diagram_id, output_dir, metadata)
-
-            logger.info("Converted %s (%d spiders raw)", stem, result.spider_counts["raw"])
-        except Exception:
-            logger.warning("Failed to convert %s", stem, exc_info=True)
+    for r in results:
+        if r is not None:
+            stem, spider_count = r
+            logger.info("Converted %s (%d spiders raw)", stem, spider_count)
 
 
 def run_stage_3(cfg: PipelineConfig) -> None:
@@ -259,7 +228,9 @@ def run_stage_5(cfg: PipelineConfig) -> None:
     post_optimize = cfg.extraction.get("post_optimize", True)
     cnot_ratio_threshold = cfg.extraction.get("discard_if_cnot_ratio", 5.0)
 
-    survivors, stats = run_extraction_filter(candidate_dir, post_optimize, cnot_ratio_threshold)
+    survivors, stats = run_extraction_filter(
+        candidate_dir, post_optimize, cnot_ratio_threshold, workers=cfg.workers
+    )
 
     summary = {
         "stats": {
@@ -294,11 +265,40 @@ def run_stage_5(cfg: PipelineConfig) -> None:
     )
 
 
+def _serialize_comparison(comp: Any) -> dict:
+    """Convert a ComparisonResult to a plain dict for JSON output."""
+    return {
+        "candidate_id": comp.candidate_id,
+        "baseline_id": comp.baseline_id,
+        "candidate_metrics": {
+            "n_qubits": comp.candidate_metrics.n_qubits,
+            "gate_count": comp.candidate_metrics.gate_count,
+            "two_qubit_count": comp.candidate_metrics.two_qubit_count,
+            "t_count": comp.candidate_metrics.t_count,
+            "depth": comp.candidate_metrics.depth,
+            "gate_density": comp.candidate_metrics.gate_density,
+            "entanglement_ratio": comp.candidate_metrics.entanglement_ratio,
+        },
+        "baseline_metrics": {
+            "n_qubits": comp.baseline_metrics.n_qubits,
+            "gate_count": comp.baseline_metrics.gate_count,
+            "two_qubit_count": comp.baseline_metrics.two_qubit_count,
+            "t_count": comp.baseline_metrics.t_count,
+            "depth": comp.baseline_metrics.depth,
+            "gate_density": comp.baseline_metrics.gate_density,
+            "entanglement_ratio": comp.baseline_metrics.entanglement_ratio,
+        },
+        "improvements": comp.improvements,
+        "overall_better": comp.overall_better,
+    }
+
+
 def run_stage_6(cfg: PipelineConfig) -> None:
     """Benchmark surviving candidates against application baselines."""
     import json
 
     from src.benchmark import compare_against_baselines
+    from src.parallel import parallel_map
 
     candidate_dir = Path(cfg.extraction.get("output_dir", "data/candidates"))
     corpus_dir = Path(cfg.corpus.get("output_dir", "data/corpus"))
@@ -316,39 +316,20 @@ def run_stage_6(cfg: PipelineConfig) -> None:
         logger.info("Stage 6: no survivors to benchmark")
         return
 
-    all_comparisons: list[dict] = []
-    for survivor in survivors:
-        candidate_id = survivor.get("candidate_id", "")
-        qasm = survivor.get("qasm")
-        if not qasm or not candidate_id:
-            continue
+    items = [
+        (survivor["qasm"], survivor["candidate_id"], str(corpus_dir))
+        for survivor in survivors
+        if survivor.get("qasm") and survivor.get("candidate_id")
+    ]
 
-        comparisons = compare_against_baselines(qasm, candidate_id, str(corpus_dir))
+    all_comparison_lists = parallel_map(
+        compare_against_baselines, items, cfg.workers, desc="benchmark"
+    )
+
+    all_comparisons: list[dict] = []
+    for comparisons in all_comparison_lists:
         for comp in comparisons:
-            all_comparisons.append({
-                "candidate_id": comp.candidate_id,
-                "baseline_id": comp.baseline_id,
-                "candidate_metrics": {
-                    "n_qubits": comp.candidate_metrics.n_qubits,
-                    "gate_count": comp.candidate_metrics.gate_count,
-                    "two_qubit_count": comp.candidate_metrics.two_qubit_count,
-                    "t_count": comp.candidate_metrics.t_count,
-                    "depth": comp.candidate_metrics.depth,
-                    "gate_density": comp.candidate_metrics.gate_density,
-                    "entanglement_ratio": comp.candidate_metrics.entanglement_ratio,
-                },
-                "baseline_metrics": {
-                    "n_qubits": comp.baseline_metrics.n_qubits,
-                    "gate_count": comp.baseline_metrics.gate_count,
-                    "two_qubit_count": comp.baseline_metrics.two_qubit_count,
-                    "t_count": comp.baseline_metrics.t_count,
-                    "depth": comp.baseline_metrics.depth,
-                    "gate_density": comp.baseline_metrics.gate_density,
-                    "entanglement_ratio": comp.baseline_metrics.entanglement_ratio,
-                },
-                "improvements": comp.improvements,
-                "overall_better": comp.overall_better,
-            })
+            all_comparisons.append(_serialize_comparison(comp))
 
     results_path = output_dir / "benchmark_results.json"
     results_path.write_text(json.dumps(all_comparisons, indent=2))
@@ -552,6 +533,12 @@ def main() -> None:
         action="store_true",
         help="Enable DEBUG-level logging.",
     )
+    parser.add_argument(
+        "--workers",
+        type=int,
+        default=None,
+        help="Number of parallel workers (default: CPU count; 1 = sequential).",
+    )
     args = parser.parse_args()
 
     logging.basicConfig(
@@ -560,6 +547,8 @@ def main() -> None:
     )
 
     cfg = PipelineConfig.from_yaml(args.config)
+    if args.workers is not None:
+        cfg.raw["workers"] = args.workers
     run_pipeline(cfg, stage=args.stage)
 
 

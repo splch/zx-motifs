@@ -4,6 +4,9 @@
 
 data_dir: data
 
+# ── Parallelism ──────────────────────────────────
+workers: null  # null = os.cpu_count(); 1 = sequential
+
 # ── Stage 1: Algorithm Corpus ─────────────────
 corpus:
   output_dir: data/corpus

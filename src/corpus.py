@@ -595,35 +595,51 @@ def circuit_to_qasm(circuit: QuantumCircuit) -> str:
     return qasm2_dumps(circuit)
 
 
+def _export_single(
+    builder: Callable,
+    n: int,
+    gate_set: list[str],
+    output_path: str,
+) -> str | None:
+    """Worker: build, transpile, and export one algorithm at one qubit size."""
+    try:
+        qc = builder(n)
+        qc_transpiled = transpile_to_gate_set(qc, gate_set)
+        qasm_str = circuit_to_qasm(qc_transpiled)
+        Path(output_path).write_text(qasm_str)
+        return output_path
+    except Exception:
+        return None
+
+
 def export_corpus(
     registry: AlgorithmRegistry,
     output_dir: str | Path,
     gate_set: list[str],
     qubit_sizes: dict[str, list[int]],
+    workers: int | None = None,
 ) -> list[Path]:
     """Build and export every algorithm at every requested size."""
+    from src.parallel import parallel_map
+
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
-    written: list[Path] = []
 
     all_sizes = sorted({n for sizes in qubit_sizes.values() for n in sizes})
 
+    items = []
     for key in registry.all_keys():
         entry = registry.get(key)
         for n in all_sizes:
             if n < entry.min_qubits or n > entry.max_qubits:
                 continue
-            try:
-                qc = entry.builder(n)
-                qc_transpiled = transpile_to_gate_set(qc, gate_set)
-                qasm_str = circuit_to_qasm(qc_transpiled)
-                path = output_dir / f"{key}_{n}q.qasm"
-                path.write_text(qasm_str)
-                written.append(path)
-                logger.info("Exported %s (%d qubits)", key, n)
-            except Exception:
-                logger.warning(
-                    "Failed to build %s at %d qubits", key, n, exc_info=True,
-                )
+            path = str(output_dir / f"{key}_{n}q.qasm")
+            items.append((entry.builder, n, gate_set, path))
+
+    results = parallel_map(_export_single, items, workers, desc="corpus export")
+    written = [Path(r) for r in results if r is not None]
+
+    for p in written:
+        logger.info("Exported %s", p.stem)
 
     return written
