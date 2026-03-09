@@ -1,0 +1,72 @@
+# ──────────────────────────────────────────────
+#  ZX-Webs Pipeline Configuration
+# ──────────────────────────────────────────────
+
+data_dir: data
+
+# ── Stage 1: Algorithm Corpus ─────────────────
+corpus:
+  output_dir: data/corpus
+  gate_set: [cx, rz, h]
+  qubit_sizes:
+    small: [3, 4, 5]
+    medium: [8, 10, 12]
+  categories:
+    - search
+    - fourier
+    - variational
+    - simulation
+    - error_correction
+    - arithmetic
+
+# ── Stage 2: ZX Conversion ───────────────────
+zx_conversion:
+  output_dir: data/diagrams
+  simplification_levels:
+    - raw
+    - clifford
+    - full
+
+# ── Stage 3: Sub-Diagram Mining ───────────────
+mining:
+  output_dir: data/webs
+  min_support: 2
+  min_spiders: 3
+  max_spiders: 30
+  phase_abstraction: class
+
+# ── Stage 4: Composition ─────────────────────
+composition:
+  output_dir: data/candidates
+  max_candidates: 1000
+  max_qubits: 20
+  enforce_flow: true
+  templates:
+    - [state_prep, entangle, phase, readout]
+    - [oracle, amplify, oracle, amplify, readout]
+    - [encode, evolve, decode]
+
+# ── Stage 5: Circuit Extraction ───────────────
+extraction:
+  output_dir: data/candidates
+  post_optimize: true
+  discard_if_cnot_ratio: 5.0
+
+# ── Stage 6: Benchmarking ────────────────────
+benchmark:
+  output_dir: data/results
+  metrics:
+    - gate_count
+    - two_qubit_count
+    - t_count
+    - depth
+    - simulated_fidelity
+
+# ── Stage 7: Reporting ────────────────────────
+reporting:
+  output_dir: data/results
+  improvement_threshold: 0.05
+  export_formats:
+    - json
+    - markdown
+    - qasm
